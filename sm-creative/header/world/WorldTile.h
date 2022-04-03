@@ -1,7 +1,6 @@
 #pragma once
 
 #include "root.h"
-#include "Assets.h"
 #include "Tile.h"
 
 class WorldTile {

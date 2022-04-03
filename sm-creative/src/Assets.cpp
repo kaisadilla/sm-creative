@@ -15,10 +15,6 @@ void Assets::buildTileAtlas () {
         string internalName = imgPath.path().stem().string();
         tileMap[internalName] = folderCursor;
 
-        if (internalName == "ground_wooden_top") {
-            int i = 3;
-        }
-
         sf::Image img;
         img.loadFromFile(imgPath.path().string());
 
@@ -84,4 +80,27 @@ void Assets::loadTileData () {
         __tilePositionMap[internalName] = tiles.size();
         tiles.push_back(Tile(internalName, tilesAtlas, tileMap[sprite]));
     }
+}
+
+void Assets::loadLevels () {
+    std::cout << "=== LOADING LEVELS ===" << std::endl;
+
+    fs::path folderPath = "res/data/levels";
+    fs::directory_iterator folderIterator(folderPath);
+
+    ui32 folderCursor = 0;
+
+    for (fs::directory_entry levelPath : folderIterator) {
+        string internalName = levelPath.path().stem().string();
+
+        Level* level = Level::loadFromFile(levelPath.path().string().c_str());
+        levels[internalName] = *level;
+
+        std::cout << "Level loaded: {" << internalName << "}" << "\n";
+        folderCursor++;
+    }
+}
+
+void Assets::freeData () {
+    // TODO: Free certain data such as Levels.
 }

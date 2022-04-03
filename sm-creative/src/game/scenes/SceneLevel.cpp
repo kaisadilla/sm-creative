@@ -34,7 +34,6 @@ void SceneLevel::onEnter () {
 }
 
 void SceneLevel::onUpdate (const f32 deltaTime) {
-    player.__input(deltaTime);
     player.onUpdate(deltaTime, colliders);
     camera.updatePosition(player.getPosition());
 }

@@ -1,6 +1,9 @@
 #pragma once
 
 #include "root.h"
+#include "Collision.h"
+
+class Collision;
 
 class Collider {
 private:
@@ -11,7 +14,9 @@ public:
     Collider();
     Collider(vec2 center, vec2 distanceToEdge);
 
-    bool checkColision(const Collider& collider);
+    bool checkColision(const Collider& collider, Collision& collision);
+    sf::FloatRect getBounds() const;
+
     void drawColliderBounds(sf::RenderWindow& window) const;
 
     inline void setCenter (const vec2& center) {

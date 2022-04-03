@@ -3,6 +3,8 @@
 #include "root.h"
 
 class Mob {
+    friend class Player;
+
 private:
     /// <summary>
     /// The position of the mob inside the level, in pixels.
@@ -33,16 +35,20 @@ public:
         position = vec2(2.f, 26.f);
     }
 
-    inline void setPosition (vec2 position) {
+    inline void setPosition (const vec2& position) {
         this->position = position;
+    }
+
+    inline void setX (const f32 x) {
+        position.x = x;
+    }
+
+    inline void setY (const f32 y) {
+        position.y = y;
     }
 
     inline void draw (sf::RenderWindow& window, vec2 offset) {
         sprite.setPosition(vec2(position.x, position.y) - offset);
         window.draw(sprite);
     }
-
-private:
-
-    friend class Player;
 };

@@ -1,7 +1,4 @@
-
-#include "..\..\header\game\Collider.h"
-
-#include "game/Collider.h"
+#include "physics/Collider.h"
 
 Collider::Collider () :
     center(vec2(0, 0)),
@@ -13,7 +10,7 @@ Collider::Collider(vec2 center, vec2 distanceToEdge) :
     distanceToEdge(distanceToEdge)
 {}
 
-bool Collider::checkColision(const Collider& collider) {
+bool Collider::checkColision(const Collider& collider, Collision& collision) {
     // the distances of the centers of the two items.
     f32 xDelta = center.x - collider.center.x;
     f32 yDelta = center.y - collider.center.y;
@@ -23,7 +20,28 @@ bool Collider::checkColision(const Collider& collider) {
     f32 xIntersect = abs(xDelta) - (distanceToEdge.x + collider.distanceToEdge.x);
     f32 yIntersect = abs(yDelta) - (distanceToEdge.y + collider.distanceToEdge.y);
 
+    bool wasCollision = xIntersect < 0.f && yIntersect < 0.f;
+    Direction direction = Direction::NONE;
+
+    if (wasCollision) {
+        if (xIntersect > yIntersect) {
+            direction = xDelta > 0.f ? Direction::LEFT : Direction::RIGHT;
+        }
+        else {
+            direction = yDelta > 0.f ? Direction::UP : Direction::DOWN;
+        }
+    }
+
+    f32 xIntersectSigned = xDelta > 0.f ? -xIntersect : xIntersect;
+    f32 yIntersectSigned = yDelta > 0.f ? -yIntersect : yIntersect;
+
+    collision = Collision(&collider, direction, vec2(xIntersectSigned, yIntersectSigned));
+
     return xIntersect < 0.f && yIntersect < 0.f;
+}
+
+sf::FloatRect Collider::getBounds () const {
+    return sf::FloatRect(center - distanceToEdge, distanceToEdge * 2.f);
 }
 
 void Collider::drawColliderBounds (sf::RenderWindow& window) const {
