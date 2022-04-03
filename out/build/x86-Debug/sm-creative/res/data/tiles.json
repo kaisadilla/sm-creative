@@ -1,0 +1,114 @@
+[
+    {
+        "internalName": "ground_wooden",
+        "displayName": "Wooden ground",
+        "sprite": "ground_wooden",
+        "categories": [
+            "ground"
+        ]
+    },
+    {
+        "internalName": "ground_wooden_left",
+        "displayName": "Wooden ground (left)",
+        "sprite": "ground_wooden_left",
+        "categories": [
+            "ground"
+        ]
+    },
+    {
+        "internalName": "ground_wooden_right",
+        "displayName": "Wooden ground (right)",
+        "sprite": "ground_wooden_right",
+        "categories": [
+            "ground"
+        ]
+    },
+    {
+        "internalName": "ground_wooden_top",
+        "displayName": "Wooden ground (top)",
+        "sprite": "ground_wooden_top",
+        "categories": [
+            "ground"
+        ]
+    },
+    {
+        "internalName": "ground_wooden_top_left",
+        "displayName": "Wooden ground (top left)",
+        "sprite": "ground_wooden_top_left",
+        "categories": [
+            "ground"
+        ]
+    },
+    {
+        "internalName": "ground_wooden_top_right",
+        "displayName": "Wooden ground (top right)",
+        "sprite": "ground_wooden_top_right",
+        "categories": [
+            "ground"
+        ]
+    },
+    {
+        "internalName": "block_question",
+        "displayName": "Question block",
+        "sprite": "block_question",
+        "categories": [
+            "blocks"
+        ]
+    },
+    {
+        "internalName": "block_wooden",
+        "displayName": "Wooden block",
+        "sprite": "block_wooden",
+        "categories": [
+            "blocks"
+        ]
+    },
+    {
+        "internalName": "block_cloud",
+        "displayName": "Cloud block",
+        "sprite": "block_cloud",
+        "categories": [
+            "blocks"
+        ]
+    },
+    {
+        "internalName": "block_brick",
+        "displayName": "Brick block",
+        "sprite": "block_brick",
+        "categories": [
+            "blocks"
+        ]
+    },
+    {
+        "internalName": "pipe_vertical_green_notch_left",
+        "displayName": "Vertical pipe (green, notch, left)",
+        "sprite": "pipe_vertical_green_notch_left",
+        "categories": [
+            "pipes"
+        ]
+    },
+    {
+        "internalName": "pipe_vertical_green_notch_right",
+        "displayName": "Vertical pipe (green, notch, right)",
+        "sprite": "pipe_vertical_green_notch_right",
+        "categories": [
+            "pipes"
+        ]
+    },
+    {
+        "internalName": "pipe_vertical_green_left",
+        "displayName": "Vertical pipe (green, left)",
+        "sprite": "pipe_vertical_green_left",
+        "categories": [
+            "pipes"
+        ]
+    },
+    {
+        "internalName": "pipe_vertical_green_right",
+        "displayName": "Vertical pipe (green, right)",
+        "sprite": "pipe_vertical_green_right",
+        "categories": [
+            "pipes"
+        ]
+    }
+]
