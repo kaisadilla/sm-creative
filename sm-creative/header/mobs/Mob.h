@@ -1,8 +1,10 @@
 #pragma once
 
 #include "root.h"
+#include "physics/Collider.h"
+#include "physics/IGameObject.h"
 
-class Mob {
+class Mob : public IGameObject {
     friend class Player;
 
 private:
@@ -16,6 +18,10 @@ private:
     vec2 size;
     //uvec2 size;
     sf::RectangleShape sprite;
+
+    // Movement and interaction.
+    Collider collider;
+    vec2 velocity = vec2(0, 0);
 
 public:
     Mob(vec2 size);
@@ -37,14 +43,17 @@ public:
 
     inline void setPosition (const vec2& position) {
         this->position = position;
+        collider.setCenter(position + size / 2.f);
     }
 
     inline void setX (const f32 x) {
         position.x = x;
+        collider.setCenter(position + size / 2.f);
     }
 
     inline void setY (const f32 y) {
         position.y = y;
+        collider.setCenter(position + size / 2.f);
     }
 
     inline void draw (sf::RenderWindow& window, vec2 offset) {

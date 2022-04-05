@@ -1,11 +1,13 @@
 #include "physics/Collider.h"
 
 Collider::Collider () :
+    gameObject(nullptr),
     center(vec2(0, 0)),
     distanceToEdge(vec2(0, 0)) 
 {}
 
-Collider::Collider(vec2 center, vec2 distanceToEdge) :
+Collider::Collider(IGameObject* gameObject, vec2 center, vec2 distanceToEdge) :
+    gameObject(gameObject),
     center(center),
     distanceToEdge(distanceToEdge)
 {}

@@ -29,11 +29,12 @@ private:
     Collider __collider;
 
 public:
-    SceneLevel() : foregroundLayer(0, 0), player(vec2(16.f, 16.f)) {}
+    SceneLevel();
     SceneLevel(const ui32 windowWidth, const ui32 windowHeight, const Level& level);
 
     void onEnter();
     void onUpdate(const f32 deltaTime);
+    void onFixedUpdate(const f32 fixedTime);
     void onDraw(sf::RenderWindow& window);
     void onLateUpdate();
 

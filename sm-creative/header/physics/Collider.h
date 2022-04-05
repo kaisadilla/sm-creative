@@ -2,22 +2,28 @@
 
 #include "root.h"
 #include "Collision.h"
+#include "IGameObject.h"
 
 class Collision;
 
 class Collider {
 private:
+    IGameObject* gameObject;
     vec2 center;
     vec2 distanceToEdge;
 
 public:
     Collider();
-    Collider(vec2 center, vec2 distanceToEdge);
+    Collider(IGameObject* gameObject, vec2 center, vec2 distanceToEdge);
 
     bool checkColision(const Collider& collider, Collision& collision);
     sf::FloatRect getBounds() const;
 
     void drawColliderBounds(sf::RenderWindow& window) const;
+
+    inline IGameObject* getGameObject () const {
+        return gameObject;
+    }
 
     inline void setCenter (const vec2& center) {
         this->center = center;

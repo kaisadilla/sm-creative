@@ -1,6 +1,6 @@
 #include "mobs/Mob.h"
 
-Mob::Mob (vec2 size) : size(size) {
+Mob::Mob (vec2 size) : size(size), collider(this, position + size / 2.f, vec2((size.x / 2.f) - 1, size.y / 2.f)) {
 
 }
 

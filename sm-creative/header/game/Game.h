@@ -15,6 +15,7 @@ private:
 
     sf::Clock clock;
     f32 deltaTime;
+    f32 fixedTime;
 
     // FPS counter.
     FpsCounter fpsCounter;
@@ -36,5 +37,6 @@ public:
     bool isOpen();
 
 private:
+    void fixedUpdate();
     void updateFps();
 };

@@ -1,21 +1,34 @@
 #include "mobs/Player.h"
 
-Player::Player (vec2 size) : Mob(size), collider(position + size / 2.f, vec2((size.x / 2.f) - 1, size.y / 2.f)) {}
+Player::Player (vec2 size) : Mob(size) {}
 
-void Player::onUpdate (const f32 deltaTime, const std::vector<Collider>& __testc) {
-    __input(deltaTime);
-    updatePhysics(deltaTime);
+GameObjectType Player::getType () {
+    return GameObjectType::Tile;
+}
 
-    collider.setCenter(position + size / 2.f);
+void Player::onUpdate (const f32 deltaTime) {
+    __input();
+}
 
+void Player::onFixedUpdate (const f32 fixedTime) {
+    updatePhysics(fixedTime);
+}
+
+void Player::checkCollisions (const std::vector<Collider>& colliders) {
     bool collided = false;
     isGrounded = false;
 
     std::vector<const Collider*> secondRound;
 
-    for (const Collider& otherCollider : __testc) {
+    for (const Collider& otherCollider : colliders) {
         Collision collision;
         if (collider.checkColision(otherCollider, collision)) {
+            // get whatever we collided with
+            IGameObject* cw = otherCollider.getGameObject();
+            if (cw->getType() == GameObjectType::Tile) {
+                WorldTile* tile = dynamic_cast<WorldTile*>(cw);
+            }
+
             collided = true;
 
             if (collision.direction == Direction::UP || collision.direction == Direction::DOWN) {
@@ -30,8 +43,6 @@ void Player::onUpdate (const f32 deltaTime, const std::vector<Collider>& __testc
                 secondRound.push_back(&otherCollider);
                 velocity.x = 0.f;
             }
-
-            collider.setCenter(position + size / 2.f);
         }
     }
 
@@ -63,11 +74,12 @@ void Player::move2 (const vec2& direction) {
     Ovelocity.y = std::clamp(Ovelocity.y, -OmaxVelocity, OmaxVelocity);
 }
 
-void Player::updatePhysics (const f32 deltaTime) {
+void Player::updatePhysics (const f32 fixedTime) {
     //velocity.y = std::clamp(velocity.y + (1.0f * deltaTime), 0.f, 9.8f);
-    velocity.y = std::min(velocity.y + (16.f * deltaTime), 9.8f);
+    velocity.y = std::min(velocity.y + 16.f, 9.8f * 16.f * 4.f);
 
-    move(velocity);
+    // TODO: This needs deltaTime. Inputs will add deltaTime to acceleration, not velocity.
+    move(velocity * fixedTime);
 
     //Ovelocity.x *= Odrag;
     //

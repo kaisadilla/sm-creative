@@ -6,6 +6,10 @@ WorldTile::WorldTile () : tile(nullptr) {
 
 WorldTile::WorldTile (Tile* tile) : tile(tile) { }
 
+GameObjectType WorldTile::getType () {
+    return GameObjectType::Tile;
+}
+
 void WorldTile::draw (sf::RenderWindow& window, vec2 position) {
     if (tile != nullptr && !tile->isAirTile()) {
         sf::Sprite& sprite = tile->getSprite();

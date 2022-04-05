@@ -1,15 +1,17 @@
 #include "game/Game.h"
 
-Game::Game ()
-    : window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "SuperM Creative", sf::Style::Close),
-    deltaTime(deltaTime)
+Game::Game () :
+    window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "SuperM Creative", sf::Style::Close),
+    deltaTime(0),
+    fixedTime(0),
+    scene(WINDOW_WIDTH, WINDOW_HEIGHT, Assets::levels["level1-1"])
 {
-    scene = SceneLevel(WINDOW_WIDTH, WINDOW_HEIGHT, Assets::levels["level1-1"]);
+    //scene = SceneLevel(WINDOW_WIDTH, WINDOW_HEIGHT, Assets::levels["level1-1"]);
 }
 
 void Game::initialize () {
     fpsCounter.setUpdateTime(0.1f);
-    window.setFramerateLimit(180);
+    //window.setFramerateLimit(180);
 
     scene.onEnter();
     window.setSize(uvec2(WINDOW_WIDTH * 2, WINDOW_HEIGHT * 2));
@@ -25,11 +27,17 @@ void Game::initialize () {
 
 void Game::update () {
     deltaTime = clock.restart().asSeconds();
+    fixedTime += deltaTime;
+
+    while (fixedTime > SECONDS_PER_FIXED_UPDATE) {
+        fixedUpdate();
+        fixedTime -= SECONDS_PER_FIXED_UPDATE;
+    }
     // if a frame took more than 0.25 seconds to complete, we discard it because else unexpected results may occur.
     // this may not be necessary if physics are moved to a fixed update loop.
-    if (deltaTime > 0.25f) {
-        deltaTime = 0;
-    }
+    //if (deltaTime > 0.25f) {
+    //    deltaTime = 0;
+    //}
     updateFps();
 
     sf::Event evt;
@@ -70,6 +78,10 @@ void Game::lateUpdate () {
 
 bool Game::isOpen () {
     return window.isOpen();
+}
+
+void Game::fixedUpdate () {
+    scene.onFixedUpdate(SECONDS_PER_FIXED_UPDATE);
 }
 
 void Game::updateFps () {

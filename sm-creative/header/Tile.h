@@ -13,6 +13,10 @@ public:
 
     static Tile* airTile(string& internalName);
 
+    inline const string& getInternalName () const {
+        return internalName;
+    }
+
     inline sf::Sprite& getSprite () {
         return sprite;
     }
