@@ -11,7 +11,7 @@ Game::Game () :
 
 void Game::initialize () {
     fpsCounter.setUpdateTime(0.1f);
-    //window.setFramerateLimit(180);
+    window.setFramerateLimit(180);
 
     scene.onEnter();
     window.setSize(uvec2(WINDOW_WIDTH * 2, WINDOW_HEIGHT * 2));
@@ -19,7 +19,6 @@ void Game::initialize () {
     //window.close();
     //window.create(sf::VideoMode(WINDOW_WIDTH * 2, WINDOW_HEIGHT * 2), "SuperM Creative", sf::Style::Close);
     
-
     if (!__font.loadFromFile("res/fonts/CascadiaMono.ttf")) {
         std::cout << "ERROR LOADING CASCADIA MONO." << "\n";
     }
@@ -33,11 +32,7 @@ void Game::update () {
         fixedUpdate();
         fixedTime -= SECONDS_PER_FIXED_UPDATE;
     }
-    // if a frame took more than 0.25 seconds to complete, we discard it because else unexpected results may occur.
-    // this may not be necessary if physics are moved to a fixed update loop.
-    //if (deltaTime > 0.25f) {
-    //    deltaTime = 0;
-    //}
+
     updateFps();
 
     sf::Event evt;

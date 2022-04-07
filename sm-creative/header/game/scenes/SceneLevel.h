@@ -26,8 +26,6 @@ private:
     sf::Texture __texPlayer;
     Player player;
 
-    Collider __collider;
-
 public:
     SceneLevel();
     SceneLevel(const ui32 windowWidth, const ui32 windowHeight, const Level& level);

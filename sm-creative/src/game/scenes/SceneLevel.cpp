@@ -36,12 +36,8 @@ void SceneLevel::onEnter () {
     
     __background.setTexture(__texBackground);
 
-    __texPlayer.loadFromFile("res/sprites/characters/mario.png");
-
-    player.setTexture(__texPlayer);
-
-    //__collider.setCenter(vec2(14.f * 16.f + 8.f, 19.f * 16.f + 8.f));
-    //__collider.setDistanceToEdge(vec2(8.f, 8.f));
+    player.setSprite("res/sprites/characters/mario.png", uvec2(16, 16));
+    player.setPosition(vec2(2.f, 26.f));
 }
 
 void SceneLevel::onUpdate (const f32 deltaTime) {

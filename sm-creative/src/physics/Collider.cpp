@@ -34,10 +34,11 @@ bool Collider::checkColision(const Collider& collider, Collision& collision) {
         }
     }
 
+    // Remember that, when a collision occurs, x and y intersect will always be negative, so -xIntersect results in a positive number.
     f32 xIntersectSigned = xDelta > 0.f ? -xIntersect : xIntersect;
     f32 yIntersectSigned = yDelta > 0.f ? -yIntersect : yIntersect;
 
-    collision = Collision(&collider, direction, vec2(xIntersectSigned, yIntersectSigned));
+    collision = Collision(&collider, wasCollision, direction, vec2(xIntersectSigned, yIntersectSigned));
 
     return xIntersect < 0.f && yIntersect < 0.f;
 }

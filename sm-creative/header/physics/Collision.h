@@ -12,6 +12,10 @@ public:
     /// </summary>
     const Collider* collider;
     /// <summary>
+    /// True if there was a collision.
+    /// </summary>
+    bool collision;
+    /// <summary>
     /// The side from which this collider collided with the other collider.
     /// </summary>
     Direction direction;
@@ -23,5 +27,5 @@ public:
 
 public:
     Collision();
-    Collision(const Collider* collider, Direction direction, vec2 intersection);
+    Collision(const Collider* collider, const bool collision, const Direction direction, const vec2& intersection);
 };

@@ -3,6 +3,7 @@
 #include "root.h"
 #include "physics/Collider.h"
 #include "physics/IGameObject.h"
+#include "world/WorldTile.h"
 
 class Mob : public IGameObject {
     friend class Player;
@@ -17,28 +18,41 @@ private:
     /// </summary>
     vec2 size;
     //uvec2 size;
+    sf::Texture texture;
     sf::RectangleShape sprite;
 
     // Movement and interaction.
     Collider collider;
+    bool isGrounded = false;
     vec2 velocity = vec2(0, 0);
 
 public:
     Mob(vec2 size);
 
+    void setSprite(const char* path, uvec2 size);
+
     void move(vec2 direction);
     void move(f32 x, f32 y);
+    virtual void updatePhysics(f32 fixedTime);
+    virtual void checkCollisions(const std::vector<Collider>& colliders);
 
     inline vec2 getPosition () {
         return position;
     }
 
-    inline void setTexture (const sf::Texture& texture) {
-        sprite = sf::RectangleShape(vec2(16.f, 16.f));
-        sprite.setTexture(&texture);
-        sprite.setTextureRect(sf::IntRect(0, 0, 16, 16));
+    /// <summary>
+    /// Returns the position the mob is currently in within the level's tile grid.
+    /// </summary>
+    /// <returns></returns>
+    inline ivec2 getGridPosition () {
+        return ivec2(position.x / 16, position.y / 16);
+    }
 
-        position = vec2(2.f, 26.f);
+    /// <summary>
+    /// For the tile cell the mob is currently in, returns its offset (in pixels) from the cell's top-left corner.
+    /// </summary>
+    inline ivec2 getGridPositionOffset () {
+        return ivec2((int)position.x & 0xf, (int)position.y & 0xf);
     }
 
     inline void setPosition (const vec2& position) {
