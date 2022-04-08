@@ -6,7 +6,7 @@ SceneLevel::SceneLevel() :
     levelTileWidth(0),
     levelTileHeight(0),
     foregroundLayer(0, 0),
-    player(vec2(16.f, 16.f))
+    player(this, vec2(16.f, 16.f))
 {}
 
 SceneLevel::SceneLevel(const ui32 windowWidth, const ui32 windowHeight, const Level& level) :
@@ -14,7 +14,7 @@ SceneLevel::SceneLevel(const ui32 windowWidth, const ui32 windowHeight, const Le
     windowHeight(windowHeight),
     levelTileWidth(level.getLevelWidth()),
     levelTileHeight(level.getLevelHeight()),
-    player(vec2(16.f, 16.f)),
+    player(this, vec2(16.f, 16.f)),
     foregroundLayer(level.getForegroundPlane())
 {
     for (i32 x = 0; x < levelTileWidth; x++) {
@@ -29,6 +29,12 @@ SceneLevel::SceneLevel(const ui32 windowWidth, const ui32 windowHeight, const Le
     }
 }
 
+SceneLevel::~SceneLevel () {
+    for (auto enemy : enemies) {
+        delete enemy;
+    }
+}
+
 void SceneLevel::onEnter () {
     camera = Camera(uvec2(foregroundLayer.getWidth() * 16, foregroundLayer.getHeight() * 16), uvec2(windowWidth, windowHeight));
 
@@ -38,14 +44,28 @@ void SceneLevel::onEnter () {
 
     player.setSprite("res/sprites/characters/mario.png", uvec2(16, 16));
     player.setPosition(vec2(2.f, 26.f));
+
+    enemies.push_back(new Goomba(this, vec2(16.f, 16.f), true));
+    enemies[0]->setSprite("res/sprites/characters/goomba.png", uvec2(16, 16));
+    enemies[0]->setPosition(vec2(8.f * 16.f, 25.f * 16.f));
+    enemies[0]->onStart();
 }
 
 void SceneLevel::onUpdate (const f32 deltaTime) {
+    for (auto& enemy : enemies) {
+        enemy->onUpdate(deltaTime);
+    }
+
     player.onUpdate(deltaTime);
     camera.updatePosition(player.getPosition());
 }
 
 void SceneLevel::onFixedUpdate (const f32 fixedTime) {
+    for (auto& enemy : enemies) {
+        enemy->onFixedUpdate(fixedTime);
+        enemy->checkCollisions(colliders);
+    }
+
     player.onFixedUpdate(fixedTime);
     player.checkCollisions(colliders);
 }
@@ -80,16 +100,21 @@ void SceneLevel::drawLevel (sf::RenderWindow& window) {
 }
 
 void SceneLevel::drawMobs (sf::RenderWindow& window) {
-
+    for (const auto& enemy : enemies) {
+        enemy->draw(window);
+    }
 }
 
 void SceneLevel::drawPlayer (sf::RenderWindow& window) {
-    player.draw(window, vec2(0, 0));
+    player.draw(window);
 }
 
 void SceneLevel::drawColliders (sf::RenderWindow& window) {
     player.getCollider().drawColliderBounds(window);
     for (const Collider& collider : colliders) {
         collider.drawColliderBounds(window);
+    }
+    for (const auto& enemy : enemies) {
+        enemy->getCollider().drawColliderBounds(window);
     }
 }

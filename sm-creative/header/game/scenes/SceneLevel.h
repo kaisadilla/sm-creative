@@ -5,6 +5,8 @@
 #include "root.h"
 #include "player/Camera.h"
 #include "world/Level.h"
+#include "mobs/Mob.h"
+#include "mobs/Goomba.h"
 #include "mobs/Player.h"
 
 class SceneLevel {
@@ -23,12 +25,14 @@ private:
     sf::Texture __texBackground;
     sf::Sprite __background;
 
-    sf::Texture __texPlayer;
     Player player;
+
+    std::vector<Mob*> enemies;
 
 public:
     SceneLevel();
     SceneLevel(const ui32 windowWidth, const ui32 windowHeight, const Level& level);
+    ~SceneLevel();
 
     void onEnter();
     void onUpdate(const f32 deltaTime);

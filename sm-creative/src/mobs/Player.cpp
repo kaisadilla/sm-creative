@@ -1,29 +1,19 @@
 #include "mobs/Player.h"
+#include "game/scenes/SceneLevel.h"
 
-Player::Player (vec2 size) : Mob(size) {}
+Player::Player (SceneLevel* level, vec2 size) :
+    Mob(level, size, Animation(0.25f, {0}, uvec2(96, 96), uvec2(16, 16)))
+{}
 
 GameObjectType Player::getType () {
-    return GameObjectType::Tile;
+    return GameObjectType::Player;
 }
+
+void Player::onStart () {}
 
 void Player::onUpdate (const f32 deltaTime) {
+    Mob::onUpdate(deltaTime);
     input();
-}
-
-void Player::onFixedUpdate (const f32 fixedTime) {
-    updatePhysics(fixedTime);
-}
-
-void Player::move2 (const vec2& direction) {
-    // Accelerate
-    //velocity.x += direction.x * acceleration;
-    //velocity.y += direction.y * acceleration;
-
-    Ovelocity += direction * Oacceleration;
-
-    // Limit velocity
-    Ovelocity.x = std::clamp(Ovelocity.x, -OmaxVelocity, OmaxVelocity);
-    Ovelocity.y = std::clamp(Ovelocity.y, -OmaxVelocity, OmaxVelocity);
 }
 
 void Player::input () {

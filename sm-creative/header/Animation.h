@@ -5,17 +5,25 @@
 #include "root.h"
 
 class Animation {
+private:
+    i32 frameCount;
+    i32 currentFrame = 0;
+    f32 timeSinceLastFrame = 0.f;
+
+    std::vector<f32> frameTimes;
+    std::vector<sf::IntRect> frameSlices;
+
 public:
-    sf::IntRect uvRect;
+    Animation(const std::vector<f32>& frameTimes, const std::vector<ui32>& frames, const uvec2& textureSize, const uvec2& sliceSize);
+    Animation(const f32& frameTime, const std::vector<ui32>& frames, const uvec2& textureSize, const uvec2& sliceSize);
+    Animation(const Animation& animation);
+
+    void onUpdate(const f32& deltaTime);
+
+    inline sf::IntRect getCurrentSlice () {
+        return frameSlices[currentFrame];
+    }
 
 private:
-    uvec2 imageCount;
-    uvec2 currentImage;
-
-    f32 totalTime;
-    f32 switchTime;
-
-public:
-    Animation(sf::Texture* pointer, uvec2 imageCount, f32 switchTime);
-    ~Animation();
+    void initialize(const std::vector<ui32>& frames, const uvec2& textureSize, const uvec2& sliceSize);
 };

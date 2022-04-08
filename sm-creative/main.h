@@ -9,11 +9,6 @@
 
 #include "root.h"
 #include "game/Game.h"
-
-#include "utils/FpsCounter.h"
-#include "world.h"
 #include "Assets.h"
-#include "mobs/Player.h"
-#include "player/Camera.h"
 
 // TODO: Reference additional headers your program requires here.

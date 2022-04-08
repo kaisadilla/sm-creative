@@ -14,6 +14,7 @@ private:
     sf::RenderWindow window;
 
     sf::Clock clock;
+    f32 time;
     f32 deltaTime;
     f32 fixedTime;
 

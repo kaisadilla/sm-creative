@@ -2,12 +2,11 @@
 
 Game::Game () :
     window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "SuperM Creative", sf::Style::Close),
+    time(0),
     deltaTime(0),
     fixedTime(0),
     scene(WINDOW_WIDTH, WINDOW_HEIGHT, Assets::levels["level1-1"])
-{
-    //scene = SceneLevel(WINDOW_WIDTH, WINDOW_HEIGHT, Assets::levels["level1-1"]);
-}
+{}
 
 void Game::initialize () {
     fpsCounter.setUpdateTime(0.1f);
@@ -25,8 +24,10 @@ void Game::initialize () {
 }
 
 void Game::update () {
-    deltaTime = clock.restart().asSeconds();
+    f32 newTime = clock.getElapsedTime().asSeconds();
+    deltaTime = newTime - time;
     fixedTime += deltaTime;
+    time = newTime;
 
     while (fixedTime > SECONDS_PER_FIXED_UPDATE) {
         fixedUpdate();
