@@ -47,17 +47,17 @@ sf::FloatRect Collider::getBounds () const {
     return sf::FloatRect(center - distanceToEdge, distanceToEdge * 2.f);
 }
 
-void Collider::drawColliderBounds (sf::RenderWindow& window) const {
+void Collider::drawColliderBounds (sf::RenderWindow& window, const sf::Color& color) const {
     sf::Vertex lines[5];
     lines[0].position = center - distanceToEdge;
-    lines[0].color = sf::Color::Green;
+    lines[0].color = color;
     lines[1].position = vec2(center.x - distanceToEdge.x, center.y + distanceToEdge.y);
-    lines[1].color = sf::Color::Green;
+    lines[1].color = color;
     lines[2].position = center + distanceToEdge;
-    lines[2].color = sf::Color::Green;
+    lines[2].color = color;
     lines[3].position = vec2(center.x + distanceToEdge.x, center.y - distanceToEdge.y);
-    lines[3].color = sf::Color::Green;
+    lines[3].color = color;
     lines[4].position = center - distanceToEdge;
-    lines[4].color = sf::Color::Green;
+    lines[4].color = color;
     window.draw(lines, 5, sf::LineStrip);
 }

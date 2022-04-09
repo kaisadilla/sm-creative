@@ -1,9 +1,11 @@
 #pragma once
 
 #include "root.h"
-#include "Mob.h"
+#include "Enemy.h"
 
-class Goomba : public Mob {
+class Goomba : public Enemy {
+private:
+    static constexpr i32 SPEED = 32.f;
 private:
     /// <summary>
     /// If true, the goomba starts walking to the right instead of to the left.
@@ -18,5 +20,13 @@ public:
     void onStart();
     void onUpdate(const f32 deltaTime);
 
-    void onCollision(Collision& collision);
+    void onCollisionWithTile(Collision& collision);
+    void onCollisionWithPlayer(Player& player);
 };
+
+namespace AnimStates::Goomba {
+    enum States {
+        WALKING = 0,
+        DEAD = 1
+    };
+}

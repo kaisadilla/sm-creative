@@ -1,8 +1,16 @@
 #include "mobs/Goomba.h"
+#include "mobs/Player.h"
 #include "game/scenes/SceneLevel.h"
 
 Goomba::Goomba(SceneLevel* level, vec2 size, bool startingDirectionRight) :
-    Mob(level, size, Animation(0.2f, {0, 1}, uvec2(48, 16), uvec2(16, 16))),
+    Enemy(
+        level,
+        size,
+        AnimationState({
+            Animation(0.2f, {0, 1}, uvec2(3, 1), uvec2(16, 16)),
+            Animation(5.f , {2}   , uvec2(3, 1), uvec2(16, 16)),
+        })
+    ),
     startingDirectionRight(startingDirectionRight)
 {}
 
@@ -11,16 +19,28 @@ GameObjectType Goomba::getType() {
 }
 
 void Goomba::onStart () {
-    gravity = 0.f;
-    velocity.x = (startingDirectionRight ? 16.f : -16.f) * 2.f;
+    velocity.x = (startingDirectionRight ? SPEED : -SPEED);
 }
 
 void Goomba::onUpdate (const f32 deltaTime) {
     Mob::onUpdate(deltaTime);
 }
 
-void Goomba::onCollision (Collision& collision) {
-    if (collision.direction == Direction::LEFT || collision.direction == Direction::RIGHT) {
-        velocity.x = -velocity.x;
+void Goomba::onCollisionWithTile (Collision& collision) {
+    if (collision.direction == Direction::LEFT) {
+        velocity.x = SPEED;
+    }
+    else if (collision.direction == Direction::RIGHT) {
+        velocity.x = -SPEED;
+    }
+}
+
+void Goomba::onCollisionWithPlayer (Player& player) {
+    if (player.getPosition().y < position.y - 2) {
+        animations.setState(AnimStates::Goomba::DEAD);
+        player.jump(12.f * 16.f);
+    }
+    else {
+        player.killPlayer();
     }
 }

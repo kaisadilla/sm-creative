@@ -1,8 +1,10 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+
 #include "root.h"
 #include "Assets.h"
+#include "Debug.h"
 #include "game/scenes/SceneLevel.h"
 #include "utils/FpsCounter.h"
 
@@ -24,7 +26,9 @@ private:
 
     SceneLevel scene;
 
-    sf::Font __font;
+    // Debug information;
+    sf::Font debugFont;
+    sf::Text infoFps;
 
 public:
     Game();
@@ -38,6 +42,10 @@ public:
     bool isOpen();
 
 private:
+    void setupDebugInfo();
     void fixedUpdate();
     void updateFps();
+    void pollEvents();
+
+    void drawDebugInfo();
 };

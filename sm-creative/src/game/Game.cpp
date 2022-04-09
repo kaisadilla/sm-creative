@@ -1,7 +1,7 @@
 #include "game/Game.h"
 
 Game::Game () :
-    window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "SuperM Creative", sf::Style::Close),
+    window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "M-Guy editable", sf::Style::Close),
     time(0),
     deltaTime(0),
     fixedTime(0),
@@ -10,17 +10,14 @@ Game::Game () :
 
 void Game::initialize () {
     fpsCounter.setUpdateTime(0.1f);
+
+    window.close();
+    window.create(sf::VideoMode(WINDOW_WIDTH * 2, WINDOW_HEIGHT * 2), "M-Guy editable", sf::Style::Close);
     window.setFramerateLimit(180);
 
+    setupDebugInfo();
+
     scene.onEnter();
-    window.setSize(uvec2(WINDOW_WIDTH * 2, WINDOW_HEIGHT * 2));
-    // Correct way to scale the window and adjust what we want scaled (with view).
-    //window.close();
-    //window.create(sf::VideoMode(WINDOW_WIDTH * 2, WINDOW_HEIGHT * 2), "SuperM Creative", sf::Style::Close);
-    
-    if (!__font.loadFromFile("res/fonts/CascadiaMono.ttf")) {
-        std::cout << "ERROR LOADING CASCADIA MONO." << "\n";
-    }
 }
 
 void Game::update () {
@@ -35,15 +32,7 @@ void Game::update () {
     }
 
     updateFps();
-
-    sf::Event evt;
-
-    while (window.pollEvent(evt)) {
-        if (evt.type == sf::Event::Closed) {
-            window.close();
-        }
-    }
-
+    pollEvents();
     scene.onUpdate(deltaTime);
 }
 
@@ -51,19 +40,7 @@ void Game::draw () {
     window.clear();
     scene.onDraw(window);
 
-    // TODO: REMOVE THIS AND MAKE IT PART OF THE DEBUG UI.
-    //string fps = std::to_string(fpsCounter.getFps());
-    //string ms = std::to_string(fpsCounter.getLatency() * 1000.f);
-    //
-    //string title = fps + " fps [" + ms + " ms]";
-    //
-    //sf::Text text;
-    //text.setFont(__font);
-    //text.setString(title);
-    //text.setCharacterSize(12);
-    //text.setFillColor(sf::Color::White);
-    //text.setStyle(sf::Text::Regular);
-    //window.draw(text);
+    if (Debug::showDebugInfo) drawDebugInfo();
 
     window.display();
 }
@@ -76,6 +53,19 @@ bool Game::isOpen () {
     return window.isOpen();
 }
 
+void Game::setupDebugInfo () {
+    if (!debugFont.loadFromFile("res/fonts/CascadiaMono.ttf")) {
+        std::cout << "ERROR LOADING CASCADIA MONO." << "\n";
+    }
+
+    infoFps.setFont(debugFont);
+    infoFps.setString("FPS: 0");
+    infoFps.setPosition(8.f, 2.f);
+    infoFps.setCharacterSize(12);
+    infoFps.setFillColor(sf::Color::White);
+    infoFps.setStyle(sf::Text::Regular);
+}
+
 void Game::fixedUpdate () {
     scene.onFixedUpdate(SECONDS_PER_FIXED_UPDATE);
 }
@@ -84,10 +74,36 @@ void Game::updateFps () {
     fpsCounter.count(deltaTime);
 
     if (fpsCounter.isUpdated()) {
-        string fps = std::to_string(fpsCounter.getFps());
-        string ms = std::to_string(fpsCounter.getLatency() * 1000.f);
-
-        string title = "SuperM Creative - " + fps + " fps [" + ms + " ms]";
-        window.setTitle(title);
+        infoFps.setString("FPS: " + std::to_string(fpsCounter.getFps()));
     }
+
+    //if (fpsCounter.isUpdated()) {
+    //    string fps = std::to_string(fpsCounter.getFps());
+    //    string ms = std::to_string(fpsCounter.getLatency() * 1000.f);
+    //
+    //    string title = "SuperM Creative - " + fps + " fps [" + ms + " ms]";
+    //    window.setTitle(title);
+    //}
+}
+
+void Game::pollEvents () {
+    sf::Event evt;
+
+    while (window.pollEvent(evt)) {
+        if (evt.type == sf::Event::Closed) {
+            window.close();
+        }
+        else if (evt.type == sf::Event::KeyPressed) {
+            if (evt.key.code == sf::Keyboard::Key::F3) {
+                Debug::showDebugInfo = !Debug::showDebugInfo;
+            }
+            else if (evt.key.code == sf::Keyboard::Key::F4) {
+                Debug::drawCollisions = !Debug::drawCollisions;
+            }
+        }
+    }
+}
+
+void Game::drawDebugInfo () {
+    window.draw(infoFps);
 }

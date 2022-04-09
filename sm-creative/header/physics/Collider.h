@@ -19,7 +19,7 @@ public:
     bool checkColision(const Collider& collider, Collision& collision);
     sf::FloatRect getBounds() const;
 
-    void drawColliderBounds(sf::RenderWindow& window) const;
+    void drawColliderBounds(sf::RenderWindow& window, const sf::Color& color) const;
 
     inline IGameObject* getGameObject () const {
         return gameObject;

@@ -56,3 +56,8 @@ enum class Direction {
     RIGHT = 3,
     NONE = 4
 };
+
+// TODO: Move somewhere else, anyway we probably won't use this.
+inline f32 roundDownToNearest (f32 number, f32 target) {
+    return std::floorf(number / target) * target;
+}

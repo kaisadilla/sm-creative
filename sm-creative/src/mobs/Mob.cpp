@@ -1,11 +1,11 @@
 #include "mobs/Mob.h"
 #include "game/scenes/SceneLevel.h"
 
-Mob::Mob (SceneLevel* level, vec2 size, Animation& animation) :
+Mob::Mob (SceneLevel* level, vec2 size, AnimationState& animations) :
     level(level),
     size(size),
     collider(this, position + size / 2.f, vec2((size.x / 2.f) - 1, size.y / 2.f)),
-    animation(animation)
+    animations(animations)
 {}
 
 void Mob::updatePhysics (f32 fixedTime) {
@@ -22,7 +22,11 @@ void Mob::setSprite (const char* path, uvec2 size) {
     sprite.setTextureRect(sf::IntRect(0, 0, size.x, size.y));
 }
 
-void Mob::checkCollisions (const std::vector<Collider>& colliders) {
+void Mob::jump (f32 strength) {
+    velocity.y = -strength;
+}
+
+void Mob::checkCollisionsWithTiles (const std::vector<Collider>& colliders) {
     constexpr f32 COLLISION_THRESHOLD = 1.5f;
 
     isGrounded = false;
@@ -48,7 +52,7 @@ void Mob::checkCollisions (const std::vector<Collider>& colliders) {
                     }
                 }
 
-                onCollision(collision);
+                onCollisionWithTile(collision);
             }
             else if (collision.direction == Direction::LEFT || collision.direction == Direction::RIGHT) {
                 secondRound.push_back(&otherCollider);
@@ -62,7 +66,7 @@ void Mob::checkCollisions (const std::vector<Collider>& colliders) {
         if (collider.checkColision(*otherCollider, collision)) {
             collided = true;
 
-            if (ignoresWalls) {
+            if (!ignoresWalls) {
                 velocity.x = 0.f;
 
                 if (std::abs(collision.intersection.y) > COLLISION_THRESHOLD) {
@@ -70,7 +74,7 @@ void Mob::checkCollisions (const std::vector<Collider>& colliders) {
                 }
             }
 
-            onCollision(collision);
+            onCollisionWithTile(collision);
         }
     }
 
@@ -91,10 +95,20 @@ void Mob::move (f32 x, f32 y) {
 }
 
 void Mob::onUpdate (const f32 deltaTime) {
-    animation.onUpdate(deltaTime);
-    sprite.setTextureRect(animation.getCurrentSlice());
+    animations.onUpdate(deltaTime, animationSpeed);
+    sprite.setTextureRect(animations.getCurrentAnimation().getCurrentSlice());
 }
 
 void Mob::onFixedUpdate (const f32 fixedTime) {
     updatePhysics(fixedTime);
+    checkOutOfBounds();
+}
+
+void Mob::checkOutOfBounds () {
+    if (position.x < -1.f || position.x > level->getWidth() + 1.f) {
+        // TODO: Destroy.
+    }
+    if (position.y < -10.f || position.y > level->getHeight() + 1.f) {
+        // TODO: Destroy.
+    }
 }

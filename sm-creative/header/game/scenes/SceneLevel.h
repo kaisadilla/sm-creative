@@ -3,9 +3,11 @@
 #include <SFML/Graphics.hpp>
 
 #include "root.h"
+#include "Debug.h"
 #include "player/Camera.h"
 #include "world/Level.h"
 #include "mobs/Mob.h"
+#include "mobs/Enemy.h"
 #include "mobs/Goomba.h"
 #include "mobs/Player.h"
 
@@ -27,7 +29,7 @@ private:
 
     Player player;
 
-    std::vector<Mob*> enemies;
+    std::vector<Enemy*> enemies;
 
 public:
     SceneLevel();
@@ -45,4 +47,13 @@ private:
     void drawMobs(sf::RenderWindow& window);
     void drawPlayer(sf::RenderWindow& window);
     void drawColliders(sf::RenderWindow& window);
+
+public:
+    i32 getWidth () {
+        return levelTileWidth * PIXELS_PER_TILE;
+    }
+
+    i32 getHeight () {
+        return levelTileHeight * PIXELS_PER_TILE;
+    }
 };

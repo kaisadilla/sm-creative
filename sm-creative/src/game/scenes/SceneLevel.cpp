@@ -41,6 +41,7 @@ void SceneLevel::onEnter () {
     __texBackground.loadFromFile("res/sprites/backgrounds/default_0.png");
     
     __background.setTexture(__texBackground);
+    __background.setScale(vec2(2.f, 2.f));
 
     player.setSprite("res/sprites/characters/mario.png", uvec2(16, 16));
     player.setPosition(vec2(2.f, 26.f));
@@ -57,17 +58,18 @@ void SceneLevel::onUpdate (const f32 deltaTime) {
     }
 
     player.onUpdate(deltaTime);
-    camera.updatePosition(player.getPosition());
+    camera.updatePosition(player.getPixelPosition());
 }
 
 void SceneLevel::onFixedUpdate (const f32 fixedTime) {
     for (auto& enemy : enemies) {
         enemy->onFixedUpdate(fixedTime);
-        enemy->checkCollisions(colliders);
+        enemy->checkCollisionsWithTiles(colliders);
     }
 
     player.onFixedUpdate(fixedTime);
-    player.checkCollisions(colliders);
+    player.checkCollisionsWithTiles(colliders);
+    player.checkCollisionWithEnemies(enemies);
 }
 
 void SceneLevel::onDraw (sf::RenderWindow& window) {
@@ -77,7 +79,9 @@ void SceneLevel::onDraw (sf::RenderWindow& window) {
     drawLevel(window);
     drawMobs(window);
     drawPlayer(window);
-    drawColliders(window);
+
+    if (Debug::drawCollisions) drawColliders(window);
+
     window.setView(window.getDefaultView());
 }
 
@@ -110,11 +114,11 @@ void SceneLevel::drawPlayer (sf::RenderWindow& window) {
 }
 
 void SceneLevel::drawColliders (sf::RenderWindow& window) {
-    player.getCollider().drawColliderBounds(window);
     for (const Collider& collider : colliders) {
-        collider.drawColliderBounds(window);
+        collider.drawColliderBounds(window, sf::Color::Green);
     }
     for (const auto& enemy : enemies) {
-        enemy->getCollider().drawColliderBounds(window);
+        enemy->getCollider().drawColliderBounds(window, sf::Color::Red);
     }
+    player.getCollider().drawColliderBounds(window, sf::Color::Blue);
 }
