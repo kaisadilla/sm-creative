@@ -38,7 +38,7 @@ void Goomba::onCollisionWithTile (Collision& collision) {
 void Goomba::onCollisionWithPlayer (Player& player) {
     if (player.getPosition().y < position.y - 2) {
         animations.setState(AnimStates::Goomba::DEAD);
-        player.jump(12.f * 16.f);
+        player.jump(16.f * 16.f);
     }
     else {
         player.killPlayer();
