@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <unordered_map>
 #include <nlohmann/json.hpp>
+#include <SFML/Audio.hpp>
 
 #include "root.h"
 #include "Tile.h"
@@ -26,6 +27,8 @@ public:
     inline static std::unordered_map<string, i32> __tilePositionMap;
     inline static std::unordered_map<string, Level> levels;
 
+    inline static sf::SoundBuffer sound_jump;
+
 private:
     inline static std::unordered_map<string, i32> tileMap;
 
@@ -34,6 +37,7 @@ public:
         tiles = std::vector<Tile>();
         buildTileAtlas();
         loadTileData();
+        loadSounds();
         loadLevels();
     }
 
@@ -41,5 +45,6 @@ public:
 private:
     static void buildTileAtlas();
     static void loadTileData();
+    static void loadSounds();
     static void loadLevels();
 };

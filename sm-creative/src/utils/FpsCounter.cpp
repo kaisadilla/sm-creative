@@ -4,13 +4,13 @@ void FpsCounter::setUpdateTime (const f32& updateTime) {
     this->updateTime = updateTime;
 }
 
-void FpsCounter::count (const f32& deltaTime) {
-    timeSinceLastUpdate += deltaTime;
+void FpsCounter::count () {
+    timeSinceLastUpdate += Time::getDeltaTime();
     internalFpsCounter++;
 
     if (timeSinceLastUpdate > updateTime) {
         fps = (ui32)(internalFpsCounter / timeSinceLastUpdate);
-        latency = deltaTime / internalFpsCounter;
+        latency = Time::getDeltaTime() / internalFpsCounter;
 
         timeSinceLastUpdate -= updateTime;
         timeSinceLastUpdate = std::fmod(timeSinceLastUpdate, 0.1f);

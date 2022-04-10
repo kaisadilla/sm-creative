@@ -5,6 +5,7 @@
 #include "root.h"
 #include "Assets.h"
 #include "Debug.h"
+#include "SM_Time.h"
 #include "game/scenes/SceneLevel.h"
 #include "utils/FpsCounter.h"
 
@@ -14,11 +15,7 @@ private:
     static constexpr ui32 WINDOW_HEIGHT = WINDOW_HEIGHT_IN_TILES * PIXELS_PER_TILE;
 private:
     sf::RenderWindow window;
-
-    sf::Clock clock;
-    f32 time;
-    f32 deltaTime;
-    f32 fixedTime;
+    f32 cumulativeFixedTime = 0.f;
 
     // FPS counter.
     FpsCounter fpsCounter;

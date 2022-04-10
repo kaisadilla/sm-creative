@@ -2,13 +2,11 @@
 
 Game::Game () :
     window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "M-Guy editable", sf::Style::Close),
-    time(0),
-    deltaTime(0),
-    fixedTime(0),
     scene(WINDOW_WIDTH, WINDOW_HEIGHT, Assets::levels["level1-1"])
 {}
 
 void Game::initialize () {
+    Time::start();
     fpsCounter.setUpdateTime(0.1f);
 
     window.close();
@@ -21,19 +19,17 @@ void Game::initialize () {
 }
 
 void Game::update () {
-    f32 newTime = clock.getElapsedTime().asSeconds();
-    deltaTime = newTime - time;
-    fixedTime += deltaTime;
-    time = newTime;
+    Time::update();
+    cumulativeFixedTime += Time::getDeltaTime();
 
-    while (fixedTime > SECONDS_PER_FIXED_UPDATE) {
+    while (cumulativeFixedTime > SECONDS_PER_FIXED_UPDATE) {
         fixedUpdate();
-        fixedTime -= SECONDS_PER_FIXED_UPDATE;
+        cumulativeFixedTime -= SECONDS_PER_FIXED_UPDATE;
     }
 
     updateFps();
     pollEvents();
-    scene.onUpdate(deltaTime);
+    scene.onUpdate();
 }
 
 void Game::draw () {
@@ -67,11 +63,11 @@ void Game::setupDebugInfo () {
 }
 
 void Game::fixedUpdate () {
-    scene.onFixedUpdate(SECONDS_PER_FIXED_UPDATE);
+    scene.onFixedUpdate();
 }
 
 void Game::updateFps () {
-    fpsCounter.count(deltaTime);
+    fpsCounter.count();
 
     if (fpsCounter.isUpdated()) {
         infoFps.setString("FPS: " + std::to_string(fpsCounter.getFps()));

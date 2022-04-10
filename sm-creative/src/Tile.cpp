@@ -15,5 +15,9 @@ Tile* Tile::airTile(string& internalName) {
     Tile* tile = new Tile();
     tile->internalName = internalName;
     tile->_isAirTile = true;
+    tile->collisionUp = false;
+    tile->collisionDown = false;
+    tile->collisionLeft = false;
+    tile->collisionRight = false;
     return tile;
 }

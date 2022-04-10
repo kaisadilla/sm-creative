@@ -22,8 +22,8 @@ void Goomba::onStart () {
     velocity.x = (startingDirectionRight ? SPEED : -SPEED);
 }
 
-void Goomba::onUpdate (const f32 deltaTime) {
-    Mob::onUpdate(deltaTime);
+void Goomba::onUpdate () {
+    Mob::onUpdate();
 }
 
 void Goomba::onCollisionWithTile (Collision& collision) {

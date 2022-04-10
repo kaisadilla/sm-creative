@@ -5,7 +5,7 @@
 
 class Goomba : public Enemy {
 private:
-    static constexpr i32 SPEED = 32.f;
+    static constexpr f32 SPEED = 32.f;
 private:
     /// <summary>
     /// If true, the goomba starts walking to the right instead of to the left.
@@ -18,7 +18,7 @@ public:
     GameObjectType getType();
 
     void onStart();
-    void onUpdate(const f32 deltaTime);
+    void onUpdate();
 
     void onCollisionWithTile(Collision& collision);
     void onCollisionWithPlayer(Player& player);

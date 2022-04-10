@@ -11,23 +11,30 @@ class Level {
     typedef nlohmann::json json;
 
 private:
-    Grid2<WorldTile> foregroundPlane;
+    ui32 width;
+    ui32 height;
+    Grid2<WorldTile> backgroundLayer;
+    Grid2<WorldTile> foregroundLayer;
 
 public:
     Level();
-    Level(const ui32& width, const ui32& height);
+    Level(const ui32 width, const ui32 height);
 
     static Level* loadFromFile(const char* path);
 
-    inline const Grid2<WorldTile>& getForegroundPlane () const {
-        return foregroundPlane;
+    inline ui32 getWidth () const {
+        return width;
     }
 
-    inline ui32 getLevelWidth () const {
-        return foregroundPlane.getWidth();
+    inline ui32 getHeight () const {
+        return height;
     }
 
-    inline ui32 getLevelHeight () const {
-        return foregroundPlane.getHeight();
+    inline const Grid2<WorldTile>& getBackgroundLayer () const {
+        return backgroundLayer;
+    }
+
+    inline const Grid2<WorldTile>& getForegroundLayer () const {
+        return foregroundLayer;
     }
 };

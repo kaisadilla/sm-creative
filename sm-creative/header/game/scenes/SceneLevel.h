@@ -4,6 +4,7 @@
 
 #include "root.h"
 #include "Debug.h"
+#include "SM_Time.h"
 #include "player/Camera.h"
 #include "world/Level.h"
 #include "mobs/Mob.h"
@@ -19,6 +20,7 @@ private:
     ui32 levelTileWidth;
     ui32 levelTileHeight;
 
+    Grid2<WorldTile> backgroundLayer;
     Grid2<WorldTile> foregroundLayer;
     std::vector<Collider> colliders;
 
@@ -26,6 +28,7 @@ private:
 
     sf::Texture __texBackground;
     sf::Sprite __background;
+    sf::Music levelMusic;
 
     Player player;
 
@@ -37,13 +40,14 @@ public:
     ~SceneLevel();
 
     void onEnter();
-    void onUpdate(const f32 deltaTime);
-    void onFixedUpdate(const f32 fixedTime);
+    void onUpdate();
+    void onFixedUpdate();
     void onDraw(sf::RenderWindow& window);
     void onLateUpdate();
 
 private:
     void drawLevel(sf::RenderWindow& window);
+    void drawLayer(sf::RenderWindow& window, Grid2<WorldTile>& layer);
     void drawMobs(sf::RenderWindow& window);
     void drawPlayer(sf::RenderWindow& window);
     void drawColliders(sf::RenderWindow& window);

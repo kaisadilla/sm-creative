@@ -22,7 +22,7 @@ void Assets::buildTileAtlas () {
 
         tiles.push_back(img);
 
-        std::cout << "Tile loaded: {" << internalName << "}" << "\n";
+        std::cout << "Tile sprite loaded: {" << internalName << "}" << "\n";
         folderCursor++;
     }
 
@@ -66,6 +66,8 @@ void Assets::buildTileAtlas () {
 }
 
 void Assets::loadTileData () {
+    std::cout << "=== LOADING TILES ===" << std::endl;
+
     string str_tiles = utils::readTextFile("res/data/tiles.json");
     json json_tiles = json::parse(str_tiles);
 
@@ -74,11 +76,23 @@ void Assets::loadTileData () {
     for (json json_tile : json_tiles) {
         string internalName = json_tile["internalName"];
         string sprite = json_tile["sprite"];
+        bool collisionUp = json_tile["collisions"]["up"];
+        bool collisionDown = json_tile["collisions"]["down"];
+        bool collisionLeft = json_tile["collisions"]["left"];
+        bool collisionRight = json_tile["collisions"]["right"];
 
-        i32 tile = tileMap[sprite];
-
+        i32 tileIndex = tileMap[sprite];
         __tilePositionMap[internalName] = tiles.size();
-        tiles.push_back(Tile(internalName, tilesAtlas, tileMap[sprite]));
+
+        Tile tile(internalName, tilesAtlas, tileMap[sprite]);
+        tile.collisionUp = collisionUp;
+        tile.collisionDown = collisionDown;
+        tile.collisionLeft = collisionLeft;
+        tile.collisionRight = collisionRight;
+
+        tiles.push_back(tile);
+
+        std::cout << "Tile loaded: {" << internalName << "}" << "\n";
     }
 }
 
@@ -103,4 +117,13 @@ void Assets::loadLevels () {
 
 void Assets::freeData () {
     // TODO: Free certain data such as Levels.
+}
+
+void Assets::loadSounds () {
+    std::cout << "=== LOADING SOUNDS ===" << std::endl;
+
+    bool good = sound_jump.loadFromFile("res/sound/jump.wav");
+    if (!good) {
+        std::cout << "NO BUENO" << "\n";
+    }
 }

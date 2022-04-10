@@ -8,10 +8,18 @@ Mob::Mob (SceneLevel* level, vec2 size, AnimationState& animations) :
     animations(animations)
 {}
 
-void Mob::updatePhysics (f32 fixedTime) {
-    velocity.y = std::min(velocity.y + (16.f * gravity), 9.8f * 16.f * 4.f);
+void Mob::updatePhysics () {
+    // Note that if the horizontal speed is exactly 0, you don't update this value.
+    if (velocity.x < 0.f) {
+        isLookingLeft = true;
+    }
+    else if (velocity.x > 0.f) {
+        isLookingLeft = false;
+    }
 
-    move(velocity * fixedTime);
+    velocity.y = std::min(velocity.y + (12.f * gravity), 8.f * 16.f * 4.f);
+
+    move(velocity * SECONDS_PER_FIXED_UPDATE);
 }
 
 void Mob::setSprite (const char* path, uvec2 size) {
@@ -30,20 +38,19 @@ void Mob::checkCollisionsWithTiles (const std::vector<Collider>& colliders) {
     constexpr f32 COLLISION_THRESHOLD = 1.5f;
 
     isGrounded = false;
-
     std::vector<const Collider*> secondRound;
 
     for (const Collider& otherCollider : colliders) {
         Collision collision;
 
         if (collider.checkColision(otherCollider, collision)) {
+            if (!isCollisionValid(collision)) continue;
+
             if (collision.direction == Direction::UP || collision.direction == Direction::DOWN) {
                 collided = true;
-
                 if (!ignoresWalls) {
-                    move(0, collision.intersection.y);
-
                     if (std::abs(collision.intersection.x) > COLLISION_THRESHOLD) {
+                        move(0, collision.intersection.y);
                         velocity.y = 0.f;
 
                         if (collision.direction == Direction::DOWN) {
@@ -64,8 +71,9 @@ void Mob::checkCollisionsWithTiles (const std::vector<Collider>& colliders) {
         Collision collision;
 
         if (collider.checkColision(*otherCollider, collision)) {
-            collided = true;
+            if (!isCollisionValid(collision)) continue;
 
+            collided = true;
             if (!ignoresWalls) {
                 velocity.x = 0.f;
 
@@ -94,13 +102,13 @@ void Mob::move (f32 x, f32 y) {
     setPosition(vec2(position.x + x, position.y + y));
 }
 
-void Mob::onUpdate (const f32 deltaTime) {
-    animations.onUpdate(deltaTime, animationSpeed);
+void Mob::onUpdate () {
+    animations.onUpdate(Time::getDeltaTime(), animationSpeed);
     sprite.setTextureRect(animations.getCurrentAnimation().getCurrentSlice());
 }
 
-void Mob::onFixedUpdate (const f32 fixedTime) {
-    updatePhysics(fixedTime);
+void Mob::onFixedUpdate () {
+    updatePhysics();
     checkOutOfBounds();
 }
 
@@ -111,4 +119,9 @@ void Mob::checkOutOfBounds () {
     if (position.y < -10.f || position.y > level->getHeight() + 1.f) {
         // TODO: Destroy.
     }
+}
+
+bool Mob::isCollisionValid (const Collision& collision) const {
+    WorldTile* tile = (WorldTile*)collision.collider->getGameObject();
+    return tile->getTile()->hasMobCollided(collision.direction, velocity);
 }

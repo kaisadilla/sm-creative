@@ -5,6 +5,7 @@ SceneLevel::SceneLevel() :
     windowHeight(0),
     levelTileWidth(0),
     levelTileHeight(0),
+    backgroundLayer(0, 0),
     foregroundLayer(0, 0),
     player(this, vec2(16.f, 16.f))
 {}
@@ -12,18 +13,19 @@ SceneLevel::SceneLevel() :
 SceneLevel::SceneLevel(const ui32 windowWidth, const ui32 windowHeight, const Level& level) :
     windowWidth(windowWidth),
     windowHeight(windowHeight),
-    levelTileWidth(level.getLevelWidth()),
-    levelTileHeight(level.getLevelHeight()),
+    levelTileWidth(level.getWidth()),
+    levelTileHeight(level.getHeight()),
     player(this, vec2(16.f, 16.f)),
-    foregroundLayer(level.getForegroundPlane())
+    backgroundLayer(level.getBackgroundLayer()),
+    foregroundLayer(level.getForegroundLayer())
 {
-    for (i32 x = 0; x < levelTileWidth; x++) {
-        for (i32 y = 0; y < levelTileHeight; y++) {
+    for (ui32 x = 0; x < levelTileWidth; x++) {
+        for (ui32 y = 0; y < levelTileHeight; y++) {
             WorldTile& worldTile = foregroundLayer.getAt(x, y);
             // TODO: This may be better as part of the world tile. The scenelevel'd only keep a vector
             // of references to worldtiles that have colliders.
-            if (!worldTile.getTile()->isAirTile()) {
-                colliders.push_back(Collider(&worldTile, vec2(x * 16 + 8, y * 16 + 8), vec2(8, 8)));
+            if (!worldTile.getTile()->isAirTile() && worldTile.getTile()->hasCollider()) {
+                colliders.push_back(Collider(&worldTile, vec2(x * 16.f + 8.f, y * 16.f + 8.f), vec2(8.f, 8.f)));
             }
         }
     }
@@ -50,24 +52,28 @@ void SceneLevel::onEnter () {
     enemies[0]->setSprite("res/sprites/characters/goomba.png", uvec2(16, 16));
     enemies[0]->setPosition(vec2(8.f * 16.f, 25.f * 16.f));
     enemies[0]->onStart();
+
+    levelMusic.openFromFile("res/music/overworld.wav");
+    levelMusic.setLoop(true);
+    levelMusic.play();
 }
 
-void SceneLevel::onUpdate (const f32 deltaTime) {
+void SceneLevel::onUpdate () {
     for (auto& enemy : enemies) {
-        enemy->onUpdate(deltaTime);
+        enemy->onUpdate();
     }
 
-    player.onUpdate(deltaTime);
+    player.onUpdate();
     camera.updatePosition(player.getPixelPosition());
 }
 
-void SceneLevel::onFixedUpdate (const f32 fixedTime) {
+void SceneLevel::onFixedUpdate () {
     for (auto& enemy : enemies) {
-        enemy->onFixedUpdate(fixedTime);
+        enemy->onFixedUpdate();
         enemy->checkCollisionsWithTiles(colliders);
     }
 
-    player.onFixedUpdate(fixedTime);
+    player.onFixedUpdate();
     player.checkCollisionsWithTiles(colliders);
     player.checkCollisionWithEnemies(enemies);
 }
@@ -90,14 +96,19 @@ void SceneLevel::onLateUpdate () {
 }
 
 void SceneLevel::drawLevel (sf::RenderWindow& window) {
+    drawLayer(window, backgroundLayer);
+    drawLayer(window, foregroundLayer);
+}
+
+void SceneLevel::drawLayer (sf::RenderWindow& window, Grid2<WorldTile>& layer) {
     // TODO: Check if sf::View culls tiles outside the viewport or not.
-    for (i32 x = 0; x < levelTileWidth; x++) {
+    for (ui32 x = 0; x < levelTileWidth; x++) {
         f32 xPixel = x * PIXELS_PER_TILE;
 
-        for (i32 y = 0; y < levelTileHeight; y++) {
+        for (ui32 y = 0; y < levelTileHeight; y++) {
             f32 yPixel = y * PIXELS_PER_TILE;
 
-            WorldTile worldTile = foregroundLayer.getAt(x, y);
+            WorldTile worldTile = layer.getAt(x, y);
             worldTile.draw(window, vec2(xPixel, yPixel));
         }
     }

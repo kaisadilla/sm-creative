@@ -1,11 +1,17 @@
 #include "world/Level.h"
 
 Level::Level () :
-    foregroundPlane(0, 0)
+    width(0),
+    height(0),
+    backgroundLayer(0, 0),
+    foregroundLayer(0, 0)
 {}
 
-Level::Level (const ui32& width, const ui32& height) :
-    foregroundPlane(width, height)
+Level::Level (const ui32 width, const ui32 height) :
+    width(width),
+    height(height),
+    backgroundLayer(width, height),
+    foregroundLayer(width, height)
 {}
 
 Level* Level::loadFromFile (const char* path) {
@@ -21,11 +27,21 @@ Level* Level::loadFromFile (const char* path) {
 
     for (ui32 x = 0; x < width; x++) {
         for (ui32 y = 0; y < height; y++) {
-            string str_tile = json_level["grid"]["" + std::to_string(x) + "," + std::to_string(y)];
+            string str_tile = json_level["grids"]["background"]["" + std::to_string(x) + "," + std::to_string(y)];
             ui32 index = Assets::__tilePositionMap[str_tile];
             Tile& tile = Assets::tiles[index];
 
-            level->foregroundPlane.setAt(x, y, WorldTile(&tile));
+            level->backgroundLayer.setAt(x, y, WorldTile(&tile));
+        }
+    }
+
+    for (ui32 x = 0; x < width; x++) {
+        for (ui32 y = 0; y < height; y++) {
+            string str_tile = json_level["grids"]["foreground"]["" + std::to_string(x) + "," + std::to_string(y)];
+            ui32 index = Assets::__tilePositionMap[str_tile];
+            Tile& tile = Assets::tiles[index];
+
+            level->foregroundLayer.setAt(x, y, WorldTile(&tile));
         }
     }
 

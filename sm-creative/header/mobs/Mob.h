@@ -1,6 +1,9 @@
 #pragma once
 
+#include <SFML/Audio.hpp>
+
 #include "root.h"
+#include "SM_Time.h"
 #include "AnimationState.h"
 #include "physics/Collider.h"
 #include "physics/IGameObject.h"
@@ -54,6 +57,7 @@ protected:
 
     bool collided = false;
     bool isGrounded = false;
+    bool isLookingLeft = false;
 
 public:
     Mob(SceneLevel* level, vec2 size, AnimationState& animation);
@@ -62,17 +66,20 @@ public:
 
     void move(vec2 direction);
     void move(f32 x, f32 y);
-    virtual void updatePhysics(f32 fixedTime);
+    virtual void updatePhysics();
     virtual void checkCollisionsWithTiles(const std::vector<Collider>& colliders);
 
     virtual void jump(f32 strength);
 
     virtual void onStart() {};
-    virtual void onUpdate(const f32 deltaTime);
-    virtual void onFixedUpdate(const f32 fixedTime);
+    virtual void onUpdate();
+    virtual void onFixedUpdate();
 
     virtual void onCollisionWithTile(Collision& collision) {};
     virtual void checkOutOfBounds();
+
+private:
+    bool isCollisionValid(const Collision& collision) const;
 
 public:
     /// <summary>
@@ -86,7 +93,7 @@ public:
     /// Returns the position of the mob aligned with the pixel grid.
     /// </summary>
     inline vec2 getPixelPosition () const {
-        return vec2((int)position.x, (int)position.y);
+        return vec2((f32)(i32)position.x, (f32)(i32)position.y);
     }
 
     /// <summary>
@@ -94,14 +101,18 @@ public:
     /// </summary>
     /// <returns></returns>
     inline ivec2 getGridPosition () const {
-        return ivec2(position.x / 16, position.y / 16);
+        return ivec2((i32)position.x / 16, (i32)position.y / 16);
     }
 
     /// <summary>
     /// For the tile cell the mob is currently in, returns its offset (in pixels) from the cell's top-left corner.
     /// </summary>
     inline ivec2 getGridPositionOffset () const {
-        return ivec2((int)position.x & 0xf, (int)position.y & 0xf);
+        return ivec2((i32)position.x & 0xf, (i32)position.y & 0xf);
+    }
+
+    inline bool getLookingLeft () const {
+        return isLookingLeft;
     }
 
     inline const Collider& getCollider () const {

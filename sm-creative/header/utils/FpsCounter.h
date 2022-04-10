@@ -1,6 +1,7 @@
 #pragma once
 
 #include "root.h"
+#include "SM_Time.h"
 
 class FpsCounter {
 private:
@@ -25,8 +26,7 @@ public:
     /// <summary>
     /// Update this counter. This should called in every frame of the program.
     /// </summary>
-    /// <param name="deltaTime">The time it took to complete the last frame.</param>
-    void count(const f32& deltaTime);
+    void count();
 
     /// <summary>
     /// Returns the number of frames per second (FPS) this counter is currently registering.
