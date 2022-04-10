@@ -4,6 +4,7 @@
 #include "natives.h"
 #include "constants.h"
 
+#include <iostream>
 #include <string>
 #include <vector>
-#include <iostream>
+#include <list>

@@ -15,11 +15,15 @@ void Game::initialize () {
 
     setupDebugInfo();
 
+    sf::Listener::setGlobalVolume(50.f);
+
     scene.onEnter();
 }
 
 void Game::update () {
     Time::update();
+    JobManager::onUpdate();
+
     cumulativeFixedTime += Time::getDeltaTime();
 
     while (cumulativeFixedTime > SECONDS_PER_FIXED_UPDATE) {

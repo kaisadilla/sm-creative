@@ -55,6 +55,7 @@ void SceneLevel::onEnter () {
 
     levelMusic.openFromFile("res/music/overworld.wav");
     levelMusic.setLoop(true);
+    levelMusic.setVolume(80.f);
     levelMusic.play();
 }
 

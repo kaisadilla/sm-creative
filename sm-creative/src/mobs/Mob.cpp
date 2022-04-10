@@ -34,6 +34,10 @@ void Mob::jump (f32 strength) {
     velocity.y = -strength;
 }
 
+void Mob::die () {
+    isDead = true;
+}
+
 void Mob::checkCollisionsWithTiles (const std::vector<Collider>& colliders) {
     constexpr f32 COLLISION_THRESHOLD = 1.5f;
 

@@ -21,6 +21,7 @@ Player::Player (SceneLevel* level, vec2 size) :
 {
     destroyWhenOutOfBounds = false;
     sound_jump.setBuffer(Assets::sound_jump);
+    //sound_jump.setVolume(50.f);
 }
 
 GameObjectType Player::getType () {
@@ -146,8 +147,8 @@ void Player::checkCollisionWithEnemies (const std::vector<Enemy*>& enemies) {
     }
 }
 
-void Player::killPlayer () {
-    isDead = true;
+void Player::die () {
+    Mob::die();
 }
 
 void Player::setAnimationState () {

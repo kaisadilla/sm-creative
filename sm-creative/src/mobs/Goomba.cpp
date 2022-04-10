@@ -36,11 +36,23 @@ void Goomba::onCollisionWithTile (Collision& collision) {
 }
 
 void Goomba::onCollisionWithPlayer (Player& player) {
-    if (player.getPosition().y < position.y - 2) {
-        animations.setState(AnimStates::Goomba::DEAD);
-        player.jump(16.f * 16.f);
+    if (!isDead) {
+        if (player.getPosition().y < position.y - 2) {
+            die();
+            player.jump(16.f * 16.f);
+        }
+        else {
+            player.die();
+        }
     }
-    else {
-        player.killPlayer();
-    }
+}
+
+void Goomba::die () {
+    Mob::die();
+    animations.setState(AnimStates::Goomba::DEAD);
+    velocity.x = 0;
+
+    // TODO: Actually disappear
+    Job job(2.f, []() {std::cout << "Coming Soon: Goomba dies." << "\n"; });
+    JobManager::addJob(job);
 }

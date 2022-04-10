@@ -2,6 +2,7 @@
 
 #include "root.h"
 #include "Enemy.h"
+#include "JobManager.h"
 
 class Goomba : public Enemy {
 private:
@@ -15,13 +16,15 @@ private:
 public:
     Goomba(SceneLevel* level, vec2 size, bool startingDirectionRight);
 
-    GameObjectType getType();
+    GameObjectType getType() override;
 
-    void onStart();
-    void onUpdate();
+    void onStart() override;
+    void onUpdate() override;
 
-    void onCollisionWithTile(Collision& collision);
-    void onCollisionWithPlayer(Player& player);
+    void onCollisionWithTile(Collision& collision) override;
+    void onCollisionWithPlayer(Player& player) override;
+
+    void die() override;
 };
 
 namespace AnimStates::Goomba {

@@ -28,18 +28,18 @@ private:
 public:
     Player(SceneLevel* level, vec2 size);
 
-    GameObjectType getType();
+    GameObjectType getType() override;
 
-    void onStart();
-    void onUpdate();
-    void onFixedUpdate();
+    void onStart() override;
+    void onUpdate() override;
+    void onFixedUpdate() override;
 
     void checkCollisionWithEnemies(const std::vector<Enemy*>& enemies);
 
-    void killPlayer();
+    void die() override;
 
 private:
-    void onCollisionWithTile(Collision& collision);
+    void onCollisionWithTile(Collision& collision) override;
 
     void input();
     void playerJumpStart();

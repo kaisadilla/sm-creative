@@ -70,6 +70,7 @@ public:
     virtual void checkCollisionsWithTiles(const std::vector<Collider>& colliders);
 
     virtual void jump(f32 strength);
+    virtual void die();
 
     virtual void onStart() {};
     virtual void onUpdate();

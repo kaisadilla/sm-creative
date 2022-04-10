@@ -6,6 +6,7 @@
 #include "Assets.h"
 #include "Debug.h"
 #include "SM_Time.h"
+#include "JobManager.h"
 #include "game/scenes/SceneLevel.h"
 #include "utils/FpsCounter.h"
 
