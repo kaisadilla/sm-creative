@@ -7,10 +7,10 @@
 #include "SM_Time.h"
 #include "player/Camera.h"
 #include "world/Level.h"
-#include "mobs/Mob.h"
-#include "mobs/Enemy.h"
-#include "mobs/Goomba.h"
-#include "mobs/Player.h"
+#include "characters/Character.h"
+#include "characters/Mob.h"
+#include "characters/Goomba.h"
+#include "characters/Player.h"
 
 class SceneLevel {
 private:
@@ -32,7 +32,7 @@ private:
 
     Player player;
 
-    std::vector<Enemy*> enemies;
+    std::vector<Mob*> enemies;
     //std::vector<std::unique_ptr<Enemy>> enemies;
     //std::map<i32, std::unique_ptr<Enemy>> enemies;
 
@@ -59,15 +59,31 @@ private:
     void drawColliders(sf::RenderWindow& window);
 
 public:
-    inline i32 getWidth () {
+    inline i32 getWidth () const {
         return levelTileWidth * PIXELS_PER_TILE;
     }
 
-    inline i32 getHeight () {
+    inline i32 getHeight () const {
         return levelTileHeight * PIXELS_PER_TILE;
     }
 
     inline i32 getNextId () {
         return ids++;
+    }
+
+    /// <summary>
+    /// Returns a pointer to the tile in the foreground layer at that position, if it exists.
+    /// If the position lays outside of the level, it returns a null pointer.
+    /// </summary>
+    /// <param name="x">The x coordinate in the tile grid.</param>
+    /// <param name="y">The y coordinate in the tile grid.</param>
+    /// <returns></returns>
+    inline WorldTile* getTileAt (const i32 x, const i32 y) {
+        if (x < 0 || x >= foregroundLayer.getWidth() || y < 0 || y >= foregroundLayer.getHeight()) {
+            return nullptr;
+        }
+        else {
+            return &foregroundLayer.getAt(x, y);
+        }
     }
 };

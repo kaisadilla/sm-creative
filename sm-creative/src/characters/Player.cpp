@@ -1,9 +1,9 @@
-#include "mobs/Player.h"
-#include "mobs/Enemy.h"
+#include "characters/Player.h"
+#include "characters/Mob.h"
 #include "game/scenes/SceneLevel.h"
 
 Player::Player (SceneLevel* level, vec2 size) :
-    Mob(
+    Character(
         level,
         size,
         AnimationState({
@@ -33,13 +33,13 @@ GameObjectType Player::getType () {
 void Player::onStart () {}
 
 void Player::onUpdate () {
-    Mob::onUpdate();
+    Character::onUpdate();
     input();
     setAnimationState();
 }
 
 void Player::onFixedUpdate () {
-    Mob::onFixedUpdate();
+    Character::onFixedUpdate();
     checkLevelBoundaries();
 }
 
@@ -76,15 +76,17 @@ void Player::input () {
         velocity.x = std::fminf(maxSpeed, velocity.x + acc);
     }
     else {
-        // Start losing speed if the player is moving, or stop completely when below 0.1 abs horizontal speed.
-        if (velocity.x < 0.1f) {
-            velocity.x = std::fminf(0.f, velocity.x + (ACCELERATION_X * Time::getDeltaTime()));
-        }
-        else if (velocity.x > 0.1f) {
-            velocity.x = std::fmaxf(0.f, velocity.x - (ACCELERATION_X * Time::getDeltaTime()));
-        }
-        else {
-            velocity.x = 0.f;
+        if (isGrounded) {
+            // Start losing speed if the player is moving, or stop completely when below 0.1 abs horizontal speed.
+            if (velocity.x < 0.1f) {
+                velocity.x = std::fminf(0.f, velocity.x + (ACCELERATION_X * Time::getDeltaTime()));
+            }
+            else if (velocity.x > 0.1f) {
+                velocity.x = std::fmaxf(0.f, velocity.x - (ACCELERATION_X * Time::getDeltaTime()));
+            }
+            else {
+                velocity.x = 0.f;
+            }
         }
     }
 
@@ -139,7 +141,7 @@ void Player::playerJumpEnd (bool forced) {
     }
 }
 
-void Player::checkCollisionWithEnemies (const std::vector<Enemy*>& enemies) {
+void Player::checkCollisionWithEnemies (const std::vector<Mob*>& enemies) {
     Collision collision;
     for (const auto& enemy : enemies) {
         if (collider.checkColision(enemy->getCollider(), collision)) {
@@ -149,7 +151,7 @@ void Player::checkCollisionWithEnemies (const std::vector<Enemy*>& enemies) {
 }
 
 void Player::die () {
-    Mob::die();
+    Character::die();
 }
 
 void Player::setAnimationState () {
@@ -199,7 +201,7 @@ void Player::checkLevelBoundaries () {
 }
 
 void Player::checkLookingLeft () {
-    Mob::checkLookingLeft();
+    Character::checkLookingLeft();
 
     // TODO: This could probably be simplified as "the player is always looking in the direction he's pressing".
     // when skidding, the player is looking at the direction he's trying to move in.

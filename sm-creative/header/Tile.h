@@ -1,6 +1,7 @@
 #pragma once
 
 #include "root.h"
+#include "physics/Collision.h"
 
 class Tile {
     friend class Assets;
@@ -37,16 +38,20 @@ public:
     }
 
     /// <summary>
-    /// Given the direction of the collision by the mob (which is the side of the mob that collided with
-    /// the tile, not vice versa), returns true if the block can collide from that direction.
+    /// Given the direction of the collision by the character (which is the side of the character
+    /// that collided with the tile, not vice versa), returns true if the block can collide from that direction.
     /// </summary>
-    /// <param name="mobSide">The side OF THE MOB that collided with this tile.</param>
-    /// <param name="mobVelocity">The velocity of the mob at this moment.</param>
-    inline bool hasMobCollided (const Direction mobSide, const vec2& mobVelocity) {
-        return (mobSide == Direction::UP && mobVelocity.y < 0.f && collisionDown)
-            || (mobSide == Direction::DOWN && mobVelocity.y > 0.f && collisionUp)
-            || (mobSide == Direction::LEFT && mobVelocity.x < 0.f && collisionRight)
-            || (mobSide == Direction::RIGHT && mobVelocity.x > 0.f && collisionLeft);
+    /// <param name="collision">The collision of the character with this tile.</param>
+    /// <param name="mobVelocity">The velocity of the character at this moment.</param>
+    inline bool hasMobCollided (const Collision& collision, const vec2& mobVelocity) {
+        return (collision.direction == Direction::UP    && mobVelocity.y < 0.f && collisionDown )
+            || (collision.direction == Direction::DOWN  && mobVelocity.y > 0.f && collisionUp   )
+            || (collision.direction == Direction::LEFT  && mobVelocity.x < 0.f && collisionRight)
+            || (collision.direction == Direction::RIGHT && mobVelocity.x > 0.f && collisionLeft );
+        //return (collision.direction == Direction::UP    && mobVelocity.y < 0.f && collisionDown  && collision.intersection.y < +4.f)
+        //    || (collision.direction == Direction::DOWN  && mobVelocity.y > 0.f && collisionUp    && collision.intersection.y > -4.f)
+        //    || (collision.direction == Direction::LEFT  && mobVelocity.x < 0.f && collisionRight && collision.intersection.x < +4.f)
+        //    || (collision.direction == Direction::RIGHT && mobVelocity.x > 0.f && collisionLeft  && collision.intersection.x > -4.f);
     }
 
     inline bool hasColliderFromTop () {

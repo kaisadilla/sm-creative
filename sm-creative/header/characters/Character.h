@@ -11,7 +11,7 @@
 
 class SceneLevel;
 
-class Mob : public IGameObject {
+class Character : public IGameObject {
 protected:
     i32 id = -1;
     /// <summary>
@@ -63,7 +63,7 @@ protected:
     bool isLookingLeft = false;
 
 public:
-    Mob(SceneLevel* level, vec2 size, AnimationState& animation);
+    Character(SceneLevel* level, vec2 size, AnimationState& animation);
 
     void setSprite(const char* path, uvec2 size);
 

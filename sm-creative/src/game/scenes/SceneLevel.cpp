@@ -50,7 +50,7 @@ void SceneLevel::onEnter () {
 
     enemies.push_back(new Goomba(this, vec2(16.f, 16.f), true));
     enemies[0]->setId(getNextId());
-    enemies[0]->setSprite("res/sprites/characters/goomba.png", uvec2(16, 16));
+    enemies[0]->setSprite("res/sprites/characters/goomba_brown.png", uvec2(16, 16));
     enemies[0]->setPosition(vec2(8.f * 16.f, 25.f * 16.f));
     enemies[0]->onStart();
 

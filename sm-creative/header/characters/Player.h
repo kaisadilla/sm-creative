@@ -1,11 +1,11 @@
 #pragma once
 
 #include "root.h"
-#include "Mob.h"
+#include "Character.h"
 
-class Enemy;
+class Mob;
 
-class Player : public Mob {
+class Player : public Character {
 private:
     static constexpr f32 ACCELERATION_X = 16.f * 20.f;
     static constexpr f32 MAX_SPEED_X = 16.f * 5.5f;
@@ -34,7 +34,7 @@ public:
     void onUpdate() override;
     void onFixedUpdate() override;
 
-    void checkCollisionWithEnemies(const std::vector<Enemy*>& enemies);
+    void checkCollisionWithEnemies(const std::vector<Mob*>& enemies);
 
     void die() override;
 

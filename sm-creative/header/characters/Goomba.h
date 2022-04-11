@@ -1,10 +1,10 @@
 #pragma once
 
 #include "root.h"
-#include "Enemy.h"
+#include "Mob.h"
 #include "JobManager.h"
 
-class Goomba : public Enemy {
+class Goomba : public Mob {
 private:
     static constexpr f32 SPEED = 32.f;
 private:

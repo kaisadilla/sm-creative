@@ -1,9 +1,9 @@
-#include "mobs/Goomba.h"
-#include "mobs/Player.h"
+#include "characters/Goomba.h"
+#include "characters/Player.h"
 #include "game/scenes/SceneLevel.h"
 
 Goomba::Goomba(SceneLevel* level, vec2 size, bool startingDirectionRight) :
-    Enemy(
+    Mob(
         level,
         size,
         AnimationState({
@@ -29,7 +29,7 @@ void Goomba::onStart () {
 }
 
 void Goomba::onUpdate () {
-    Mob::onUpdate();
+    Character::onUpdate();
 }
 
 void Goomba::onCollisionWithTile (Collision& collision) {
@@ -55,7 +55,7 @@ void Goomba::onCollisionWithPlayer (Player& player) {
 }
 
 void Goomba::die () {
-    Mob::die();
+    Character::die();
     animations.setState(AnimStates::Goomba::DEAD);
     velocity.x = 0;
 
