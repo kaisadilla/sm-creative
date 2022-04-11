@@ -20,6 +20,13 @@ private:
     /// </summary>
     bool startingDirectionRight;
 
+    ivec2 checkedCliffTile;
+
+    /*********
+     * DEBUG *
+     *********/
+    sf::RectangleShape debug_checkedCliffTile;
+
 public:
     Goomba(SceneLevel* level, const vec2& size, bool avoidsCliffs, bool startingDirectionRight);
 
@@ -32,6 +39,11 @@ public:
     void onCollisionWithPlayer(Player& player) override;
 
     void die() override;
+
+    virtual void drawDebugInfo(sf::RenderWindow& window) override;
+
+public:
+    void checkCliffs();
 };
 
 //namespace AnimStates::Goomba {

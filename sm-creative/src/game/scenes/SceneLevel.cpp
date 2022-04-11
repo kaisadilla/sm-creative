@@ -93,6 +93,7 @@ void SceneLevel::onDraw (sf::RenderWindow& window) {
     drawPlayer(window);
 
     if (Debug::drawCollisions) drawColliders(window);
+    if (Debug::drawDebugInfo) drawDebugInfo(window);
 
     window.setView(window.getDefaultView());
 }
@@ -152,6 +153,12 @@ void SceneLevel::drawColliders (sf::RenderWindow& window) {
         enemy->getCollider().drawColliderBounds(window, sf::Color::Red);
     }
     player.getCollider().drawColliderBounds(window, sf::Color::Blue);
+}
+
+void SceneLevel::drawDebugInfo (sf::RenderWindow& window) {
+    for (auto& enemy : enemies) {
+        enemy->drawDebugInfo(window);
+    }
 }
 
 Mob* SceneLevel::createEnemy (data::WorldMob mobData) {

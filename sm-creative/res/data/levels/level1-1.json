@@ -6,7 +6,7 @@
             "id": 0,
             "behavior": "goomba",
             "behaviorProperties": {
-                "avoidsCliffs" : false,
+                "avoidsCliffs" : true,
                 "startingDirectionRight": true
             },
             "sprite": "goomba_brown",

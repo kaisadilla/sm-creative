@@ -84,6 +84,8 @@ public:
     virtual void onCollisionWithTile(Collision& collision) {};
     virtual void checkOutOfBounds();
 
+    virtual void drawDebugInfo(sf::RenderWindow& window) {};
+
 protected:
     bool isCollisionValid(const Collision& collision) const;
     virtual void checkLookingLeft();
@@ -123,7 +125,7 @@ public:
     /// </summary>
     /// <returns></returns>
     inline ivec2 getGridPosition () const {
-        return ivec2((i32)position.x / 16, (i32)position.y / 16);
+        return ivec2((i32)std::floorf(position.x / 16.f), (i32)std::floorf(position.y / 16.f));
     }
 
     /// <summary>

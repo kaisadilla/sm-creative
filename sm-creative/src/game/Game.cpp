@@ -100,6 +100,9 @@ void Game::pollEvents () {
             else if (evt.key.code == sf::Keyboard::Key::F4) {
                 Debug::drawCollisions = !Debug::drawCollisions;
             }
+            else if (evt.key.code == sf::Keyboard::Key::F5) {
+                Debug::drawDebugInfo = !Debug::drawDebugInfo;
+            }
         }
     }
 }

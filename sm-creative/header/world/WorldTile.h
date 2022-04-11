@@ -18,4 +18,8 @@ public:
     inline Tile* getTile () {
         return tile;
     }
+
+    inline bool isAirTile () const {
+        return tile->isAirTile();
+    }
 };

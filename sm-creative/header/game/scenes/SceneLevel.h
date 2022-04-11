@@ -57,6 +57,7 @@ private:
     void drawMobs(sf::RenderWindow& window);
     void drawPlayer(sf::RenderWindow& window);
     void drawColliders(sf::RenderWindow& window);
+    void drawDebugInfo(sf::RenderWindow& window);
 
     Mob* createEnemy(data::WorldMob mobData);
 

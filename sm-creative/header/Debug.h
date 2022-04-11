@@ -6,4 +6,5 @@ class Debug {
 public:
     inline static bool showDebugInfo = false;
     inline static bool drawCollisions = false;
+    inline static bool drawDebugInfo = false;
 };
