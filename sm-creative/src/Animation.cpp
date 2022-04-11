@@ -5,7 +5,8 @@ Animation::Animation (const Animation& animations) :
     currentFrame(animations.currentFrame),
     timeSinceLastFrame(animations.timeSinceLastFrame),
     frameTimes(animations.frameTimes),
-    frameSlices(animations.frameSlices)
+    frameSlices(animations.frameSlices),
+    frameSlicesMirrored(animations.frameSlicesMirrored)
 {}
 
 void Animation::reset () {
@@ -59,6 +60,7 @@ void Animation::initialize (const std::vector<ui32>& frames, const uvec2& slices
         ui32 yStart = frame / slices.x;
 
         frameSlices.push_back(sf::IntRect(xStart * sliceSize.x, yStart * sliceSize.y, sliceSize.x, sliceSize.y));
+        frameSlicesMirrored.push_back(sf::IntRect((xStart + 1) * sliceSize.x, yStart * sliceSize.y, -sliceSize.x, sliceSize.y));
     }
 
     frameCount = frameSlices.size();

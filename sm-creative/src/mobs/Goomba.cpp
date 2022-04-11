@@ -12,7 +12,13 @@ Goomba::Goomba(SceneLevel* level, vec2 size, bool startingDirectionRight) :
         })
     ),
     startingDirectionRight(startingDirectionRight)
-{}
+{
+    vec2 colliderCenter;
+    vec2 colliderEdge;
+    Collider::calculateVectorsInsideSprite(size, sf::IntRect(0, 0, 16, 16), colliderCenter, colliderEdge);
+    collider.setCenter(colliderCenter);
+    collider.setDistanceToEdge(colliderEdge);
+}
 
 GameObjectType Goomba::getType() {
     return GameObjectType::Enemy;
@@ -39,6 +45,7 @@ void Goomba::onCollisionWithPlayer (Player& player) {
     if (!isDead) {
         if (player.getPosition().y < position.y - 2) {
             die();
+            sound_stomp.play();
             player.jump(16.f * 16.f);
         }
         else {
@@ -52,7 +59,7 @@ void Goomba::die () {
     animations.setState(AnimStates::Goomba::DEAD);
     velocity.x = 0;
 
-    // TODO: Actually disappear
-    Job job(2.f, []() {std::cout << "Coming Soon: Goomba dies." << "\n"; });
-    JobManager::addJob(job);
+    JobManager::addJob(.25f, [this]() {
+        dispose();
+    });
 }

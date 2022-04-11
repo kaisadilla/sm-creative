@@ -13,6 +13,7 @@ private:
     //bool animate = true;
     std::vector<f32> frameTimes;
     std::vector<sf::IntRect> frameSlices;
+    std::vector<sf::IntRect> frameSlicesMirrored;
 
 public:
     Animation(const std::vector<f32>& frameTimes, const std::vector<ui32>& frames, const uvec2& slices, const uvec2& sliceSize);
@@ -22,8 +23,8 @@ public:
     void onUpdate(const f32 deltaTime, const f32 speed);
     void reset();
 
-    inline sf::IntRect getCurrentSlice () const {
-        return frameSlices[currentFrame];
+    inline sf::IntRect getCurrentSlice (const bool mirrored) const {
+        return mirrored ? frameSlicesMirrored[currentFrame] : frameSlices[currentFrame];
     }
 
 private:

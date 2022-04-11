@@ -28,6 +28,7 @@ public:
     inline static std::unordered_map<string, Level> levels;
 
     inline static sf::SoundBuffer sound_jump;
+    inline static sf::SoundBuffer sound_stomp;
 
 private:
     inline static std::unordered_map<string, i32> tileMap;

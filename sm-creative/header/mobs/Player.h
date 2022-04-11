@@ -7,8 +7,8 @@ class Enemy;
 
 class Player : public Mob {
 private:
-    static constexpr f32 ACCELERATION_X = 16.f * 16.f;
-    static constexpr f32 MAX_SPEED_X = 16.f * 8.f;
+    static constexpr f32 ACCELERATION_X = 16.f * 20.f;
+    static constexpr f32 MAX_SPEED_X = 16.f * 5.5f;
 
 private:
     /********
@@ -48,18 +48,15 @@ private:
     void setAnimationState();
 
     void checkLevelBoundaries();
+    void checkLookingLeft() override;
 };
 
 namespace AnimStates::Player {
     enum States {
-        STILL_RIGHT   = 0,
-        WALKING_RIGHT = 1,
-        SKID_RIGHT    = 2,
-        JUMPING_RIGHT = 3,
-        STILL_LEFT    = 4,
-        WALKING_LEFT  = 5,
-        SKID_LEFT     = 6,
-        JUMPING_LEFT  = 7,
-        DEAD          = 8
+        STILL  ,
+        WALKING,
+        SKID   ,
+        JUMPING,
+        DEAD   
     };
 }

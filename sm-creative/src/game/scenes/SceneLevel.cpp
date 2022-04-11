@@ -49,13 +49,14 @@ void SceneLevel::onEnter () {
     player.setPosition(vec2(2.f, 26.f));
 
     enemies.push_back(new Goomba(this, vec2(16.f, 16.f), true));
+    enemies[0]->setId(getNextId());
     enemies[0]->setSprite("res/sprites/characters/goomba.png", uvec2(16, 16));
     enemies[0]->setPosition(vec2(8.f * 16.f, 25.f * 16.f));
     enemies[0]->onStart();
 
     levelMusic.openFromFile("res/music/overworld.wav");
     levelMusic.setLoop(true);
-    levelMusic.setVolume(80.f);
+    levelMusic.setVolume(50.f);
     levelMusic.play();
 }
 
@@ -66,6 +67,8 @@ void SceneLevel::onUpdate () {
 
     player.onUpdate();
     camera.updatePosition(player.getPixelPosition());
+
+    deleteDisposedEnemies();
 }
 
 void SceneLevel::onFixedUpdate () {
@@ -94,6 +97,20 @@ void SceneLevel::onDraw (sf::RenderWindow& window) {
 
 void SceneLevel::onLateUpdate () {
 
+}
+
+void SceneLevel::deleteDisposedEnemies () {
+    //enemies.erase(std::remove(enemies.begin(), enemies.end(), enemy), enemies.end());
+    auto& it = enemies.begin();
+
+    while (it != enemies.end()) {
+        if ((*it)->getDisposePending()) {
+            it = enemies.erase(it);
+        }
+        else {
+            it++;
+        }
+    }
 }
 
 void SceneLevel::drawLevel (sf::RenderWindow& window) {

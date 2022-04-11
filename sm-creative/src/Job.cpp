@@ -1,6 +1,6 @@
 #include "Job.h"
 
-Job::Job(const f32 timer, const std::function<void()>& callback) :
-    timer(timer),
+Job::Job(const f32 delay, const std::function<void()>& callback) :
+    timer(delay),
     callback(callback)
 {}

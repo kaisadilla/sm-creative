@@ -11,14 +11,16 @@ Player::Player (SceneLevel* level, vec2 size) :
             Animation(0.1f, {0, 1}, uvec2(6, 6), uvec2(16, 16)),
             Animation(60.f, {3}   , uvec2(6, 6), uvec2(16, 16)),
             Animation(60.f, {2}   , uvec2(6, 6), uvec2(16, 16)),
-            Animation(60.f, {6}   , uvec2(6, 6), uvec2(16, 16)),
-            Animation(0.1f, {6, 7}, uvec2(6, 6), uvec2(16, 16)),
-            Animation(60.f, {9}   , uvec2(6, 6), uvec2(16, 16)),
-            Animation(60.f, {8}   , uvec2(6, 6), uvec2(16, 16)),
             Animation(60.f, {4}   , uvec2(6, 6), uvec2(16, 16)),
         })
     )
 {
+    vec2 colliderCenter;
+    vec2 colliderEdge;
+    Collider::calculateVectorsInsideSprite(size, sf::IntRect(3, 1, 10, 15), colliderCenter, colliderEdge);
+    collider.setCenter(colliderCenter);
+    collider.setDistanceToEdge(colliderEdge);
+
     destroyWhenOutOfBounds = false;
     sound_jump.setBuffer(Assets::sound_jump);
     //sound_jump.setVolume(50.f);
@@ -52,8 +54,7 @@ void Player::input () {
     f32 maxSpeed = MAX_SPEED_X;
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::C)) {
-        acc *= 2.f;
-        maxSpeed *= 2.f;
+        maxSpeed *= 1.555f; // Original goes to 18 to 28, which is ~1.5555555555-.
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LControl)) {
         maxSpeed = 2.f;
@@ -152,43 +153,38 @@ void Player::die () {
 }
 
 void Player::setAnimationState () {
+    animationSpeed = 1.f;
     if (isDead) {
         animations.setState(AnimStates::Player::DEAD);
     }
     else {
         if (isGrounded) {
             if (velocity.x == 0) {
-                animations.setState(getLookingLeft() ? AnimStates::Player::STILL_LEFT : AnimStates::Player::STILL_RIGHT);
+                animations.setState(AnimStates::Player::STILL);
             }
             else if (velocity.x < 0.f) {
                 // if the player is moving left but pressing right, it is skidding.
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) {
-                    animations.setState(AnimStates::Player::SKID_RIGHT);
+                    animations.setState(AnimStates::Player::SKID);
                 }
                 else {
-                    animations.setState(AnimStates::Player::WALKING_LEFT);
+                    animationSpeed = std::abs(velocity.x / 64.f);
+                    animations.setState(AnimStates::Player::WALKING);
                 }
             }
             else if (velocity.x > 0.f) {
                 // if the player is moving right but pressing left, it is skidding.
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)) {
-                    animations.setState(AnimStates::Player::SKID_LEFT);
+                    animations.setState(AnimStates::Player::SKID);
                 }
                 else {
-                    animations.setState(AnimStates::Player::WALKING_RIGHT);
+                    animationSpeed = std::abs(velocity.x / 64.f);
+                    animations.setState(AnimStates::Player::WALKING);
                 }
             }
         }
         else {
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)) {
-                animations.setState(AnimStates::Player::JUMPING_LEFT);
-            }
-            else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) {
-                animations.setState(AnimStates::Player::JUMPING_RIGHT);
-            }
-            else {
-                animations.setState(getLookingLeft() ? AnimStates::Player::JUMPING_LEFT : AnimStates::Player::JUMPING_RIGHT);
-            }
+            animations.setState(AnimStates::Player::JUMPING);
         }
     }
 }
@@ -199,5 +195,28 @@ void Player::checkLevelBoundaries () {
     }
     else if (position.x > level->getWidth() - size.y) {
         position.x = level->getWidth() - size.y;
+    }
+}
+
+void Player::checkLookingLeft () {
+    Mob::checkLookingLeft();
+
+    // TODO: This could probably be simplified as "the player is always looking in the direction he's pressing".
+    // when skidding, the player is looking at the direction he's trying to move in.
+    if (velocity.x < 0.f && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) {
+        isLookingLeft = false;
+    }
+    else if (velocity.x > 0.f && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)) {
+        isLookingLeft = true;
+    }
+
+    // when airborne, the player is looking at the direction he's trying to look in.
+    if (!isGrounded) {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)) {
+            isLookingLeft = true;
+        }
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) {
+            isLookingLeft = false;
+        }
     }
 }

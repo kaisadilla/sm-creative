@@ -4,19 +4,12 @@
 Mob::Mob (SceneLevel* level, vec2 size, AnimationState& animations) :
     level(level),
     size(size),
-    collider(this, position + size / 2.f, vec2((size.x / 2.f) - 1, size.y / 2.f)),
+    collider(this),
     animations(animations)
 {}
 
 void Mob::updatePhysics () {
-    // Note that if the horizontal speed is exactly 0, you don't update this value.
-    if (velocity.x < 0.f) {
-        isLookingLeft = true;
-    }
-    else if (velocity.x > 0.f) {
-        isLookingLeft = false;
-    }
-
+    checkLookingLeft();
     velocity.y = std::min(velocity.y + (12.f * gravity), 8.f * 16.f * 4.f);
 
     move(velocity * SECONDS_PER_FIXED_UPDATE);
@@ -36,6 +29,10 @@ void Mob::jump (f32 strength) {
 
 void Mob::die () {
     isDead = true;
+}
+
+void Mob::dispose () {
+    disposePending = true;
 }
 
 void Mob::checkCollisionsWithTiles (const std::vector<Collider>& colliders) {
@@ -108,7 +105,7 @@ void Mob::move (f32 x, f32 y) {
 
 void Mob::onUpdate () {
     animations.onUpdate(Time::getDeltaTime(), animationSpeed);
-    sprite.setTextureRect(animations.getCurrentAnimation().getCurrentSlice());
+    sprite.setTextureRect(animations.getCurrentAnimation().getCurrentSlice(isLookingLeft && canBeMirrored));
 }
 
 void Mob::onFixedUpdate () {
@@ -117,15 +114,25 @@ void Mob::onFixedUpdate () {
 }
 
 void Mob::checkOutOfBounds () {
-    if (position.x < -1.f || position.x > level->getWidth() + 1.f) {
-        // TODO: Destroy.
+    if (position.x < -32.f || position.x > level->getWidth() + 32.f) {
+        dispose();
     }
-    if (position.y < -10.f || position.y > level->getHeight() + 1.f) {
-        // TODO: Destroy.
+    else if (position.y < -240.f || position.y > level->getHeight() + 32.f) {
+        dispose();
     }
 }
 
 bool Mob::isCollisionValid (const Collision& collision) const {
     WorldTile* tile = (WorldTile*)collision.collider->getGameObject();
     return tile->getTile()->hasMobCollided(collision.direction, velocity);
+}
+
+void Mob::checkLookingLeft () {
+    // Note that if the horizontal speed is exactly 0, we don't update this value.
+    if (velocity.x < 0.f) {
+        isLookingLeft = true;
+    }
+    else if (velocity.x > 0.f) {
+        isLookingLeft = false;
+    }
 }

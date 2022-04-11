@@ -14,4 +14,8 @@ public:
     static inline void addJob (const Job& job) {
         pendingJobs.push_back(job);
     }
+
+    static inline void addJob (const f32 delay, const std::function<void()>& callback) {
+        pendingJobs.push_back(Job(delay, callback));
+    }
 };

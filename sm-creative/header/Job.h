@@ -12,5 +12,5 @@ private:
     std::function<void()> callback;
 
 public:
-    Job(const f32 timer, const std::function<void()>& callback);
+    Job(const f32 delay, const std::function<void()>& callback);
 };

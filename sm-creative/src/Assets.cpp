@@ -122,8 +122,6 @@ void Assets::freeData () {
 void Assets::loadSounds () {
     std::cout << "=== LOADING SOUNDS ===" << std::endl;
 
-    bool good = sound_jump.loadFromFile("res/sound/jump.wav");
-    if (!good) {
-        std::cout << "NO BUENO" << "\n";
-    }
+    sound_jump.loadFromFile("res/sound/jump.wav");
+    sound_stomp.loadFromFile("res/sound/stomp.wav");
 }

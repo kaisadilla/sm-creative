@@ -13,6 +13,7 @@ class SceneLevel;
 
 class Mob : public IGameObject {
 protected:
+    i32 id = -1;
     /// <summary>
     /// The position of the mob inside the level, in pixels.
     /// </summary>
@@ -26,6 +27,7 @@ protected:
      * STATE *
      *********/
     bool isDead = false;
+    bool disposePending = false;
 
     /**********
      * SPRITE *
@@ -34,6 +36,7 @@ protected:
     sf::Texture texture;
     sf::RectangleShape sprite;
     f32 animationSpeed = 1.f;
+    bool canBeMirrored = true;
 
     /****************************
      * MOVEMENT AND INTERACTION *
@@ -71,6 +74,7 @@ public:
 
     virtual void jump(f32 strength);
     virtual void die();
+    virtual void dispose();
 
     virtual void onStart() {};
     virtual void onUpdate();
@@ -79,10 +83,26 @@ public:
     virtual void onCollisionWithTile(Collision& collision) {};
     virtual void checkOutOfBounds();
 
-private:
+protected:
     bool isCollisionValid(const Collision& collision) const;
+    virtual void checkLookingLeft();
 
 public:
+    inline i32 getId () const {
+        return id;
+    }
+
+    inline void setId (i32 id) {
+        this->id = id;
+    }
+
+    /// <summary>
+    /// Returns true if this mob is marked to be deleted.
+    /// </summary>
+    inline bool getDisposePending () {
+        return disposePending;
+    }
+
     /// <summary>
     /// Returns the exact position of the mob inside the level.
     /// </summary>

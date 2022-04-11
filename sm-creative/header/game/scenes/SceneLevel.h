@@ -33,6 +33,10 @@ private:
     Player player;
 
     std::vector<Enemy*> enemies;
+    //std::vector<std::unique_ptr<Enemy>> enemies;
+    //std::map<i32, std::unique_ptr<Enemy>> enemies;
+
+    i32 ids = 0;
 
 public:
     SceneLevel();
@@ -45,6 +49,8 @@ public:
     void onDraw(sf::RenderWindow& window);
     void onLateUpdate();
 
+    void deleteDisposedEnemies();
+
 private:
     void drawLevel(sf::RenderWindow& window);
     void drawLayer(sf::RenderWindow& window, Grid2<WorldTile>& layer);
@@ -53,11 +59,15 @@ private:
     void drawColliders(sf::RenderWindow& window);
 
 public:
-    i32 getWidth () {
+    inline i32 getWidth () {
         return levelTileWidth * PIXELS_PER_TILE;
     }
 
-    i32 getHeight () {
+    inline i32 getHeight () {
         return levelTileHeight * PIXELS_PER_TILE;
+    }
+
+    inline i32 getNextId () {
+        return ids++;
     }
 };
