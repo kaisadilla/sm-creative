@@ -2,7 +2,7 @@
 #include "characters/Player.h"
 #include "game/scenes/SceneLevel.h"
 
-Goomba::Goomba(SceneLevel* level, vec2 size, bool startingDirectionRight) :
+Goomba::Goomba(SceneLevel* level, const vec2& size, bool avoidsCliffs, bool startingDirectionRight) :
     Mob(
         level,
         size,
@@ -11,6 +11,7 @@ Goomba::Goomba(SceneLevel* level, vec2 size, bool startingDirectionRight) :
             Animation(5.f , {2}   , uvec2(3, 1), uvec2(16, 16)),
         })
     ),
+    avoidsCliffs(avoidsCliffs),
     startingDirectionRight(startingDirectionRight)
 {
     vec2 colliderCenter;
@@ -56,7 +57,7 @@ void Goomba::onCollisionWithPlayer (Player& player) {
 
 void Goomba::die () {
     Character::die();
-    animations.setState(AnimStates::Goomba::DEAD);
+    animations.setState(AnimStates::DEAD);
     velocity.x = 0;
 
     JobManager::addJob(.25f, [this]() {

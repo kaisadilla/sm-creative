@@ -3,18 +3,17 @@
 #include <fstream>
 #include <filesystem>
 #include <unordered_map>
-#include <unordered_map>
 #include <nlohmann/json.hpp>
 #include <SFML/Audio.hpp>
 
 #include "root.h"
-#include "Tile.h"
-#include "utils/files.h"
-#include "world/Level.h"
 
 namespace fs = std::filesystem;
 
-class Level;
+class Tile;
+namespace data {
+    class Level;
+}
 
 class Assets {
     typedef nlohmann::json json;
@@ -25,7 +24,7 @@ public:
     inline static i32 texturesPerRow;
     inline static f32 normalizedTextureSize;
     inline static std::unordered_map<string, i32> __tilePositionMap;
-    inline static std::unordered_map<string, Level> levels;
+    inline static std::unordered_map<string, data::Level> levels;
 
     inline static sf::SoundBuffer sound_jump;
     inline static sf::SoundBuffer sound_stomp;

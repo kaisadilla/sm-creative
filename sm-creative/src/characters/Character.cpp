@@ -15,12 +15,23 @@ void Character::updatePhysics () {
     move(velocity * SECONDS_PER_FIXED_UPDATE);
 }
 
-void Character::setSprite (const char* path, uvec2 size) {
-    texture.loadFromFile(path);
+void Character::setSprite (const char* name, vec2 size) {
+    texture.loadFromFile(string("res/sprites/characters/") + name + string(".png"));
 
     sprite = sf::RectangleShape(vec2(size.x, size.y));
     sprite.setTexture(&texture);
     sprite.setTextureRect(sf::IntRect(0, 0, size.x, size.y));
+}
+
+void Character::setSpriteAndColliderSizes (const vec2& spriteSize, const sf::IntRect& colliderPosition) {
+    vec2 colliderCenter;
+    vec2 colliderEdge;
+    Collider::calculateVectorsInsideSprite(spriteSize, colliderPosition, colliderCenter, colliderEdge);
+    collider.setCenter(colliderCenter);
+    collider.setCenter(colliderEdge);
+
+    size = spriteSize;
+    sprite.setSize(size);
 }
 
 void Character::jump (f32 strength) {

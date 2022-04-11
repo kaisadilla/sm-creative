@@ -6,7 +6,7 @@
 #include "Debug.h"
 #include "SM_Time.h"
 #include "player/Camera.h"
-#include "world/Level.h"
+#include "data/Level.h"
 #include "characters/Character.h"
 #include "characters/Mob.h"
 #include "characters/Goomba.h"
@@ -36,11 +36,11 @@ private:
     //std::vector<std::unique_ptr<Enemy>> enemies;
     //std::map<i32, std::unique_ptr<Enemy>> enemies;
 
-    i32 ids = 0;
+    i32 nextId = 0;
 
 public:
     SceneLevel();
-    SceneLevel(const ui32 windowWidth, const ui32 windowHeight, const Level& level);
+    SceneLevel(const ui32 windowWidth, const ui32 windowHeight, const data::Level& level);
     ~SceneLevel();
 
     void onEnter();
@@ -58,6 +58,8 @@ private:
     void drawPlayer(sf::RenderWindow& window);
     void drawColliders(sf::RenderWindow& window);
 
+    Mob* createEnemy(data::WorldMob mobData);
+
 public:
     inline i32 getWidth () const {
         return levelTileWidth * PIXELS_PER_TILE;
@@ -68,7 +70,7 @@ public:
     }
 
     inline i32 getNextId () {
-        return ids++;
+        return nextId++;
     }
 
     /// <summary>

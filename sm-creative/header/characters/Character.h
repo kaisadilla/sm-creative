@@ -65,7 +65,8 @@ protected:
 public:
     Character(SceneLevel* level, vec2 size, AnimationState& animation);
 
-    void setSprite(const char* path, uvec2 size);
+    void setSprite(const char* name, vec2 size);
+    void setSpriteAndColliderSizes(const vec2& spriteSize, const sf::IntRect& colliderPosition);
 
     void move(vec2 direction);
     void move(f32 x, f32 y);

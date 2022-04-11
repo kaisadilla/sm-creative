@@ -1,7 +1,36 @@
 {
     "width": 176,
     "height": 27,
-    "enemies": [],
+    "enemies": [
+        {
+            "id": 0,
+            "behavior": "goomba",
+            "behaviorProperties": {
+                "avoidsCliffs" : false,
+                "startingDirectionRight": true
+            },
+            "sprite": "goomba_brown",
+            "dimensions": {
+                "sprite": [16, 16],
+                "collider": [0, 0, 16, 16]
+            },
+            "position": [8, 25]
+        },
+        {
+            "id": 0,
+            "behavior": "goomba",
+            "behaviorProperties": {
+                "avoidsCliffs" : true,
+                "startingDirectionRight": true
+            },
+            "sprite": "goomba_red",
+            "dimensions": {
+                "sprite": [16, 16],
+                "collider": [0, 0, 16, 16]
+            },
+            "position": [33, 25]
+        }
+    ],
     "events": [],
     "grids": {
         "background": {

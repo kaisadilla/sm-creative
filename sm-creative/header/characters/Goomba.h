@@ -7,14 +7,21 @@
 class Goomba : public Mob {
 private:
     static constexpr f32 SPEED = 32.f;
+
+    enum AnimStates {
+        WALKING = 0,
+        DEAD = 1
+    };
+
 private:
+    bool avoidsCliffs;
     /// <summary>
     /// If true, the goomba starts walking to the right instead of to the left.
     /// </summary>
     bool startingDirectionRight;
 
 public:
-    Goomba(SceneLevel* level, vec2 size, bool startingDirectionRight);
+    Goomba(SceneLevel* level, const vec2& size, bool avoidsCliffs, bool startingDirectionRight);
 
     GameObjectType getType() override;
 
@@ -27,9 +34,9 @@ public:
     void die() override;
 };
 
-namespace AnimStates::Goomba {
-    enum States {
-        WALKING = 0,
-        DEAD = 1
-    };
-}
+//namespace AnimStates::Goomba {
+//    enum States {
+//        WALKING = 0,
+//        DEAD = 1
+//    };
+//}

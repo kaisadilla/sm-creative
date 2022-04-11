@@ -10,7 +10,7 @@ SceneLevel::SceneLevel() :
     player(this, vec2(16.f, 16.f))
 {}
 
-SceneLevel::SceneLevel(const ui32 windowWidth, const ui32 windowHeight, const Level& level) :
+SceneLevel::SceneLevel(const ui32 windowWidth, const ui32 windowHeight, const data::Level& level) :
     windowWidth(windowWidth),
     windowHeight(windowHeight),
     levelTileWidth(level.getWidth()),
@@ -29,6 +29,10 @@ SceneLevel::SceneLevel(const ui32 windowWidth, const ui32 windowHeight, const Le
             }
         }
     }
+
+    for (auto& enemy : level.getEnemies()) {
+        enemies.push_back(createEnemy(enemy));
+    }
 }
 
 SceneLevel::~SceneLevel () {
@@ -45,19 +49,17 @@ void SceneLevel::onEnter () {
     __background.setTexture(__texBackground);
     __background.setScale(vec2(2.f, 2.f));
 
-    player.setSprite("res/sprites/characters/mario.png", uvec2(16, 16));
+    player.setSprite("mario", vec2(16, 16));
     player.setPosition(vec2(2.f, 26.f));
-
-    enemies.push_back(new Goomba(this, vec2(16.f, 16.f), true));
-    enemies[0]->setId(getNextId());
-    enemies[0]->setSprite("res/sprites/characters/goomba_brown.png", uvec2(16, 16));
-    enemies[0]->setPosition(vec2(8.f * 16.f, 25.f * 16.f));
-    enemies[0]->onStart();
 
     levelMusic.openFromFile("res/music/overworld.wav");
     levelMusic.setLoop(true);
     levelMusic.setVolume(50.f);
     levelMusic.play();
+
+    for (auto& enemy : enemies) {
+        enemy->onStart();
+    }
 }
 
 void SceneLevel::onUpdate () {
@@ -150,4 +152,29 @@ void SceneLevel::drawColliders (sf::RenderWindow& window) {
         enemy->getCollider().drawColliderBounds(window, sf::Color::Red);
     }
     player.getCollider().drawColliderBounds(window, sf::Color::Blue);
+}
+
+Mob* SceneLevel::createEnemy (data::WorldMob mobData) {
+    const i32& id = mobData.getId();
+    const vec2& size = mobData.getSpriteDimensions();
+    const sf::IntRect& defaultCollider = mobData.getCollider("collider");
+    const vec2& position = mobData.getPosition();
+
+    Mob* enemy = nullptr;
+
+    if (mobData.getBehavior() == data::Behavior::Goomba) {
+        bool avoidsCliffs = mobData.getBehaviorProperty<bool>("avoidsCliffs");
+        bool startingDirectionRight = mobData.getBehaviorProperty<bool>("startingDirectionRight");
+
+        enemy = new Goomba(this, size, avoidsCliffs, startingDirectionRight);
+    }
+
+    enemy->setId(id);
+    enemy->setSprite(mobData.getSprite().c_str(), size);
+    enemy->setSpriteAndColliderSizes(size, defaultCollider);
+    enemy->setPosition(vec2(position.x * 16.f, position.y * 16.f));
+
+    nextId = std::max(nextId, id);
+
+    return enemy;
 }

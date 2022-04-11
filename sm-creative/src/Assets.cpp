@@ -1,4 +1,7 @@
 #include "Assets.h"
+#include "Tile.h"
+#include "data/Level.h"
+#include "utils/files.h"
 
 void Assets::buildTileAtlas () {
     std::cout << "=== BUILDING TILE ATLAS ===" << std::endl;
@@ -107,7 +110,7 @@ void Assets::loadLevels () {
     for (fs::directory_entry levelPath : folderIterator) {
         string internalName = levelPath.path().stem().string();
 
-        Level* level = Level::loadFromFile(levelPath.path().string().c_str());
+        data::Level* level = data::Level::loadFromFile(levelPath.path().string().c_str());
         levels[internalName] = *level;
 
         std::cout << "Level loaded: {" << internalName << "}" << "\n";
