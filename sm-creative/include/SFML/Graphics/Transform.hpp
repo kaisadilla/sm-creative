@@ -255,7 +255,7 @@ public:
     /// \see translate, scale
     ///
     ////////////////////////////////////////////////////////////
-    Transform& rotate(float angle, const Vector2f& center);
+    Transform& rotate(float angle, const Vector2f& relativeCenter);
 
     ////////////////////////////////////////////////////////////
     /// \brief Combine the current transform with a scaling
@@ -346,7 +346,7 @@ public:
     /// \see translate, rotate
     ///
     ////////////////////////////////////////////////////////////
-    Transform& scale(const Vector2f& factors, const Vector2f& center);
+    Transform& scale(const Vector2f& factors, const Vector2f& relativeCenter);
 
     ////////////////////////////////////////////////////////////
     // Static member data

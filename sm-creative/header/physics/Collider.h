@@ -1,7 +1,6 @@
 #pragma once
 
 #include "root.h"
-#include "Collision.h"
 #include "IGameObject.h"
 
 class Collision;
@@ -9,13 +8,14 @@ class Collision;
 class Collider {
 private:
     IGameObject* gameObject;
-    vec2 center;
+    vec2 position;
+    vec2 relativeCenter;
     vec2 distanceToEdge;
 
 public:
     Collider();
     Collider(IGameObject* gameObject);
-    Collider(IGameObject* gameObject, vec2 center, vec2 distanceToEdge);
+    Collider(IGameObject* gameObject, const vec2& position, const vec2& relativeCenter, const vec2& distanceToEdge);
 
     /// <summary>
     /// Calculates the center and distance to the edge of a collider relative to a sprite,
@@ -27,7 +27,7 @@ public:
     /// with the (x, y) coordinates of the top left corner and the width and height of the collider.</param>
     /// <param name="center">Returns the center obtained by the calculation.</param>
     /// <param name="distanceToEdge">Returns the distance to the edge obtained by the calculation.</param>
-    static void calculateVectorsInsideSprite(const vec2& spriteSize, const sf::IntRect& colliderPosition, vec2& center, vec2& distanceToEdge);
+    static void calculateVectorsInsideSprite(const vec2& spriteSize, const sf::IntRect& colliderPosition, vec2& relativeCenter, vec2& distanceToEdge);
 
     bool checkColision(const Collider& collider, Collision& collision);
     sf::FloatRect getBounds() const;
@@ -40,8 +40,16 @@ public:
         return gameObject;
     }
 
-    inline void setCenter (const vec2& center) {
-        this->center = center;
+    inline vec2 getAbsoluteCenter () const {
+        return position + relativeCenter;
+    }
+
+    inline void setPosition (const vec2& position) {
+        this->position = position;
+    }
+
+    inline void setRelativeCenter (const vec2& relativeCenter) {
+        this->relativeCenter = relativeCenter;
     }
 
     inline void setDistanceToEdge (const vec2& distanceToEdge) {

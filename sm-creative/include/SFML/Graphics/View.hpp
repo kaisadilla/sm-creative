@@ -67,7 +67,7 @@ public:
     /// \param size   Size of zone to display
     ///
     ////////////////////////////////////////////////////////////
-    View(const Vector2f& center, const Vector2f& size);
+    View(const Vector2f& relativeCenter, const Vector2f& size);
 
     ////////////////////////////////////////////////////////////
     /// \brief Set the center of the view
@@ -88,7 +88,7 @@ public:
     /// \see setSize, getCenter
     ///
     ////////////////////////////////////////////////////////////
-    void setCenter(const Vector2f& center);
+    void setCenter(const Vector2f& relativeCenter);
 
     ////////////////////////////////////////////////////////////
     /// \brief Set the size of the view

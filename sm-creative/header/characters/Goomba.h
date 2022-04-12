@@ -3,52 +3,40 @@
 #include "root.h"
 #include "Mob.h"
 #include "JobManager.h"
+#include "behavior/IAvoidCliffs.h"
 
-class Goomba : public Mob {
+class Goomba : public Mob, public IAvoidCliffs {
 private:
-    static constexpr f32 SPEED = 32.f;
-
-    enum AnimStates {
-        WALKING = 0,
-        DEAD = 1
-    };
+    static constexpr f32 WALKING_SPEED = 32.f;
 
 private:
-    bool avoidsCliffs;
     /// <summary>
     /// If true, the goomba starts walking to the right instead of to the left.
     /// </summary>
     bool startingDirectionRight;
 
-    ivec2 checkedCliffTile;
-
-    /*********
-     * DEBUG *
-     *********/
-    sf::RectangleShape debug_checkedCliffTile;
-
 public:
     Goomba(SceneLevel* level, const vec2& size, bool avoidsCliffs, bool startingDirectionRight);
 
-    GameObjectType getType() override;
+    GameObjectType getType() override { return GameObjectType::Enemy; }
 
     void onStart() override;
     void onUpdate() override;
+    void onFixedUpdate() override;
 
     void onCollisionWithTile(Collision& collision) override;
-    void onCollisionWithPlayer(Player& player) override;
+    void onCollisionWithMob(Collision& collision, Mob* mob) override;
+    void onCollisionWithPlayer(Collision& collision, Player& player) override;
 
+    void takeDamage(bool forceDeath) override;
     void die() override;
 
     virtual void drawDebugInfo(sf::RenderWindow& window) override;
-
-public:
-    void checkCliffs();
 };
 
-//namespace AnimStates::Goomba {
-//    enum States {
-//        WALKING = 0,
-//        DEAD = 1
-//    };
-//}
+namespace AnimStates::Goomba {
+    enum States {
+        WALKING = 0,
+        STOMPED = 1
+    };
+}

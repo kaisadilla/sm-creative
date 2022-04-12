@@ -3,7 +3,7 @@
 #include "game/scenes/SceneLevel.h"
 
 Player::Player (SceneLevel* level, vec2 size) :
-    Character(
+    Entity(
         level,
         size,
         AnimationState({
@@ -15,15 +15,16 @@ Player::Player (SceneLevel* level, vec2 size) :
         })
     )
 {
+    // TODO: This is not the weh.
     vec2 colliderCenter;
     vec2 colliderEdge;
     Collider::calculateVectorsInsideSprite(size, sf::IntRect(3, 1, 10, 15), colliderCenter, colliderEdge);
-    collider.setCenter(colliderCenter);
+    collider.setRelativeCenter(colliderCenter);
     collider.setDistanceToEdge(colliderEdge);
 
     destroyWhenOutOfBounds = false;
     sound_jump.setBuffer(Assets::sound_jump);
-    //sound_jump.setVolume(50.f);
+    sound_death.setBuffer(Assets::sound_playerDeath);
 }
 
 GameObjectType Player::getType () {
@@ -33,13 +34,13 @@ GameObjectType Player::getType () {
 void Player::onStart () {}
 
 void Player::onUpdate () {
-    Character::onUpdate();
+    Entity::onUpdate();
     input();
     setAnimationState();
 }
 
 void Player::onFixedUpdate () {
-    Character::onFixedUpdate();
+    Entity::onFixedUpdate();
     checkLevelBoundaries();
 }
 
@@ -142,16 +143,25 @@ void Player::playerJumpEnd (bool forced) {
 }
 
 void Player::checkCollisionWithEnemies (const std::vector<Mob*>& enemies) {
-    Collision collision;
-    for (const auto& enemy : enemies) {
-        if (collider.checkColision(enemy->getCollider(), collision)) {
-            enemy->onCollisionWithPlayer(*this);
+    if (!isDead) {
+        Collision collision;
+        for (const auto& enemy : enemies) {
+            if (collider.checkColision(enemy->getCollider(), collision)) {
+                if (enemy->collidesWithEntities()) {
+                    enemy->onCollisionWithPlayer(collision, *this);
+                }
+            }
         }
     }
 }
 
+void Player::takeDamage(bool forceDeath) {
+    die();
+}
+
 void Player::die () {
-    Character::die();
+    Entity::die();
+    sound_death.play();
 }
 
 void Player::setAnimationState () {
@@ -201,7 +211,7 @@ void Player::checkLevelBoundaries () {
 }
 
 void Player::checkLookingLeft () {
-    Character::checkLookingLeft();
+    Entity::checkLookingLeft();
 
     // TODO: This could probably be simplified as "the player is always looking in the direction he's pressing".
     // when skidding, the player is looking at the direction he's trying to move in.

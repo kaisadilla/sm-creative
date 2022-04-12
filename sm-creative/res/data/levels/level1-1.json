@@ -6,7 +6,7 @@
             "id": 0,
             "behavior": "goomba",
             "behaviorProperties": {
-                "avoidsCliffs" : true,
+                "avoidsCliffs": false,
                 "startingDirectionRight": true
             },
             "sprite": "goomba_brown",
@@ -14,21 +14,37 @@
                 "sprite": [16, 16],
                 "collider": [0, 0, 16, 16]
             },
-            "position": [8, 25]
+            "position": [30, 24]
         },
         {
-            "id": 0,
+            "id": 1,
             "behavior": "goomba",
             "behaviorProperties": {
-                "avoidsCliffs" : true,
-                "startingDirectionRight": true
+                "avoidsCliffs": true,
+                "startingDirectionRight": false
             },
             "sprite": "goomba_red",
             "dimensions": {
                 "sprite": [16, 16],
                 "collider": [0, 0, 16, 16]
             },
-            "position": [33, 25]
+            "position": [12, 25]
+        },
+        {
+            "id": 2,
+            "behavior": "koopa",
+            "behaviorProperties": {
+                "avoidsCliffs": true,
+                "startingDirectionRight": true,
+                "canRevive": true
+            },
+            "sprite": "koopa_red",
+            "dimensions": {
+                "sprite": [18, 27],
+                "collider": [1, 0, 16, 27],
+                "shellCollider": [1, 11, 16, 16]
+            },
+            "position": [8, 24]
         }
     ],
     "events": [],

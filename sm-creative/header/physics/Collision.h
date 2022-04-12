@@ -3,6 +3,8 @@
 #include "root.h"
 #include "Collider.h"
 
+class IGameObject;
+
 class Collision {
     friend class Collider;
 
@@ -16,9 +18,18 @@ public:
     /// </summary>
     bool collision;
     /// <summary>
-    /// The side from which this collider collided with the other collider.
+    /// The side of this collider that collided with the other agent
+    /// (whichever is greatest between horizontal and vertical directions).
     /// </summary>
     Direction direction;
+    /// <summary>
+    /// The horizontal side of this collider that collided with the other agent.
+    /// </summary>
+    Direction horizontalDirection;
+    /// <summary>
+    /// The vertical side of this collider that collided with the other agent.
+    /// </summary>
+    Direction verticalDirection;
     // TODO: Speak English.
     /// <summary>
     /// The amount of distance, in each direction, that the others are inside each other.
@@ -27,5 +38,32 @@ public:
 
 public:
     Collision();
-    Collision(const Collider* collider, const bool collision, const Direction direction, const vec2& intersection);
+    Collision(const Collider* collider, const bool collision, const Direction direction,
+        const Direction horizontalDirection, const Direction verticalDirection,
+        const vec2& intersection
+    );
+
+    /// <summary>
+    /// Returns the side of the game object given that was hit by this collision .
+    /// </summary>
+    /// <param name="gameObject">The game object to check.</param>
+    inline Direction getDirectionForGameObject (const IGameObject* gameObject) const {
+        return gameObject == collider->getGameObject() ? direction : getOppositeDirection(direction);
+    }
+
+    /// <summary>
+    /// Returns the horizontal side of the game object given that was hit by this collision .
+    /// </summary>
+    /// <param name="gameObject">The game object to check.</param>
+    inline Direction getHorizontalDirectionForGameObject (const IGameObject* gameObject) const  {
+        return gameObject == collider->getGameObject() ? horizontalDirection : getOppositeDirection(horizontalDirection);
+    }
+
+    /// <summary>
+    /// Returns the vertical side of the game object given that was hit by this collision .
+    /// </summary>
+    /// <param name="gameObject">The game object to check.</param>
+    inline Direction getVerticalDirectionForGameObject (const IGameObject* gameObject) const {
+        return gameObject == collider->getGameObject() ? verticalDirection : getOppositeDirection(verticalDirection);
+    }
 };

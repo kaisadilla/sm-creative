@@ -57,6 +57,14 @@ enum class Direction {
     NONE = 4
 };
 
+inline Direction getOppositeDirection (Direction direction) {
+    if (direction == Direction::UP)         return Direction::DOWN;
+    else if (direction == Direction::DOWN)  return Direction::UP;
+    else if (direction == Direction::LEFT)  return Direction::RIGHT;
+    else if (direction == Direction::RIGHT) return Direction::LEFT;
+    else return Direction::NONE;
+}
+
 // TODO: Move somewhere else, anyway we probably won't use this.
 inline f32 roundDownToNearest (f32 number, f32 target) {
     return std::floorf(number / target) * target;

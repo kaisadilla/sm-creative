@@ -1,11 +1,11 @@
 #pragma once
 
 #include "root.h"
-#include "Character.h"
+#include "Entity.h"
 
 class Mob;
 
-class Player : public Character {
+class Player : public Entity {
 private:
     static constexpr f32 ACCELERATION_X = 16.f * 20.f;
     static constexpr f32 MAX_SPEED_X = 16.f * 5.5f;
@@ -24,6 +24,7 @@ private:
      * SOUNDS *
      **********/
     sf::Sound sound_jump;
+    sf::Sound sound_death;
 
 public:
     Player(SceneLevel* level, vec2 size);
@@ -36,6 +37,7 @@ public:
 
     void checkCollisionWithEnemies(const std::vector<Mob*>& enemies);
 
+    void takeDamage(bool forceDeath) override;
     void die() override;
 
 private:

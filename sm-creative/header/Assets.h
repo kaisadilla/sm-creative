@@ -26,8 +26,11 @@ public:
     inline static std::unordered_map<string, i32> __tilePositionMap;
     inline static std::unordered_map<string, data::Level> levels;
 
+    inline static sf::SoundBuffer sound_pause;
     inline static sf::SoundBuffer sound_jump;
     inline static sf::SoundBuffer sound_stomp;
+    inline static sf::SoundBuffer sound_kick;
+    inline static sf::SoundBuffer sound_playerDeath;
 
 private:
     inline static std::unordered_map<string, i32> tileMap;

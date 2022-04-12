@@ -1,21 +1,21 @@
-#include "characters/Character.h"
+#include "characters/Entity.h"
 #include "game/scenes/SceneLevel.h"
 
-Character::Character (SceneLevel* level, vec2 size, AnimationState& animations) :
+Entity::Entity (SceneLevel* level, vec2 size, AnimationState& animations) :
     level(level),
     size(size),
     collider(this),
     animations(animations)
 {}
 
-void Character::updatePhysics () {
+void Entity::updatePhysics () {
     checkLookingLeft();
     velocity.y = std::min(velocity.y + (12.f * gravity), 8.f * 16.f * 4.f);
 
     move(velocity * SECONDS_PER_FIXED_UPDATE);
 }
 
-void Character::setSprite (const char* name, vec2 size) {
+void Entity::setSprite (const char* name, vec2 size) {
     texture.loadFromFile(string("res/sprites/characters/") + name + string(".png"));
 
     sprite = sf::RectangleShape(vec2(size.x, size.y));
@@ -23,30 +23,36 @@ void Character::setSprite (const char* name, vec2 size) {
     sprite.setTextureRect(sf::IntRect(0, 0, size.x, size.y));
 }
 
-void Character::setSpriteAndColliderSizes (const vec2& spriteSize, const sf::IntRect& colliderPosition) {
+void Entity::setColliderSize (const sf::IntRect& colliderPosition) {
     vec2 colliderCenter;
     vec2 colliderEdge;
-    Collider::calculateVectorsInsideSprite(spriteSize, colliderPosition, colliderCenter, colliderEdge);
-    collider.setCenter(colliderCenter);
-    collider.setCenter(colliderEdge);
-
-    size = spriteSize;
-    sprite.setSize(size);
+    Collider::calculateVectorsInsideSprite(size, colliderPosition, colliderCenter, colliderEdge);
+    collider.setRelativeCenter(colliderCenter);
+    collider.setDistanceToEdge(colliderEdge);
 }
 
-void Character::jump (f32 strength) {
+void Entity::initializeDefaultSpriteAndColliderSizes (const vec2& spriteSize, const sf::IntRect& colliderPosition) {
+    size = spriteSize;
+    sprite.setSize(size);
+
+    defaultCollider = colliderPosition;
+
+    setColliderSize(defaultCollider);
+}
+
+void Entity::jump (f32 strength) {
     velocity.y = -strength;
 }
 
-void Character::die () {
+void Entity::die () {
     isDead = true;
 }
 
-void Character::dispose () {
+void Entity::dispose () {
     disposePending = true;
 }
 
-void Character::checkCollisionsWithTiles (const std::vector<Collider>& colliders) {
+void Entity::checkCollisionsWithTiles (const std::vector<Collider>& colliders) {
     constexpr f32 COLLISION_THRESHOLD = 1.5f;
 
     isGrounded = false;
@@ -106,25 +112,29 @@ void Character::checkCollisionsWithTiles (const std::vector<Collider>& colliders
     //}
 }
 
-void Character::move (vec2 direction) {
+void Entity::move (vec2 direction) {
     setPosition(vec2(position.x + direction.x, position.y + direction.y));
 }
 
-void Character::move (f32 x, f32 y) {
+void Entity::move (f32 x, f32 y) {
     setPosition(vec2(position.x + x, position.y + y));
 }
 
-void Character::onUpdate () {
+void Entity::onUpdate () {
     animations.onUpdate(Time::getDeltaTime(), animationSpeed);
     sprite.setTextureRect(animations.getCurrentAnimation().getCurrentSlice(isLookingLeft && canBeMirrored));
 }
 
-void Character::onFixedUpdate () {
+void Entity::onFixedUpdate () {
+    if (ignoreEntityCollisionTimer > 0.f) {
+        ignoreEntityCollisionTimer = std::max(0.f, ignoreEntityCollisionTimer - SECONDS_PER_FIXED_UPDATE);
+    }
+
     updatePhysics();
     checkOutOfBounds();
 }
 
-void Character::checkOutOfBounds () {
+void Entity::checkOutOfBounds () {
     if (position.x < -32.f || position.x > level->getWidth() + 32.f) {
         dispose();
     }
@@ -133,12 +143,12 @@ void Character::checkOutOfBounds () {
     }
 }
 
-bool Character::isCollisionValid (const Collision& collision) const {
+bool Entity::isCollisionValid (const Collision& collision) const {
     WorldTile* tile = (WorldTile*)collision.collider->getGameObject();
     return tile->getTile()->hasMobCollided(collision, velocity);
 }
 
-void Character::checkLookingLeft () {
+void Entity::checkLookingLeft () {
     // Note that if the horizontal speed is exactly 0, we don't update this value.
     if (velocity.x < 0.f) {
         isLookingLeft = true;

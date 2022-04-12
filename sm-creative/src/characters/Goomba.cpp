@@ -11,60 +11,76 @@ Goomba::Goomba(SceneLevel* level, const vec2& size, bool avoidsCliffs, bool star
             Animation(5.f , {2}   , uvec2(3, 1), uvec2(16, 16)),
         })
     ),
-    avoidsCliffs(avoidsCliffs),
+    IAvoidCliffs(avoidsCliffs, size.y),
     startingDirectionRight(startingDirectionRight)
-{
-    vec2 colliderCenter;
-    vec2 colliderEdge;
-    Collider::calculateVectorsInsideSprite(size, sf::IntRect(0, 0, 16, 16), colliderCenter, colliderEdge);
-    collider.setCenter(colliderCenter);
-    collider.setDistanceToEdge(colliderEdge);
-}
-
-GameObjectType Goomba::getType() {
-    return GameObjectType::Enemy;
-}
+{}
 
 void Goomba::onStart () {
-    velocity.x = (startingDirectionRight ? SPEED : -SPEED);
+    Mob::onStart();
+    IAvoidCliffs::onStart();
 
-    debug_checkedCliffTile.setFillColor(sf::Color(255, 0, 0, 128));
-    debug_checkedCliffTile.setSize(vec2(16.f, 16.f));
+    velocity.x = (startingDirectionRight ? WALKING_SPEED : -WALKING_SPEED);
 }
 
 void Goomba::onUpdate () {
-    Character::onUpdate();
+    Mob::onUpdate();
+}
+
+void Goomba::onFixedUpdate () {
+    Mob::onFixedUpdate();
 
     if (avoidsCliffs) {
-        checkCliffs();
+        checkCliffs(this, WALKING_SPEED);
     }
 }
 
 void Goomba::onCollisionWithTile (Collision& collision) {
     if (collision.direction == Direction::LEFT) {
-        velocity.x = SPEED;
+        velocity.x = WALKING_SPEED;
     }
     else if (collision.direction == Direction::RIGHT) {
-        velocity.x = -SPEED;
+        velocity.x = -WALKING_SPEED;
     }
 }
 
-void Goomba::onCollisionWithPlayer (Player& player) {
+void Goomba::onCollisionWithMob (Collision& collision, Mob* mob) {
+    if (collision.getDirectionForGameObject(this) == Direction::LEFT) {
+        velocity.x = -WALKING_SPEED;
+    }
+    else if (collision.getDirectionForGameObject(this) == Direction::RIGHT) {
+        velocity.x = WALKING_SPEED;
+    }
+}
+
+void Goomba::onCollisionWithPlayer (Collision& collision, Player& player) {
     if (!isDead) {
         if (player.getPosition().y < position.y - 2) {
-            die();
+            takeDamage(false);
             sound_stomp.play();
             player.jump(16.f * 16.f);
         }
         else {
-            player.die();
+            player.takeDamage(false);
         }
     }
 }
 
+void Goomba::takeDamage (bool forceDeath) {
+    if (forceDeath) {
+        dieWithStyle();
+    }
+    else {
+        animations.setState(AnimStates::Goomba::STOMPED);
+        velocity.x = 0;
+
+        isDead = true;
+        despawnTimer = DEAD_ENEMY_DESPAWN_TIME;
+    }
+}
+
 void Goomba::die () {
-    Character::die();
-    animations.setState(AnimStates::DEAD);
+    Mob::die();
+    animations.setState(AnimStates::Goomba::STOMPED);
     velocity.x = 0;
 
     JobManager::addJob(.25f, [this]() {
@@ -73,24 +89,5 @@ void Goomba::die () {
 }
 
 void Goomba::drawDebugInfo (sf::RenderWindow& window) {
-    if (avoidsCliffs) {
-        debug_checkedCliffTile.setPosition(vec2(checkedCliffTile.x * 16.f, checkedCliffTile.y * 16.f));
-        window.draw(debug_checkedCliffTile);
-    }
-}
-
-void Goomba::checkCliffs () {
-    const ivec2& gridPos = getGridPosition();
-
-    if (velocity.x < 0.f) {
-        checkedCliffTile = ivec2(gridPos.x, gridPos.y + 1);
-    }
-    else if (velocity.x > 0.f) {
-        checkedCliffTile = ivec2(gridPos.x + 1, gridPos.y + 1);
-    }
-
-    const WorldTile* tileAtLeft = level->getTileAt(checkedCliffTile.x, checkedCliffTile.y);
-    if (tileAtLeft == nullptr || tileAtLeft->isAirTile()) {
-        velocity.x = SPEED;
-    }
+    drawDebugInfo_cliffDetection(window);
 }

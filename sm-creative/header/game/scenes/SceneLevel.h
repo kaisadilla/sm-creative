@@ -7,9 +7,8 @@
 #include "SM_Time.h"
 #include "player/Camera.h"
 #include "data/Level.h"
-#include "characters/Character.h"
+#include "characters/Entity.h"
 #include "characters/Mob.h"
-#include "characters/Goomba.h"
 #include "characters/Player.h"
 
 class SceneLevel {
@@ -38,6 +37,12 @@ private:
 
     i32 nextId = 0;
 
+    bool isLevelPaused = false;
+
+    sf::Texture texPause;
+    sf::Sprite spritePause;
+    sf::Sound sound_pause;
+
 public:
     SceneLevel();
     SceneLevel(const ui32 windowWidth, const ui32 windowHeight, const data::Level& level);
@@ -48,6 +53,7 @@ public:
     void onFixedUpdate();
     void onDraw(sf::RenderWindow& window);
     void onLateUpdate();
+    void onEvent(const sf::Event& evt);
 
     void deleteDisposedEnemies();
 
@@ -58,8 +64,6 @@ private:
     void drawPlayer(sf::RenderWindow& window);
     void drawColliders(sf::RenderWindow& window);
     void drawDebugInfo(sf::RenderWindow& window);
-
-    Mob* createEnemy(data::WorldMob mobData);
 
 public:
     inline i32 getWidth () const {

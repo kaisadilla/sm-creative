@@ -125,6 +125,9 @@ void Assets::freeData () {
 void Assets::loadSounds () {
     std::cout << "=== LOADING SOUNDS ===" << std::endl;
 
+    sound_pause.loadFromFile("res/sound/pause.wav");
     sound_jump.loadFromFile("res/sound/jump.wav");
     sound_stomp.loadFromFile("res/sound/stomp.wav");
+    sound_kick.loadFromFile("res/sound/kick.wav");
+    sound_playerDeath.loadFromFile("res/sound/player_death.wav");
 }

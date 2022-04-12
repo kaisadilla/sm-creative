@@ -11,7 +11,7 @@
 
 class SceneLevel;
 
-class Character : public IGameObject {
+class Entity : public IGameObject {
 protected:
     i32 id = -1;
     /// <summary>
@@ -41,11 +41,12 @@ protected:
     /****************************
      * MOVEMENT AND INTERACTION *
      ****************************/
-     /// <summary>
-     /// If true, the mob will not collide with any tiles.
-     /// If the mob has gravity, this means it will fall through
-     /// the floor.
-     /// </summary>
+    sf::IntRect defaultCollider;
+    /// <summary>
+    /// If true, the mob will not collide with any tiles.
+    /// If the mob has gravity, this means it will fall through
+    /// the floor.
+    /// </summary>
     bool ignoresWalls = false;
     /// <summary>
     /// If true, the mob will be destroyed if it leaves its level's boundaries.
@@ -62,11 +63,23 @@ protected:
     bool isGrounded = false;
     bool isLookingLeft = false;
 
+    /// <summary>
+    /// If this value is greater than zero, collisions with entities are ignored.
+    /// </summary>
+    f32 ignoreEntityCollisionTimer = 0.f;
+
 public:
-    Character(SceneLevel* level, vec2 size, AnimationState& animation);
+    Entity(SceneLevel* level, vec2 size, AnimationState& animation);
+    /// <summary>
+    /// Changes the sizes of this mob's sprite and collider. The values given
+    /// are set up as its default values.
+    /// </summary>
+    /// <param name="spriteSize">The size of the sprite, in pixels.</param>
+    /// <param name="colliderPosition">The position of the collider relative to the sprite.</param>
+    void initializeDefaultSpriteAndColliderSizes(const vec2& spriteSize, const sf::IntRect& colliderPosition);
 
     void setSprite(const char* name, vec2 size);
-    void setSpriteAndColliderSizes(const vec2& spriteSize, const sf::IntRect& colliderPosition);
+    void setColliderSize(const sf::IntRect& colliderPosition);
 
     void move(vec2 direction);
     void move(f32 x, f32 y);
@@ -74,6 +87,7 @@ public:
     virtual void checkCollisionsWithTiles(const std::vector<Collider>& colliders);
 
     virtual void jump(f32 strength);
+    virtual void takeDamage(bool forceDeath) = 0;
     virtual void die();
     virtual void dispose();
 
@@ -143,9 +157,13 @@ public:
         return collider;
     }
 
+    inline bool collidesWithEntities () {
+        return ignoreEntityCollisionTimer <= 0.f;
+    }
+
     inline void setPosition (const vec2& position) {
         this->position = position;
-        collider.setCenter(position + size / 2.f);
+        collider.setPosition(position);
         sprite.setPosition(getPixelPosition() + vec2(0, 1));
     }
 

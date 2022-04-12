@@ -1,4 +1,5 @@
 #include "game/scenes/SceneLevel.h"
+#include "characters/enemies.h"
 
 SceneLevel::SceneLevel() :
     windowWidth(0),
@@ -25,14 +26,23 @@ SceneLevel::SceneLevel(const ui32 windowWidth, const ui32 windowHeight, const da
             // TODO: This may be better as part of the world tile. The scenelevel'd only keep a vector
             // of references to worldtiles that have colliders.
             if (!worldTile.getTile()->isAirTile() && worldTile.getTile()->hasCollider()) {
-                colliders.push_back(Collider(&worldTile, vec2(x * 16.f + 8.f, y * 16.f + 8.f), vec2(8.f, 8.f)));
+                colliders.push_back(Collider(&worldTile, vec2(x * 16.f, y * 16.f), vec2(8.f, 8.f), vec2(8.f, 8.f)));
             }
         }
     }
 
-    for (auto& enemy : level.getEnemies()) {
-        enemies.push_back(createEnemy(enemy));
+    for (auto& enemyData : level.getEnemies()) {
+        Mob* enemy = createEnemyForLevel(enemyData, this);
+        if (enemy != nullptr) {
+            nextId = std::max(nextId, enemy->getId());
+            enemies.push_back(enemy);
+        }
     }
+
+    sound_pause.setBuffer(Assets::sound_pause);
+    texPause.loadFromFile("res/sprites/ui/pause.png");
+    spritePause.setTexture(texPause);
+    spritePause.setTextureRect(sf::IntRect(ivec2(0, 0), (ivec2)texPause.getSize()));
 }
 
 SceneLevel::~SceneLevel () {
@@ -50,7 +60,7 @@ void SceneLevel::onEnter () {
     __background.setScale(vec2(2.f, 2.f));
 
     player.setSprite("mario", vec2(16, 16));
-    player.setPosition(vec2(2.f, 26.f));
+    player.setPosition(vec2(0.f, 22.f * 16.f));
 
     levelMusic.openFromFile("res/music/overworld.wav");
     levelMusic.setLoop(true);
@@ -76,7 +86,11 @@ void SceneLevel::onUpdate () {
 void SceneLevel::onFixedUpdate () {
     for (auto& enemy : enemies) {
         enemy->onFixedUpdate();
-        enemy->checkCollisionsWithTiles(colliders);
+    }
+
+    for (i32 i = 0; i < enemies.size(); i++) {
+        enemies[i]->checkCollisionsWithTiles(colliders);
+        enemies[i]->checkCollisionWithEnemies(enemies, i + 1);
     }
 
     player.onFixedUpdate();
@@ -96,10 +110,32 @@ void SceneLevel::onDraw (sf::RenderWindow& window) {
     if (Debug::drawDebugInfo) drawDebugInfo(window);
 
     window.setView(window.getDefaultView());
+
+    if (isLevelPaused) {
+        spritePause.setPosition(((vec2)window.getSize() / 2.f) - (((vec2)texPause.getSize() * 2.f) / 2.f));
+        window.draw(spritePause);
+    }
 }
 
 void SceneLevel::onLateUpdate () {
 
+}
+
+void SceneLevel::onEvent (const sf::Event& evt) {
+    if (evt.type == sf::Event::KeyPressed) {
+        if (evt.key.code == sf::Keyboard::Key::Pause || evt.key.code == sf::Keyboard::Key::P) {
+            if (isLevelPaused) {
+                Time::resume();
+                isLevelPaused = false;
+            }
+            else {
+                Time::pause();
+                isLevelPaused = true;
+            }
+
+            sound_pause.play();
+        }
+    }
 }
 
 void SceneLevel::deleteDisposedEnemies () {
@@ -159,29 +195,4 @@ void SceneLevel::drawDebugInfo (sf::RenderWindow& window) {
     for (auto& enemy : enemies) {
         enemy->drawDebugInfo(window);
     }
-}
-
-Mob* SceneLevel::createEnemy (data::WorldMob mobData) {
-    const i32& id = mobData.getId();
-    const vec2& size = mobData.getSpriteDimensions();
-    const sf::IntRect& defaultCollider = mobData.getCollider("collider");
-    const vec2& position = mobData.getPosition();
-
-    Mob* enemy = nullptr;
-
-    if (mobData.getBehavior() == data::Behavior::Goomba) {
-        bool avoidsCliffs = mobData.getBehaviorProperty<bool>("avoidsCliffs");
-        bool startingDirectionRight = mobData.getBehaviorProperty<bool>("startingDirectionRight");
-
-        enemy = new Goomba(this, size, avoidsCliffs, startingDirectionRight);
-    }
-
-    enemy->setId(id);
-    enemy->setSprite(mobData.getSprite().c_str(), size);
-    enemy->setSpriteAndColliderSizes(size, defaultCollider);
-    enemy->setPosition(vec2(position.x * 16.f, position.y * 16.f));
-
-    nextId = std::max(nextId, id);
-
-    return enemy;
 }

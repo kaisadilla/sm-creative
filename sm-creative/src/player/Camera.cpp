@@ -51,10 +51,10 @@ void Camera::updatePosition (vec2 target) {
 }
 
 void Camera::__drawDebugLines (sf::RenderWindow& window) {
-    sf::RectangleShape center(vec2(6.f, 6.f));
-    center.setFillColor(sf::Color::Green);
-    center.setPosition((vec2)windowHalves);
-    window.draw(center);
+    sf::RectangleShape relativeCenter(vec2(6.f, 6.f));
+    relativeCenter.setFillColor(sf::Color::Green);
+    relativeCenter.setPosition((vec2)windowHalves);
+    window.draw(relativeCenter);
 
     //sf::Vertex line[2];
     //line[0].position = sf::Vector2f(10, 0);

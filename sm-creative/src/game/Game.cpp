@@ -6,7 +6,6 @@ Game::Game () :
 {}
 
 void Game::initialize () {
-    Time::start();
     fpsCounter.setUpdateTime(0.1f);
 
     window.close();
@@ -18,6 +17,7 @@ void Game::initialize () {
     sf::Listener::setGlobalVolume(50.f);
 
     scene.onEnter();
+    Time::start();
 }
 
 void Game::update () {
@@ -64,6 +64,20 @@ void Game::setupDebugInfo () {
     infoFps.setCharacterSize(12);
     infoFps.setFillColor(sf::Color::White);
     infoFps.setStyle(sf::Text::Regular);
+
+    infoTime.setFont(debugFont);
+    infoTime.setString("Time: 0.00");
+    infoTime.setPosition(8.f, 14.f);
+    infoTime.setCharacterSize(12);
+    infoTime.setFillColor(sf::Color::White);
+    infoTime.setStyle(sf::Text::Regular);
+
+    infoTimeScale.setFont(debugFont);
+    infoTimeScale.setString("Time scale: 0.00 [paused]");
+    infoTimeScale.setPosition(8.f, 26.f);
+    infoTimeScale.setCharacterSize(12);
+    infoTimeScale.setFillColor(sf::Color::White);
+    infoTimeScale.setStyle(sf::Text::Regular);
 }
 
 void Game::fixedUpdate () {
@@ -94,7 +108,16 @@ void Game::pollEvents () {
             window.close();
         }
         else if (evt.type == sf::Event::KeyPressed) {
-            if (evt.key.code == sf::Keyboard::Key::F3) {
+            if (evt.key.code == sf::Keyboard::Key::F1) {
+                Time::pauseOrResume();
+            }
+            else if (evt.key.code == sf::Keyboard::Key::F2) {
+                //SceneLevel* newScene = new SceneLevel(WINDOW_WIDTH, WINDOW_HEIGHT, Assets::levels["level1-1"]);
+                //memcpy(&scene, newScene, sizeof(newScene));
+                //delete newScene;
+                //scene.onEnter();
+            }
+            else if (evt.key.code == sf::Keyboard::Key::F3) {
                 Debug::showDebugInfo = !Debug::showDebugInfo;
             }
             else if (evt.key.code == sf::Keyboard::Key::F4) {
@@ -103,10 +126,37 @@ void Game::pollEvents () {
             else if (evt.key.code == sf::Keyboard::Key::F5) {
                 Debug::drawDebugInfo = !Debug::drawDebugInfo;
             }
+            else if (evt.key.code == sf::Keyboard::Key::F11) {
+                if (Time::getTimeScale() == 1.f) {
+                    Time::setTimeScale(0.5f);
+                }
+                else if (Time::getTimeScale() == 0.5f) {
+                    Time::setTimeScale(0.25f);
+                }
+                else if (Time::getTimeScale() == 0.25f) {
+                    Time::setTimeScale(0.125f);
+                }
+                else {
+                    Time::setTimeScale(1.f);
+                }
+            }
         }
+
+        scene.onEvent(evt);
     }
 }
 
 void Game::drawDebugInfo () {
+    string strTime = "Time: " + std::to_string(Time::getTime());
+    string strTimeScale = "Time scale: " + std::to_string(Time::getTimeScale());
+    if (Time::getPaused()) {
+        strTimeScale += " [PAUSED]";
+    }
+
+    infoTime.setString(strTime);
+    infoTimeScale.setString(strTimeScale);
+
     window.draw(infoFps);
+    window.draw(infoTime);
+    window.draw(infoTimeScale);
 }

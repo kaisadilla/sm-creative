@@ -27,6 +27,8 @@ private:
     // Debug information;
     sf::Font debugFont;
     sf::Text infoFps;
+    sf::Text infoTime;
+    sf::Text infoTimeScale;
 
 public:
     Game();
