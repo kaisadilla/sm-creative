@@ -97,30 +97,6 @@ build sm-creative\CMakeFiles\sm-creative.dir\main.cpp.obj: CXX_COMPILER__sm-crea
   TARGET_COMPILE_PDB = sm-creative\CMakeFiles\sm-creative.dir\
   TARGET_PDB = sm-creative\sm-creative.pdb
 
-build sm-creative\CMakeFiles\sm-creative.dir\src\Animation.cpp.obj: CXX_COMPILER__sm-creative_Debug D$:\repos\cpp\sm-creative\sm-creative\src\Animation.cpp || cmake_object_order_depends_target_sm-creative
-  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++17
-  INCLUDES = -ID:\repos\cpp\sm-creative\sm-creative\header -ID:\repos\cpp\sm-creative\sm-creative\src -ID:\repos\cpp\sm-creative\sm-creative\include
-  OBJECT_DIR = sm-creative\CMakeFiles\sm-creative.dir
-  OBJECT_FILE_DIR = sm-creative\CMakeFiles\sm-creative.dir\src
-  TARGET_COMPILE_PDB = sm-creative\CMakeFiles\sm-creative.dir\
-  TARGET_PDB = sm-creative\sm-creative.pdb
-
-build sm-creative\CMakeFiles\sm-creative.dir\src\AnimationState.cpp.obj: CXX_COMPILER__sm-creative_Debug D$:\repos\cpp\sm-creative\sm-creative\src\AnimationState.cpp || cmake_object_order_depends_target_sm-creative
-  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++17
-  INCLUDES = -ID:\repos\cpp\sm-creative\sm-creative\header -ID:\repos\cpp\sm-creative\sm-creative\src -ID:\repos\cpp\sm-creative\sm-creative\include
-  OBJECT_DIR = sm-creative\CMakeFiles\sm-creative.dir
-  OBJECT_FILE_DIR = sm-creative\CMakeFiles\sm-creative.dir\src
-  TARGET_COMPILE_PDB = sm-creative\CMakeFiles\sm-creative.dir\
-  TARGET_PDB = sm-creative\sm-creative.pdb
-
-build sm-creative\CMakeFiles\sm-creative.dir\src\Assets.cpp.obj: CXX_COMPILER__sm-creative_Debug D$:\repos\cpp\sm-creative\sm-creative\src\Assets.cpp || cmake_object_order_depends_target_sm-creative
-  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++17
-  INCLUDES = -ID:\repos\cpp\sm-creative\sm-creative\header -ID:\repos\cpp\sm-creative\sm-creative\src -ID:\repos\cpp\sm-creative\sm-creative\include
-  OBJECT_DIR = sm-creative\CMakeFiles\sm-creative.dir
-  OBJECT_FILE_DIR = sm-creative\CMakeFiles\sm-creative.dir\src
-  TARGET_COMPILE_PDB = sm-creative\CMakeFiles\sm-creative.dir\
-  TARGET_PDB = sm-creative\sm-creative.pdb
-
 build sm-creative\CMakeFiles\sm-creative.dir\src\Job.cpp.obj: CXX_COMPILER__sm-creative_Debug D$:\repos\cpp\sm-creative\sm-creative\src\Job.cpp || cmake_object_order_depends_target_sm-creative
   FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++17
   INCLUDES = -ID:\repos\cpp\sm-creative\sm-creative\header -ID:\repos\cpp\sm-creative\sm-creative\src -ID:\repos\cpp\sm-creative\sm-creative\include
@@ -153,75 +129,139 @@ build sm-creative\CMakeFiles\sm-creative.dir\src\Tile.cpp.obj: CXX_COMPILER__sm-
   TARGET_COMPILE_PDB = sm-creative\CMakeFiles\sm-creative.dir\
   TARGET_PDB = sm-creative\sm-creative.pdb
 
-build sm-creative\CMakeFiles\sm-creative.dir\src\characters\Entity.cpp.obj: CXX_COMPILER__sm-creative_Debug D$:\repos\cpp\sm-creative\sm-creative\src\characters\Entity.cpp || cmake_object_order_depends_target_sm-creative
+build sm-creative\CMakeFiles\sm-creative.dir\src\animation\AnimationState.cpp.obj: CXX_COMPILER__sm-creative_Debug D$:\repos\cpp\sm-creative\sm-creative\src\animation\AnimationState.cpp || cmake_object_order_depends_target_sm-creative
   FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++17
   INCLUDES = -ID:\repos\cpp\sm-creative\sm-creative\header -ID:\repos\cpp\sm-creative\sm-creative\src -ID:\repos\cpp\sm-creative\sm-creative\include
   OBJECT_DIR = sm-creative\CMakeFiles\sm-creative.dir
-  OBJECT_FILE_DIR = sm-creative\CMakeFiles\sm-creative.dir\src\characters
+  OBJECT_FILE_DIR = sm-creative\CMakeFiles\sm-creative.dir\src\animation
   TARGET_COMPILE_PDB = sm-creative\CMakeFiles\sm-creative.dir\
   TARGET_PDB = sm-creative\sm-creative.pdb
 
-build sm-creative\CMakeFiles\sm-creative.dir\src\characters\Goomba.cpp.obj: CXX_COMPILER__sm-creative_Debug D$:\repos\cpp\sm-creative\sm-creative\src\characters\Goomba.cpp || cmake_object_order_depends_target_sm-creative
+build sm-creative\CMakeFiles\sm-creative.dir\src\animation\DynamicAnimation.cpp.obj: CXX_COMPILER__sm-creative_Debug D$:\repos\cpp\sm-creative\sm-creative\src\animation\DynamicAnimation.cpp || cmake_object_order_depends_target_sm-creative
   FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++17
   INCLUDES = -ID:\repos\cpp\sm-creative\sm-creative\header -ID:\repos\cpp\sm-creative\sm-creative\src -ID:\repos\cpp\sm-creative\sm-creative\include
   OBJECT_DIR = sm-creative\CMakeFiles\sm-creative.dir
-  OBJECT_FILE_DIR = sm-creative\CMakeFiles\sm-creative.dir\src\characters
+  OBJECT_FILE_DIR = sm-creative\CMakeFiles\sm-creative.dir\src\animation
   TARGET_COMPILE_PDB = sm-creative\CMakeFiles\sm-creative.dir\
   TARGET_PDB = sm-creative\sm-creative.pdb
 
-build sm-creative\CMakeFiles\sm-creative.dir\src\characters\Koopa.cpp.obj: CXX_COMPILER__sm-creative_Debug D$:\repos\cpp\sm-creative\sm-creative\src\characters\Koopa.cpp || cmake_object_order_depends_target_sm-creative
+build sm-creative\CMakeFiles\sm-creative.dir\src\animation\SpriteAnimation.cpp.obj: CXX_COMPILER__sm-creative_Debug D$:\repos\cpp\sm-creative\sm-creative\src\animation\SpriteAnimation.cpp || cmake_object_order_depends_target_sm-creative
   FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++17
   INCLUDES = -ID:\repos\cpp\sm-creative\sm-creative\header -ID:\repos\cpp\sm-creative\sm-creative\src -ID:\repos\cpp\sm-creative\sm-creative\include
   OBJECT_DIR = sm-creative\CMakeFiles\sm-creative.dir
-  OBJECT_FILE_DIR = sm-creative\CMakeFiles\sm-creative.dir\src\characters
+  OBJECT_FILE_DIR = sm-creative\CMakeFiles\sm-creative.dir\src\animation
   TARGET_COMPILE_PDB = sm-creative\CMakeFiles\sm-creative.dir\
   TARGET_PDB = sm-creative\sm-creative.pdb
 
-build sm-creative\CMakeFiles\sm-creative.dir\src\characters\Mob.cpp.obj: CXX_COMPILER__sm-creative_Debug D$:\repos\cpp\sm-creative\sm-creative\src\characters\Mob.cpp || cmake_object_order_depends_target_sm-creative
+build sm-creative\CMakeFiles\sm-creative.dir\src\animation\StaticAnimation.cpp.obj: CXX_COMPILER__sm-creative_Debug D$:\repos\cpp\sm-creative\sm-creative\src\animation\StaticAnimation.cpp || cmake_object_order_depends_target_sm-creative
   FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++17
   INCLUDES = -ID:\repos\cpp\sm-creative\sm-creative\header -ID:\repos\cpp\sm-creative\sm-creative\src -ID:\repos\cpp\sm-creative\sm-creative\include
   OBJECT_DIR = sm-creative\CMakeFiles\sm-creative.dir
-  OBJECT_FILE_DIR = sm-creative\CMakeFiles\sm-creative.dir\src\characters
+  OBJECT_FILE_DIR = sm-creative\CMakeFiles\sm-creative.dir\src\animation
   TARGET_COMPILE_PDB = sm-creative\CMakeFiles\sm-creative.dir\
   TARGET_PDB = sm-creative\sm-creative.pdb
 
-build sm-creative\CMakeFiles\sm-creative.dir\src\characters\Player.cpp.obj: CXX_COMPILER__sm-creative_Debug D$:\repos\cpp\sm-creative\sm-creative\src\characters\Player.cpp || cmake_object_order_depends_target_sm-creative
+build sm-creative\CMakeFiles\sm-creative.dir\src\assets\Assets.cpp.obj: CXX_COMPILER__sm-creative_Debug D$:\repos\cpp\sm-creative\sm-creative\src\assets\Assets.cpp || cmake_object_order_depends_target_sm-creative
   FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++17
   INCLUDES = -ID:\repos\cpp\sm-creative\sm-creative\header -ID:\repos\cpp\sm-creative\sm-creative\src -ID:\repos\cpp\sm-creative\sm-creative\include
   OBJECT_DIR = sm-creative\CMakeFiles\sm-creative.dir
-  OBJECT_FILE_DIR = sm-creative\CMakeFiles\sm-creative.dir\src\characters
+  OBJECT_FILE_DIR = sm-creative\CMakeFiles\sm-creative.dir\src\assets
   TARGET_COMPILE_PDB = sm-creative\CMakeFiles\sm-creative.dir\
   TARGET_PDB = sm-creative\sm-creative.pdb
 
-build sm-creative\CMakeFiles\sm-creative.dir\src\characters\behavior\IAvoidCliffs.cpp.obj: CXX_COMPILER__sm-creative_Debug D$:\repos\cpp\sm-creative\sm-creative\src\characters\behavior\IAvoidCliffs.cpp || cmake_object_order_depends_target_sm-creative
+build sm-creative\CMakeFiles\sm-creative.dir\src\assets\Registry.cpp.obj: CXX_COMPILER__sm-creative_Debug D$:\repos\cpp\sm-creative\sm-creative\src\assets\Registry.cpp || cmake_object_order_depends_target_sm-creative
   FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++17
   INCLUDES = -ID:\repos\cpp\sm-creative\sm-creative\header -ID:\repos\cpp\sm-creative\sm-creative\src -ID:\repos\cpp\sm-creative\sm-creative\include
   OBJECT_DIR = sm-creative\CMakeFiles\sm-creative.dir
-  OBJECT_FILE_DIR = sm-creative\CMakeFiles\sm-creative.dir\src\characters\behavior
+  OBJECT_FILE_DIR = sm-creative\CMakeFiles\sm-creative.dir\src\assets
   TARGET_COMPILE_PDB = sm-creative\CMakeFiles\sm-creative.dir\
   TARGET_PDB = sm-creative\sm-creative.pdb
 
-build sm-creative\CMakeFiles\sm-creative.dir\src\characters\enemies.cpp.obj: CXX_COMPILER__sm-creative_Debug D$:\repos\cpp\sm-creative\sm-creative\src\characters\enemies.cpp || cmake_object_order_depends_target_sm-creative
+build sm-creative\CMakeFiles\sm-creative.dir\src\assets\data\LevelData.cpp.obj: CXX_COMPILER__sm-creative_Debug D$:\repos\cpp\sm-creative\sm-creative\src\assets\data\LevelData.cpp || cmake_object_order_depends_target_sm-creative
   FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++17
   INCLUDES = -ID:\repos\cpp\sm-creative\sm-creative\header -ID:\repos\cpp\sm-creative\sm-creative\src -ID:\repos\cpp\sm-creative\sm-creative\include
   OBJECT_DIR = sm-creative\CMakeFiles\sm-creative.dir
-  OBJECT_FILE_DIR = sm-creative\CMakeFiles\sm-creative.dir\src\characters
+  OBJECT_FILE_DIR = sm-creative\CMakeFiles\sm-creative.dir\src\assets\data
   TARGET_COMPILE_PDB = sm-creative\CMakeFiles\sm-creative.dir\
   TARGET_PDB = sm-creative\sm-creative.pdb
 
-build sm-creative\CMakeFiles\sm-creative.dir\src\data\Level.cpp.obj: CXX_COMPILER__sm-creative_Debug D$:\repos\cpp\sm-creative\sm-creative\src\data\Level.cpp || cmake_object_order_depends_target_sm-creative
+build sm-creative\CMakeFiles\sm-creative.dir\src\assets\data\WorldMob.cpp.obj: CXX_COMPILER__sm-creative_Debug D$:\repos\cpp\sm-creative\sm-creative\src\assets\data\WorldMob.cpp || cmake_object_order_depends_target_sm-creative
   FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++17
   INCLUDES = -ID:\repos\cpp\sm-creative\sm-creative\header -ID:\repos\cpp\sm-creative\sm-creative\src -ID:\repos\cpp\sm-creative\sm-creative\include
   OBJECT_DIR = sm-creative\CMakeFiles\sm-creative.dir
-  OBJECT_FILE_DIR = sm-creative\CMakeFiles\sm-creative.dir\src\data
+  OBJECT_FILE_DIR = sm-creative\CMakeFiles\sm-creative.dir\src\assets\data
   TARGET_COMPILE_PDB = sm-creative\CMakeFiles\sm-creative.dir\
   TARGET_PDB = sm-creative\sm-creative.pdb
 
-build sm-creative\CMakeFiles\sm-creative.dir\src\data\WorldMob.cpp.obj: CXX_COMPILER__sm-creative_Debug D$:\repos\cpp\sm-creative\sm-creative\src\data\WorldMob.cpp || cmake_object_order_depends_target_sm-creative
+build sm-creative\CMakeFiles\sm-creative.dir\src\entities\Entity.cpp.obj: CXX_COMPILER__sm-creative_Debug D$:\repos\cpp\sm-creative\sm-creative\src\entities\Entity.cpp || cmake_object_order_depends_target_sm-creative
   FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++17
   INCLUDES = -ID:\repos\cpp\sm-creative\sm-creative\header -ID:\repos\cpp\sm-creative\sm-creative\src -ID:\repos\cpp\sm-creative\sm-creative\include
   OBJECT_DIR = sm-creative\CMakeFiles\sm-creative.dir
-  OBJECT_FILE_DIR = sm-creative\CMakeFiles\sm-creative.dir\src\data
+  OBJECT_FILE_DIR = sm-creative\CMakeFiles\sm-creative.dir\src\entities
+  TARGET_COMPILE_PDB = sm-creative\CMakeFiles\sm-creative.dir\
+  TARGET_PDB = sm-creative\sm-creative.pdb
+
+build sm-creative\CMakeFiles\sm-creative.dir\src\entities\Goomba.cpp.obj: CXX_COMPILER__sm-creative_Debug D$:\repos\cpp\sm-creative\sm-creative\src\entities\Goomba.cpp || cmake_object_order_depends_target_sm-creative
+  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++17
+  INCLUDES = -ID:\repos\cpp\sm-creative\sm-creative\header -ID:\repos\cpp\sm-creative\sm-creative\src -ID:\repos\cpp\sm-creative\sm-creative\include
+  OBJECT_DIR = sm-creative\CMakeFiles\sm-creative.dir
+  OBJECT_FILE_DIR = sm-creative\CMakeFiles\sm-creative.dir\src\entities
+  TARGET_COMPILE_PDB = sm-creative\CMakeFiles\sm-creative.dir\
+  TARGET_PDB = sm-creative\sm-creative.pdb
+
+build sm-creative\CMakeFiles\sm-creative.dir\src\entities\Item.cpp.obj: CXX_COMPILER__sm-creative_Debug D$:\repos\cpp\sm-creative\sm-creative\src\entities\Item.cpp || cmake_object_order_depends_target_sm-creative
+  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++17
+  INCLUDES = -ID:\repos\cpp\sm-creative\sm-creative\header -ID:\repos\cpp\sm-creative\sm-creative\src -ID:\repos\cpp\sm-creative\sm-creative\include
+  OBJECT_DIR = sm-creative\CMakeFiles\sm-creative.dir
+  OBJECT_FILE_DIR = sm-creative\CMakeFiles\sm-creative.dir\src\entities
+  TARGET_COMPILE_PDB = sm-creative\CMakeFiles\sm-creative.dir\
+  TARGET_PDB = sm-creative\sm-creative.pdb
+
+build sm-creative\CMakeFiles\sm-creative.dir\src\entities\Koopa.cpp.obj: CXX_COMPILER__sm-creative_Debug D$:\repos\cpp\sm-creative\sm-creative\src\entities\Koopa.cpp || cmake_object_order_depends_target_sm-creative
+  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++17
+  INCLUDES = -ID:\repos\cpp\sm-creative\sm-creative\header -ID:\repos\cpp\sm-creative\sm-creative\src -ID:\repos\cpp\sm-creative\sm-creative\include
+  OBJECT_DIR = sm-creative\CMakeFiles\sm-creative.dir
+  OBJECT_FILE_DIR = sm-creative\CMakeFiles\sm-creative.dir\src\entities
+  TARGET_COMPILE_PDB = sm-creative\CMakeFiles\sm-creative.dir\
+  TARGET_PDB = sm-creative\sm-creative.pdb
+
+build sm-creative\CMakeFiles\sm-creative.dir\src\entities\Mob.cpp.obj: CXX_COMPILER__sm-creative_Debug D$:\repos\cpp\sm-creative\sm-creative\src\entities\Mob.cpp || cmake_object_order_depends_target_sm-creative
+  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++17
+  INCLUDES = -ID:\repos\cpp\sm-creative\sm-creative\header -ID:\repos\cpp\sm-creative\sm-creative\src -ID:\repos\cpp\sm-creative\sm-creative\include
+  OBJECT_DIR = sm-creative\CMakeFiles\sm-creative.dir
+  OBJECT_FILE_DIR = sm-creative\CMakeFiles\sm-creative.dir\src\entities
+  TARGET_COMPILE_PDB = sm-creative\CMakeFiles\sm-creative.dir\
+  TARGET_PDB = sm-creative\sm-creative.pdb
+
+build sm-creative\CMakeFiles\sm-creative.dir\src\entities\Player.cpp.obj: CXX_COMPILER__sm-creative_Debug D$:\repos\cpp\sm-creative\sm-creative\src\entities\Player.cpp || cmake_object_order_depends_target_sm-creative
+  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++17
+  INCLUDES = -ID:\repos\cpp\sm-creative\sm-creative\header -ID:\repos\cpp\sm-creative\sm-creative\src -ID:\repos\cpp\sm-creative\sm-creative\include
+  OBJECT_DIR = sm-creative\CMakeFiles\sm-creative.dir
+  OBJECT_FILE_DIR = sm-creative\CMakeFiles\sm-creative.dir\src\entities
+  TARGET_COMPILE_PDB = sm-creative\CMakeFiles\sm-creative.dir\
+  TARGET_PDB = sm-creative\sm-creative.pdb
+
+build sm-creative\CMakeFiles\sm-creative.dir\src\entities\SuperMushroom.cpp.obj: CXX_COMPILER__sm-creative_Debug D$:\repos\cpp\sm-creative\sm-creative\src\entities\SuperMushroom.cpp || cmake_object_order_depends_target_sm-creative
+  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++17
+  INCLUDES = -ID:\repos\cpp\sm-creative\sm-creative\header -ID:\repos\cpp\sm-creative\sm-creative\src -ID:\repos\cpp\sm-creative\sm-creative\include
+  OBJECT_DIR = sm-creative\CMakeFiles\sm-creative.dir
+  OBJECT_FILE_DIR = sm-creative\CMakeFiles\sm-creative.dir\src\entities
+  TARGET_COMPILE_PDB = sm-creative\CMakeFiles\sm-creative.dir\
+  TARGET_PDB = sm-creative\sm-creative.pdb
+
+build sm-creative\CMakeFiles\sm-creative.dir\src\entities\behavior\IAvoidCliffs.cpp.obj: CXX_COMPILER__sm-creative_Debug D$:\repos\cpp\sm-creative\sm-creative\src\entities\behavior\IAvoidCliffs.cpp || cmake_object_order_depends_target_sm-creative
+  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++17
+  INCLUDES = -ID:\repos\cpp\sm-creative\sm-creative\header -ID:\repos\cpp\sm-creative\sm-creative\src -ID:\repos\cpp\sm-creative\sm-creative\include
+  OBJECT_DIR = sm-creative\CMakeFiles\sm-creative.dir
+  OBJECT_FILE_DIR = sm-creative\CMakeFiles\sm-creative.dir\src\entities\behavior
+  TARGET_COMPILE_PDB = sm-creative\CMakeFiles\sm-creative.dir\
+  TARGET_PDB = sm-creative\sm-creative.pdb
+
+build sm-creative\CMakeFiles\sm-creative.dir\src\entities\enemies.cpp.obj: CXX_COMPILER__sm-creative_Debug D$:\repos\cpp\sm-creative\sm-creative\src\entities\enemies.cpp || cmake_object_order_depends_target_sm-creative
+  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++17
+  INCLUDES = -ID:\repos\cpp\sm-creative\sm-creative\header -ID:\repos\cpp\sm-creative\sm-creative\src -ID:\repos\cpp\sm-creative\sm-creative\include
+  OBJECT_DIR = sm-creative\CMakeFiles\sm-creative.dir
+  OBJECT_FILE_DIR = sm-creative\CMakeFiles\sm-creative.dir\src\entities
   TARGET_COMPILE_PDB = sm-creative\CMakeFiles\sm-creative.dir\
   TARGET_PDB = sm-creative\sm-creative.pdb
 
@@ -238,6 +278,14 @@ build sm-creative\CMakeFiles\sm-creative.dir\src\game\scenes\SceneLevel.cpp.obj:
   INCLUDES = -ID:\repos\cpp\sm-creative\sm-creative\header -ID:\repos\cpp\sm-creative\sm-creative\src -ID:\repos\cpp\sm-creative\sm-creative\include
   OBJECT_DIR = sm-creative\CMakeFiles\sm-creative.dir
   OBJECT_FILE_DIR = sm-creative\CMakeFiles\sm-creative.dir\src\game\scenes
+  TARGET_COMPILE_PDB = sm-creative\CMakeFiles\sm-creative.dir\
+  TARGET_PDB = sm-creative\sm-creative.pdb
+
+build sm-creative\CMakeFiles\sm-creative.dir\src\libraries\Buffer.cpp.obj: CXX_COMPILER__sm-creative_Debug D$:\repos\cpp\sm-creative\sm-creative\src\libraries\Buffer.cpp || cmake_object_order_depends_target_sm-creative
+  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++17
+  INCLUDES = -ID:\repos\cpp\sm-creative\sm-creative\header -ID:\repos\cpp\sm-creative\sm-creative\src -ID:\repos\cpp\sm-creative\sm-creative\include
+  OBJECT_DIR = sm-creative\CMakeFiles\sm-creative.dir
+  OBJECT_FILE_DIR = sm-creative\CMakeFiles\sm-creative.dir\src\libraries
   TARGET_COMPILE_PDB = sm-creative\CMakeFiles\sm-creative.dir\
   TARGET_PDB = sm-creative\sm-creative.pdb
 
@@ -305,7 +353,7 @@ build sm-creative\CMakeFiles\sm-creative.dir\src\world\WorldTile.cpp.obj: CXX_CO
 #############################################
 # Link the executable sm-creative\sm-creative.exe
 
-build sm-creative\sm-creative.exe: CXX_EXECUTABLE_LINKER__sm-creative_Debug sm-creative\CMakeFiles\sm-creative.dir\main.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\Animation.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\AnimationState.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\Assets.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\Job.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\JobManager.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\SM_Time.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\Tile.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\characters\Entity.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\characters\Goomba.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\characters\Koopa.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\characters\Mob.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\characters\Player.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\characters\behavior\IAvoidCliffs.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\characters\enemies.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\data\Level.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\data\WorldMob.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\game\Game.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\game\scenes\SceneLevel.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\physics\Body.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\physics\Collider.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\physics\Collision.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\player\Camera.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\utils\FpsCounter.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\utils\files.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\world\WorldTile.cpp.obj | ..\..\..\sm-creative\lib\SFML\sfml-system-d.lib ..\..\..\sm-creative\lib\SFML\sfml-graphics-d.lib ..\..\..\sm-creative\lib\SFML\sfml-audio-d.lib ..\..\..\sm-creative\lib\SFML\sfml-network-d.lib ..\..\..\sm-creative\lib\SFML\sfml-window-d.lib
+build sm-creative\sm-creative.exe: CXX_EXECUTABLE_LINKER__sm-creative_Debug sm-creative\CMakeFiles\sm-creative.dir\main.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\Job.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\JobManager.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\SM_Time.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\Tile.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\animation\AnimationState.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\animation\DynamicAnimation.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\animation\SpriteAnimation.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\animation\StaticAnimation.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\assets\Assets.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\assets\Registry.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\assets\data\LevelData.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\assets\data\WorldMob.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\entities\Entity.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\entities\Goomba.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\entities\Item.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\entities\Koopa.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\entities\Mob.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\entities\Player.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\entities\SuperMushroom.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\entities\behavior\IAvoidCliffs.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\entities\enemies.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\game\Game.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\game\scenes\SceneLevel.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\libraries\Buffer.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\physics\Body.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\physics\Collider.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\physics\Collision.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\player\Camera.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\utils\FpsCounter.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\utils\files.cpp.obj sm-creative\CMakeFiles\sm-creative.dir\src\world\WorldTile.cpp.obj | ..\..\..\sm-creative\lib\SFML\sfml-system-d.lib ..\..\..\sm-creative\lib\SFML\sfml-graphics-d.lib ..\..\..\sm-creative\lib\SFML\sfml-audio-d.lib ..\..\..\sm-creative\lib\SFML\sfml-network-d.lib ..\..\..\sm-creative\lib\SFML\sfml-window-d.lib
   FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1
   LINK_FLAGS = /machine:X86 /debug /INCREMENTAL /subsystem:console
   LINK_LIBRARIES = ..\..\..\sm-creative\lib\SFML\sfml-system-d.lib  ..\..\..\sm-creative\lib\SFML\sfml-graphics-d.lib  ..\..\..\sm-creative\lib\SFML\sfml-audio-d.lib  ..\..\..\sm-creative\lib\SFML\sfml-network-d.lib  ..\..\..\sm-creative\lib\SFML\sfml-window-d.lib  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib

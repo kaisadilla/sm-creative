@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "root.h"
-#include "Assets.h"
+#include "assets/Assets.h"
 #include "Debug.h"
 #include "SM_Time.h"
 #include "JobManager.h"

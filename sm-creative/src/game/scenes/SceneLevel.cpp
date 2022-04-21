@@ -1,5 +1,6 @@
 #include "game/scenes/SceneLevel.h"
-#include "characters/enemies.h"
+#include "entities/enemies.h"
+#include "assets/data/LevelData.h"
 
 SceneLevel::SceneLevel() :
     windowWidth(0),
@@ -11,44 +12,47 @@ SceneLevel::SceneLevel() :
     player(this, vec2(16.f, 16.f))
 {}
 
-SceneLevel::SceneLevel(const ui32 windowWidth, const ui32 windowHeight, const data::Level& level) :
+SceneLevel::SceneLevel(const ui32 windowWidth, const ui32 windowHeight, const LevelData& level) :
     windowWidth(windowWidth),
     windowHeight(windowHeight),
-    levelTileWidth(level.getWidth()),
-    levelTileHeight(level.getHeight()),
+    levelTileWidth(0),
+    levelTileHeight(0),
     player(this, vec2(16.f, 16.f)),
-    backgroundLayer(level.getBackgroundLayer()),
-    foregroundLayer(level.getForegroundLayer())
+    backgroundLayer(0, 0),
+    foregroundLayer(0, 0)
 {
-    for (ui32 x = 0; x < levelTileWidth; x++) {
-        for (ui32 y = 0; y < levelTileHeight; y++) {
-            WorldTile& worldTile = foregroundLayer.getAt(x, y);
-            // TODO: This may be better as part of the world tile. The scenelevel'd only keep a vector
-            // of references to worldtiles that have colliders.
-            if (!worldTile.getTile()->isAirTile() && worldTile.getTile()->hasCollider()) {
-                colliders.push_back(Collider(&worldTile, vec2(x * 16.f, y * 16.f), vec2(8.f, 8.f), vec2(8.f, 8.f)));
-            }
-        }
-    }
-
-    for (auto& enemyData : level.getEnemies()) {
-        Mob* enemy = createEnemyForLevel(enemyData, this);
-        if (enemy != nullptr) {
-            nextId = std::max(nextId, enemy->getId());
-            enemies.push_back(enemy);
-        }
-    }
-
-    sound_pause.setBuffer(Assets::sound_pause);
-    texPause.loadFromFile("res/sprites/ui/pause.png");
-    spritePause.setTexture(texPause);
-    spritePause.setTextureRect(sf::IntRect(ivec2(0, 0), (ivec2)texPause.getSize()));
+    //for (ui32 x = 0; x < levelTileWidth; x++) {
+    //    for (ui32 y = 0; y < levelTileHeight; y++) {
+    //        WorldTile& worldTile = foregroundLayer.getAt(x, y);
+    //        // TODO: This may be better as part of the world tile. The scenelevel'd only keep a vector
+    //        // of references to worldtiles that have colliders.
+    //        if (!worldTile.getTile()->isAirTile() && worldTile.getTile()->hasCollider()) {
+    //            colliders.push_back(Collider(&worldTile, vec2(x * 16.f, y * 16.f), vec2(8.f, 8.f), vec2(8.f, 8.f)));
+    //        }
+    //    }
+    //}
+    //
+    //for (auto& enemyData : level.getEnemies()) {
+    //    Mob* enemy = createEnemyForLevel(enemyData, this);
+    //    if (enemy != nullptr) {
+    //        nextId = std::max(nextId, enemy->getId());
+    //        enemies.push_back(enemy);
+    //    }
+    //}
+    //
+    //sound_pause.setBuffer(Assets::sound_pause);
+    //texPause.loadFromFile("res/sprites/ui/pause.png");
+    //spritePause.setTexture(texPause);
+    //spritePause.setTextureRect(sf::IntRect(ivec2(0, 0), (ivec2)texPause.getSize()));
 }
 
 SceneLevel::~SceneLevel () {
     for (auto enemy : enemies) {
         delete enemy;
     }
+    //for (auto item : items) {
+    //    delete item;
+    //}
 }
 
 void SceneLevel::onEnter () {
@@ -59,20 +63,36 @@ void SceneLevel::onEnter () {
     __background.setTexture(__texBackground);
     __background.setScale(vec2(2.f, 2.f));
 
-    player.setSprite("mario", vec2(16, 16));
+    player.setSprite("mario", vec2(32, 32));
     player.setPosition(vec2(0.f, 22.f * 16.f));
+    player.initializeDefaultSpriteAndColliderSizes(vec2(32, 32), sf::IntRect(11, 17, 10, 15));
 
     levelMusic.openFromFile("res/music/overworld.wav");
+    //levelMusic.openFromFile("res/music/sml2_athletic.wav");
     levelMusic.setLoop(true);
     levelMusic.setVolume(50.f);
     levelMusic.play();
 
+    //Item* item = new SuperMushroom(this, vec2(16, 16), true);
+    //items.push_back(item);
+    items.emplace_back(std::make_unique<SuperMushroom>(SuperMushroom(this, vec2(16, 16), true)));
+    items[0]->setId(333);
+    items[0]->setSprite("mushroom", vec2(16, 16));
+    items[0]->initializeDefaultSpriteAndColliderSizes(vec2(16, 16), sf::IntRect(0, 0, 16, 16));
+    items[0]->setPosition(vec2(5 * 16.f, 16 * 16.f));
+
+    for (auto& item : items) {
+        item->onStart();
+    }
     for (auto& enemy : enemies) {
         enemy->onStart();
     }
 }
 
 void SceneLevel::onUpdate () {
+    for (auto& item : items) {
+        item->onUpdate();
+    }
     for (auto& enemy : enemies) {
         enemy->onUpdate();
     }
@@ -84,6 +104,10 @@ void SceneLevel::onUpdate () {
 }
 
 void SceneLevel::onFixedUpdate () {
+    for (auto& item : items) {
+        item->onFixedUpdate();
+        item->checkCollisionsWithTiles(colliders);
+    }
     for (auto& enemy : enemies) {
         enemy->onFixedUpdate();
     }
@@ -95,6 +119,7 @@ void SceneLevel::onFixedUpdate () {
 
     player.onFixedUpdate();
     player.checkCollisionsWithTiles(colliders);
+    player.checkCollisionWithItems(items);
     player.checkCollisionWithEnemies(enemies);
 }
 
@@ -103,6 +128,7 @@ void SceneLevel::onDraw (sf::RenderWindow& window) {
 
     window.setView(camera.getView());
     drawLevel(window);
+    drawItems(window);
     drawMobs(window);
     drawPlayer(window);
 
@@ -140,14 +166,26 @@ void SceneLevel::onEvent (const sf::Event& evt) {
 
 void SceneLevel::deleteDisposedEnemies () {
     //enemies.erase(std::remove(enemies.begin(), enemies.end(), enemy), enemies.end());
-    auto& it = enemies.begin();
+    auto& itEnemies = enemies.begin();
 
-    while (it != enemies.end()) {
-        if ((*it)->getDisposePending()) {
-            it = enemies.erase(it);
+    while (itEnemies != enemies.end()) {
+        if ((*itEnemies)->getDisposePending()) {
+            delete (*itEnemies);
+            itEnemies = enemies.erase(itEnemies);
         }
         else {
-            it++;
+            itEnemies++;
+        }
+    }
+
+    auto& itItems = items.begin();
+    while (itItems != items.end()) {
+        if ((*itItems)->getDisposePending()) {
+            //delete (*itItems);
+            itItems = items.erase(itItems);
+        }
+        else {
+            itItems++;
         }
     }
 }
@@ -177,6 +215,12 @@ void SceneLevel::drawMobs (sf::RenderWindow& window) {
     }
 }
 
+void SceneLevel::drawItems(sf::RenderWindow& window) {
+    for (const auto& item : items) {
+        item->draw(window);
+    }
+}
+
 void SceneLevel::drawPlayer (sf::RenderWindow& window) {
     player.draw(window);
 }
@@ -185,10 +229,13 @@ void SceneLevel::drawColliders (sf::RenderWindow& window) {
     for (const Collider& collider : colliders) {
         collider.drawColliderBounds(window, sf::Color::Green);
     }
-    for (const auto& enemy : enemies) {
-        enemy->getCollider().drawColliderBounds(window, sf::Color::Red);
+    for (const auto& item : items) {
+        item->getCollider().drawColliderBounds(window);
     }
-    player.getCollider().drawColliderBounds(window, sf::Color::Blue);
+    for (const auto& enemy : enemies) {
+        enemy->getCollider().drawColliderBounds(window);
+    }
+    player.getCollider().drawColliderBounds(window);
 }
 
 void SceneLevel::drawDebugInfo (sf::RenderWindow& window) {

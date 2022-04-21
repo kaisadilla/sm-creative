@@ -62,12 +62,22 @@ bool Collider::checkColision(const Collider& collider, Collision& collision) {
 
     collision = Collision(&collider, wasCollision, mainDirection, horizontalDirection, verticalDirection, vec2(xIntersectSigned, yIntersectSigned));
 
-    return xIntersect < 0.f && yIntersect < 0.f;
+    collidedThisFrame = xIntersect < 0.f && yIntersect < 0.f;
+    return collidedThisFrame;
 }
 
-sf::FloatRect Collider::getBounds () const {
+sf::FloatRect Collider::getRelativeBounds () const {
+    return sf::FloatRect(relativeCenter - distanceToEdge, distanceToEdge * 2.f);
+}
+
+sf::FloatRect Collider::getAbsoluteBounds() const {
     return sf::FloatRect(getAbsoluteCenter() - distanceToEdge, distanceToEdge * 2.f);
 }
+
+void Collider::drawColliderBounds (sf::RenderWindow& window) const {
+    drawColliderBounds(window, collidedThisFrame ? sf::Color::Red : sf::Color::Blue);
+}
+
 
 void Collider::drawColliderBounds (sf::RenderWindow& window, const sf::Color& color) const {
     constexpr f32 OFFSET = 0.1f;

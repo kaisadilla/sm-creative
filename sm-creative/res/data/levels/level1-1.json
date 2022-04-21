@@ -41,7 +41,7 @@
             "sprite": "koopa_red",
             "dimensions": {
                 "sprite": [18, 27],
-                "collider": [1, 0, 16, 27],
+                "collider": [1, 11, 16, 16],
                 "shellCollider": [1, 11, 16, 16]
             },
             "position": [8, 24]

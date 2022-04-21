@@ -6,6 +6,7 @@ enum class GameObjectType {
     Player = 0,
     Tile = 1,
     Enemy = 2,
+    Item = 3
 };
 
 class IGameObject {

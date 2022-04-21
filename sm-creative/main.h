@@ -9,6 +9,6 @@
 
 #include "root.h"
 #include "game/Game.h"
-#include "Assets.h"
+#include "assets/Assets.h"
 
 // TODO: Reference additional headers your program requires here.

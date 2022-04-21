@@ -1,8 +1,9 @@
 #include "game/Game.h"
+#include "assets/data/LevelData.h"
 
 Game::Game () :
     window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "M-Guy editable", sf::Style::Close),
-    scene(WINDOW_WIDTH, WINDOW_HEIGHT, Assets::levels["level1-1"])
+    scene(WINDOW_WIDTH, WINDOW_HEIGHT, LevelData())
 {}
 
 void Game::initialize () {

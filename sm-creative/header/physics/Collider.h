@@ -11,6 +11,8 @@ private:
     vec2 position;
     vec2 relativeCenter;
     vec2 distanceToEdge;
+    
+    bool collidedThisFrame;
 
 public:
     Collider();
@@ -30,8 +32,10 @@ public:
     static void calculateVectorsInsideSprite(const vec2& spriteSize, const sf::IntRect& colliderPosition, vec2& relativeCenter, vec2& distanceToEdge);
 
     bool checkColision(const Collider& collider, Collision& collision);
-    sf::FloatRect getBounds() const;
+    sf::FloatRect getRelativeBounds() const;
+    sf::FloatRect getAbsoluteBounds() const;
 
+    void drawColliderBounds(sf::RenderWindow& window) const;
     void drawColliderBounds(sf::RenderWindow& window, const sf::Color& color) const;
 
 

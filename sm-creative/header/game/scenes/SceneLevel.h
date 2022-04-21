@@ -6,10 +6,12 @@
 #include "Debug.h"
 #include "SM_Time.h"
 #include "player/Camera.h"
-#include "data/Level.h"
-#include "characters/Entity.h"
-#include "characters/Mob.h"
-#include "characters/Player.h"
+#include "entities/Entity.h"
+#include "entities/Mob.h"
+#include "entities/Item.h"
+#include "entities/Player.h"
+
+class LevelData;
 
 class SceneLevel {
 private:
@@ -32,6 +34,7 @@ private:
     Player player;
 
     std::vector<Mob*> enemies;
+    std::vector<std::unique_ptr<Item>> items;
     //std::vector<std::unique_ptr<Enemy>> enemies;
     //std::map<i32, std::unique_ptr<Enemy>> enemies;
 
@@ -45,7 +48,7 @@ private:
 
 public:
     SceneLevel();
-    SceneLevel(const ui32 windowWidth, const ui32 windowHeight, const data::Level& level);
+    SceneLevel(const ui32 windowWidth, const ui32 windowHeight, const LevelData& level);
     ~SceneLevel();
 
     void onEnter();
@@ -61,6 +64,7 @@ private:
     void drawLevel(sf::RenderWindow& window);
     void drawLayer(sf::RenderWindow& window, Grid2<WorldTile>& layer);
     void drawMobs(sf::RenderWindow& window);
+    void drawItems(sf::RenderWindow& window);
     void drawPlayer(sf::RenderWindow& window);
     void drawColliders(sf::RenderWindow& window);
     void drawDebugInfo(sf::RenderWindow& window);
