@@ -11,6 +11,9 @@ private:
     i32 width;
     i32 height;
 
+    i32 background;
+    i32 music;
+
 public:
     LevelData() {};
 

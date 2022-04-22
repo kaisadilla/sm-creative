@@ -3,7 +3,7 @@
 #include "root.h"
 #include "physics/Collision.h"
 
-class Tile {
+class __delete_Tile {
     friend class Assets;
 
 private:
@@ -17,9 +17,9 @@ private:
     bool collisionRight = true;
 
 public:
-    Tile(const string& internalName, sf::Texture& atlas, i32 spriteIndex);
+    __delete_Tile(const string& internalName, sf::Texture& atlas, i32 spriteIndex);
 
-    static Tile* airTile(string& internalName);
+    static __delete_Tile* airTile(string& internalName);
 
     inline const string& getInternalName () const {
         return internalName;
@@ -71,5 +71,5 @@ public:
     }
 
 private:
-    Tile();
+    __delete_Tile();
 };

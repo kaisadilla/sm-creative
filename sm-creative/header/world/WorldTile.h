@@ -1,21 +1,21 @@
 #pragma once
 
 #include "root.h"
-#include "Tile.h"
+#include "__delete_Tile.h"
 #include "physics/IGameObject.h"
 
 class WorldTile : public IGameObject {
 private:
-    Tile* tile;
+    __delete_Tile* tile;
 
 public:
     WorldTile();
-    WorldTile(Tile* tile);
+    WorldTile(__delete_Tile* tile);
 
     GameObjectType getType();
     void draw(sf::RenderWindow& window, vec2 position);
 
-    inline Tile* getTile () {
+    inline __delete_Tile* getTile () {
         return tile;
     }
 

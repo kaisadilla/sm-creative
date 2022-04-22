@@ -8,32 +8,34 @@
 
 #include "root.h"
 #include "assets/Registry.h"
-#include "libraries/Buffer.hpp"
+#include "assets/data/LevelData.h"
 
 namespace fs = std::filesystem;
-
-class Tile;
-namespace data {
-    class Level;
-}
 
 class Assets {
     typedef nlohmann::json json;
 
+private:
+    inline static Registry registry;
+
+    inline static std::unordered_map<string, i32> tileMap; // remove
+
 public:
     /// <summary>
-    /// Stores the position of each tile sprite inside the array. For spritesheets,
-    /// every frame will be stored at its own index using the suffix ":n", where n
-    /// is the position of the frame in the spritesheet.
+    /// Stores the position of each tile sprite frame inside the array. The key is a ivec2
+    /// containing the index of the tile sprite and the index of the frame. For static sprites,
+    /// the index of the frame will always be 0.
     /// </summary>
-    inline static std::unordered_map<string, i32> tileIndices;
+    inline static std::vector<std::vector<i32>> tileIndices;
+    //inline static std::unordered_map<ivec2, i32> tileIndices;
+    inline static i32 tileSize;
+    inline static i32 texturesPerRow;
     inline static sf::Texture tileAtlas;
 
+    inline static std::unordered_map<string, LevelData> levels;
 
-    inline static std::vector<Tile> tiles;
-    inline static i32 texturesPerRow;
-    inline static f32 normalizedTextureSize;
-    inline static std::unordered_map<string, i32> __tilePositionMap;
+    inline static f32 normalizedTextureSize; // remove
+    inline static std::unordered_map<string, i32> __tilePositionMap; // remove
 
     inline static sf::SoundBuffer sound_pause;
     inline static sf::SoundBuffer sound_jump;
@@ -41,29 +43,25 @@ public:
     inline static sf::SoundBuffer sound_kick;
     inline static sf::SoundBuffer sound_playerDeath;
 
-private:
-    inline static Registry registry;
-
-    inline static std::unordered_map<string, i32> tileMap;
-
 public:
     static void loadData();
+    static void freeData();
 
-    static void __loadData () {
-        __test_load_binary();
-
-        tiles = std::vector<Tile>();
-        buildTileAtlas();
-        loadTileData();
-        loadSounds();
-        loadLevels();
+public:
+    static inline string getBackgroundImageAt (const i32 index) {
+        return registry.backgroundImages[index];
     }
 
-    static void freeData();
+    static inline string getMusicAt (const i32 index) {
+        return registry.music[index];
+    }
+    
+    static inline string getEntitySpriteAt (const i32 index) {
+        return registry.entitySprites[index];
+    }
+
 private:
     static void buildTileAtlas();
-    static void loadTileData();
     static void loadSounds();
     static void loadLevels();
-    static void __test_load_binary();
 };

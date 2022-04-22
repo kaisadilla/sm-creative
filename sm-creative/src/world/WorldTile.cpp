@@ -4,7 +4,7 @@ WorldTile::WorldTile () : tile(nullptr) {
 
 }
 
-WorldTile::WorldTile (Tile* tile) : tile(tile) { }
+WorldTile::WorldTile (__delete_Tile* tile) : tile(tile) { }
 
 GameObjectType WorldTile::getType () {
     return GameObjectType::Tile;
