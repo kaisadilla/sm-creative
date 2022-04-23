@@ -17,7 +17,7 @@ protected:
     sf::Sound sound_kick;
 
 public:
-    Mob(SceneLevel* level, const vec2& size, AnimationState& animations);
+    Mob() {};
 
     GameObjectType getType() override { return GameObjectType::Enemy; }
 

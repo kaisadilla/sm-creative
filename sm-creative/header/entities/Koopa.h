@@ -13,6 +13,8 @@ private:
 private:
     bool startingDirectionRight;
     bool canRevive;
+    bool playerCanGrabShell;
+
     sf::IntRect shellCollider;
 
     bool isShell = false;
@@ -21,7 +23,10 @@ private:
     f32 secondsUntilReviveEnd = 1.0f;
 
 public:
-    Koopa(SceneLevel* level, const vec2& size, const sf::IntRect& shellCollider, bool avoidsCliffs, bool startingDirectionRight, bool canRevive);
+    Koopa(bool avoidsCliffs, bool startingDirectionRight, bool canRevive, bool playerCanGrabShell);
+
+    void initialize(const sf::IntRect& shellColliderPosition);
+    void initializeAnimations() override;
 
     void onStart() override;
     void onUpdate() override;
@@ -52,19 +57,4 @@ namespace AnimStates::Koopa {
         SHELL_REANIMATING,
         DEAD
     };
-
-    inline SpriteAnimation* getAnimation (KoopaState state) {
-        switch (state) {
-        case WALKING:
-            return new DynamicAnimation(0.2f, { 0, 1 }, uvec2(6, 1), uvec2(18, 27));
-        case SHELL:
-            return new StaticAnimation(uvec2(6, 1), uvec2(18, 27), 2);
-        case SHELL_TRAVELLING:
-            return new DynamicAnimation(0.03f, { 2, 3, 4 }, uvec2(6, 1), uvec2(18, 27));
-        case SHELL_REANIMATING:
-            return new DynamicAnimation(0.1f, { 2, 5 }, uvec2(6, 1), uvec2(18, 27));
-        case DEAD:
-            return new StaticAnimation(uvec2(6, 1), uvec2(18, 27), 2);
-        }
-    }
 }

@@ -3,43 +3,45 @@
 #include "entities/Mob.h"
 #include "game/scenes/SceneLevel.h"
 
-Player::Player (SceneLevel* level, vec2 size) :
-    Entity(
-        level,
-        size,
-        AnimationState()
-    )
-{
+Player::Player () {
     destroyWhenOutOfBounds = false;
     sound_jump.setBuffer(Assets::sound_jump);
     sound_death.setBuffer(Assets::sound_playerDeath);
-
-    SpriteAnimation* transformSmallToBig = new DynamicAnimation(
-        0.0666f, {22, 0, 22, 0, 22, 0, 22, 16, 22, 16, 22, 16}, uvec2(16, 8), uvec2(32, 32),
-        [this]() {
-            std::cout << "Nothing happens here yet";
-            //setMode(MarioMode::BIG);
-        }
-    );
-
-    std::vector<SpriteAnimation*> animVector = {
-            new DynamicAnimation(60.f  , {0}               , uvec2(16, 8), uvec2(32, 32)),
-            new DynamicAnimation(0.1f  , {0, 1}            , uvec2(16, 8), uvec2(32, 32)),
-            new DynamicAnimation(60.f  , {3}               , uvec2(16, 8), uvec2(32, 32)),
-            new DynamicAnimation(60.f  , {2}               , uvec2(16, 8), uvec2(32, 32)),
-            new DynamicAnimation(60.f  , {4}               , uvec2(16, 8), uvec2(32, 32)),
-            new DynamicAnimation(60.f  , {16}              , uvec2(16, 8), uvec2(32, 32)),
-            new DynamicAnimation(0.075f, {16, 17, 18, 17}  , uvec2(16, 8), uvec2(32, 32)),
-            new DynamicAnimation(60.f  , {20}              , uvec2(16, 8), uvec2(32, 32)),
-            new DynamicAnimation(60.f  , {19}              , uvec2(16, 8), uvec2(32, 32)),
-            new DynamicAnimation(60.f  , {21}              , uvec2(16, 8), uvec2(32, 32)),
-            transformSmallToBig
-    };
-    animations.setAnimations(animVector);
 }
 
 GameObjectType Player::getType () {
     return GameObjectType::Player;
+}
+
+void Player::initializeAnimations () {
+    StaticAnimation*  aSmallStill    = new StaticAnimation({ 16, 8 }, textureSize, 0);
+    DynamicAnimation* aSmallWalking  = new DynamicAnimation({ 16, 8 }, textureSize, 0.1f, { 0, 1 });
+    StaticAnimation*  aSmallSkidding = new StaticAnimation({ 16, 8 }, textureSize, 3);
+    StaticAnimation*  aSmallJumping  = new StaticAnimation({ 16, 8 }, textureSize, 2);
+    StaticAnimation*  aDead          = new StaticAnimation({ 16, 8 }, textureSize, 4);
+    StaticAnimation*  aBigStill      = new StaticAnimation({ 16, 8 }, textureSize, 16);
+    DynamicAnimation* aBigWalking    = new DynamicAnimation({ 16, 8 }, textureSize, 0.075f, { 16, 17, 18, 17 });
+    StaticAnimation*  aBigSkidding   = new StaticAnimation({ 16, 8 }, textureSize, 20);
+    StaticAnimation*  aBigJumping    = new StaticAnimation({ 16, 8 }, textureSize, 19);
+    StaticAnimation*  aBigCrouching  = new StaticAnimation({ 16, 8 }, textureSize, 21);
+
+    // TODO: idk what I will do with this.
+    DynamicAnimation* aTransformSmallToBig = new DynamicAnimation({ 16, 8 }, textureSize, 0.0666f, { 22, 0, 22, 0, 22, 0, 22, 16, 22, 16, 22, 16 }, [this]() {
+        std::cout << "Nothing happens here yet";
+    });
+
+    animations.setAnimations({
+        aSmallStill,
+        aSmallWalking,
+        aSmallSkidding,
+        aSmallJumping,
+        aDead,
+        aBigStill,
+        aBigWalking,
+        aBigSkidding,
+        aBigJumping,
+        aBigCrouching
+    });
 }
 
 void Player::onStart () {}

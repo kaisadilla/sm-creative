@@ -12,7 +12,9 @@ private:
     bool startingDirectionRight;
 
 public:
-    SuperMushroom(SceneLevel* level, const vec2& size, bool startingDirectionRight);
+    SuperMushroom(bool startingDirectionRight);
+
+    void initializeAnimations() override;
 
     void onStart() override;
     void onUpdate() override;

@@ -8,7 +8,7 @@ class StaticAnimation : public SpriteAnimation {
     sf::IntRect frameSliceMirrored;
 
 public:
-    StaticAnimation(const uvec2& slices, const uvec2& sliceSize, const ui32 frame);
+    StaticAnimation(const uvec2& slices, const vec2& sliceSize, const ui32 frame);
     StaticAnimation(const StaticAnimation& animation);
 
     void onUpdate(const f32 deltaTime, const f32 speed) override {};

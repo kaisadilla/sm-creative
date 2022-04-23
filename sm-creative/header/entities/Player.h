@@ -54,9 +54,10 @@ private:
     sf::Sound sound_death;
 
 public:
-    Player(SceneLevel* level, vec2 size);
+    Player();
 
     GameObjectType getType() override;
+    void initializeAnimations() override;
 
     void onStart() override;
     void onUpdate() override;

@@ -5,7 +5,7 @@
 
 class Item : public Entity {
 public:
-    Item(SceneLevel* level, const vec2& size, AnimationState& animations);
+    Item() {};
 
     GameObjectType getType() override { return GameObjectType::Item; }
 

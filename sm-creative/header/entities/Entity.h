@@ -9,21 +9,22 @@
 #include "physics/IGameObject.h"
 #include "world/WorldTile.h"
 
-class SceneLevel;
+class LevelScene;
+class SceneLevel; // TODO: REMOVE
 class Player;
 
 class Entity : public IGameObject {
 protected:
     i32 id = -1;
-    /// <summary>
-    /// The position of the mob inside the level, in pixels.
-    /// </summary>
     vec2 position;
-    /// <summary>
-    /// The size of the mob, in pixels.
-    /// </summary>
     vec2 size;
-    bool flipSpriteWhenLookingLeft = true;
+
+    /********
+     * DATA *
+     ********/
+    vec2 entitySize;
+    vec2 textureSize;
+    sf::IntRect defaultCollider;
 
     /*********
      * STATE *
@@ -31,6 +32,45 @@ protected:
     bool isDead = false;
     f32 despawnTimer = 0.f;
     bool disposePending = false;
+
+    bool collided = false;
+    bool isGrounded = false;
+    bool isLookingLeft = false;
+
+    /****************************
+     * MOVEMENT AND INTERACTION *
+     ****************************/
+    /// <summary>
+    /// The level scene this entity is currently in.
+    /// </summary>
+    LevelScene* scene = nullptr;
+    /// <summary>
+    /// If true, the entity won't be pushed out of solid tiles when it collides with them.
+    /// If the entity has gravity, this means it will fall through the floor.
+    /// </summary>
+    bool canGoThroughTiles = false;
+    /// <summary>
+    /// If true, this entity doesn't check collisions with tiles.
+    /// </summary>
+    bool ignoresTiles = false;
+    /// <summary>
+    /// If true, this entity doesn't check collisions with mobs.
+    /// </summary>
+    bool ignoresMobs = false;
+    /// <summary>
+    /// If true, the entity will be destroyed if it leaves its level's boundaries.
+    /// </summary>
+    bool destroyWhenOutOfBounds = true;
+    /// <summary>
+    /// If true, the sprite of this entity will be flipped horizontally when it's looking to the left.
+    /// </summary>
+    bool flipSpriteWhenLookingLeft = true;
+
+    /***********
+     * PHYSICS *
+     ***********/
+    vec2 velocity = vec2(0, 0);
+    f32 gravityScale = 1.f;
 
     /**********
      * SPRITE *
@@ -58,46 +98,44 @@ protected:
     /// </summary>
     DynamicAnimation* transitionalAnimation = nullptr;
 
-    /****************************
-     * MOVEMENT AND INTERACTION *
-     ****************************/
-    sf::IntRect defaultCollider;
-    /// <summary>
-    /// If true, the mob won't be pushed out of solid tiles when it collides with them.
-    /// If the mob has gravity, this means it will fall through the floor.
-    /// </summary>
-    bool canGoThroughTiles = false;
-    /// <summary>
-    /// If true, this mob doesn't check collisions with tiles.
-    /// </summary>
-    bool ignoresTiles = false;
-    /// <summary>
-    /// If true, this mob doesn't check collisions with mobs.
-    /// </summary>
-    bool ignoresMobs = false;
-    /// <summary>
-    /// If true, the mob will be destroyed if it leaves its level's boundaries.
-    /// </summary>
-    bool destroyWhenOutOfBounds = true;
-
-    SceneLevel* level;
+    /************
+     * COLLIDER *
+     ************/
     Collider collider;
-
-    vec2 velocity = vec2(0, 0);
-    f32 gravityScale = 1.f;
-
-    bool collided = false;
-    bool isGrounded = false;
-    bool isLookingLeft = false;
-
     /// <summary>
     /// If this value is greater than zero, collisions with entities are ignored.
     /// </summary>
     f32 ignoreEntityCollisionTimer = 0.f;
+    
+
+    // TODO: REMOVE
+    SceneLevel* level;
 
 public:
-    Entity(SceneLevel* level, vec2 size, AnimationState& animation);
+    Entity() {};
+    //Entity(SceneLevel* level, vec2 size, AnimationState& animation);
     ~Entity();
+
+    /******************
+     * INITIALIZATION *
+     ******************/
+    void setDefaultSizes(const vec2& entitySize, const vec2& textureSize, const sf::IntRect& collider);
+    void setSprite(const ui32 spriteIndex);
+    void setColliderSize(const sf::IntRect& colliderPosition); // TODO: Rename to setColliderPosition.
+    virtual void initializeAnimations() = 0;
+
+    /**********
+     * EVENTS *
+     **********/
+    virtual void onStart() {};
+    virtual void onUpdate();
+    virtual void onFixedUpdate();
+
+    /***********
+     * PHYSICS *
+     ***********/
+
+    // remove:
 
     /// <summary>
     /// Changes the sizes of this mob's sprite and collider. The values given
@@ -105,10 +143,9 @@ public:
     /// </summary>
     /// <param name="spriteSize">The size of the sprite, in pixels.</param>
     /// <param name="colliderPosition">The position of the collider relative to the sprite.</param>
-    void initializeDefaultSpriteAndColliderSizes(const vec2& spriteSize, const sf::IntRect& colliderPosition);
+    void initializeDefaultSpriteAndColliderSizes(const vec2& spriteSize, const sf::IntRect& colliderPosition); // TODO: DELETE
 
     void setSprite(const char* name, vec2 size);
-    void setColliderSize(const sf::IntRect& colliderPosition);
 
     void move(vec2 direction);
     void move(f32 x, f32 y);
@@ -119,10 +156,6 @@ public:
     virtual void takeDamage(bool forceDeath, Direction direction = Direction::NONE) = 0;
     virtual void die();
     virtual void dispose();
-
-    virtual void onStart() {};
-    virtual void onUpdate();
-    virtual void onFixedUpdate();
 
     virtual void onCollisionWithTile(Collision& collision) {};
     virtual void onCollisionWithPlayer(Collision& collision, Player& player) {};

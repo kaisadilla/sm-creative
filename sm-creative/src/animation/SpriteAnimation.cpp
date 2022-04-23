@@ -1,6 +1,6 @@
 #include "animation/SpriteAnimation.h"
 
-sf::IntRect SpriteAnimation::calculateSliceDimensions (const uvec2& slices, const uvec2& sliceSize, const ui32 index) {
+sf::IntRect SpriteAnimation::calculateSliceDimensions (const uvec2& slices, const vec2& sliceSize, const ui32 index) {
     ui32 xStart = index % slices.x;
     ui32 yStart = index / slices.x;
 

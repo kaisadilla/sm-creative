@@ -1,13 +1,6 @@
 #include "entities/Entity.h"
 #include "game/scenes/SceneLevel.h"
 
-Entity::Entity (SceneLevel* level, vec2 size, AnimationState& animations) :
-    level(level),
-    size(size),
-    collider(this),
-    animations(animations)
-{}
-
 Entity::~Entity () {
     std::cout << "Destroying entity with id " << id << "\n";
     animations.free();
@@ -18,6 +11,15 @@ void Entity::updatePhysics () {
     velocity.y = std::min(velocity.y + (12.f * gravityScale), 8.f * 16.f * 4.f);
 
     move(velocity * SECONDS_PER_FIXED_UPDATE);
+}
+
+void Entity::setSprite (const ui32 spriteIndex) {
+    const string& texName = Assets::getEntitySpriteAt(spriteIndex);
+
+    texture.loadFromFile("res/sprites/entities" + texName + ".png");
+    sprite = sf::RectangleShape(entitySize);
+    sprite.setTexture(&texture);
+    sprite.setTextureRect(sf::IntRect(0, 0, textureSize.x, textureSize.y));
 }
 
 void Entity::setSprite (const char* name, vec2 size) {
@@ -41,6 +43,17 @@ void Entity::initializeDefaultSpriteAndColliderSizes (const vec2& spriteSize, co
     sprite.setSize(size);
 
     defaultCollider = colliderPosition;
+
+    setColliderSize(defaultCollider);
+}
+
+void Entity::setDefaultSizes (const vec2& entitySize, const vec2& textureSize, const sf::IntRect& collider) {
+    this->entitySize = entitySize;
+    this->textureSize = textureSize;
+    defaultCollider = collider;
+
+    size = entitySize;
+    sprite.setSize(entitySize);
 
     setColliderSize(defaultCollider);
 }

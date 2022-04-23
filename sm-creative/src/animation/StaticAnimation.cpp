@@ -1,6 +1,6 @@
 #include "animation/StaticAnimation.h"
 
-StaticAnimation::StaticAnimation (const uvec2& slices, const uvec2& sliceSize, const ui32 frame) :
+StaticAnimation::StaticAnimation (const uvec2& slices, const vec2& sliceSize, const ui32 frame) :
     frameSlice(calculateSliceDimensions(slices, sliceSize, frame)),
     frameSliceMirrored(getMirroredSlice(frameSlice))
 {}

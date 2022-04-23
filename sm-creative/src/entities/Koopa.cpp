@@ -2,23 +2,32 @@
 #include "entities/Player.h"
 #include "game/scenes/SceneLevel.h"
 
-Koopa::Koopa(SceneLevel* level, const vec2& size, const sf::IntRect& shellCollider, bool avoidsCliffs, bool startingDirectionRight, bool canRevive) :
-    Mob(
-        level,
-        size,
-        AnimationState({
-            AnimStates::Koopa::getAnimation(AnimStates::Koopa::WALKING),
-            AnimStates::Koopa::getAnimation(AnimStates::Koopa::SHELL),
-            AnimStates::Koopa::getAnimation(AnimStates::Koopa::SHELL_TRAVELLING),
-            AnimStates::Koopa::getAnimation(AnimStates::Koopa::SHELL_REANIMATING),
-            AnimStates::Koopa::getAnimation(AnimStates::Koopa::DEAD),
-        })
-    ),
+Koopa::Koopa(bool avoidsCliffs, bool startingDirectionRight, bool canRevive, bool playerCanGrabShell) :
     IAvoidCliffs(avoidsCliffs, size.y),
-    shellCollider(shellCollider),
     startingDirectionRight(startingDirectionRight),
-    canRevive(canRevive)
+    canRevive(canRevive),
+    playerCanGrabShell(playerCanGrabShell)
 {}
+
+void Koopa::initialize (const sf::IntRect& shellColliderPosition) {
+    shellCollider = shellColliderPosition;
+}
+
+void Koopa::initializeAnimations () {
+    DynamicAnimation* aWalking          = new DynamicAnimation({ 6, 1 }, textureSize, 0.2f, { 0, 1 });
+    StaticAnimation*  aShell            = new StaticAnimation({ 6, 1 }, textureSize, 2);
+    DynamicAnimation* aShellTravelling  = new DynamicAnimation({ 6, 1 }, textureSize, 0.03f, { 2, 3, 4 });
+    DynamicAnimation* aShellReanimating = new DynamicAnimation({ 6, 1 }, textureSize, 0.1f, { 2, 5 });
+    StaticAnimation*  aDead             = new StaticAnimation({ 6, 1 }, textureSize, 2);
+
+    animations.setAnimations({
+        aWalking,
+        aShell,
+        aShellTravelling,
+        aShellReanimating,
+        aDead
+    });
+}
 
 void Koopa::onStart () {
     Mob::onStart();

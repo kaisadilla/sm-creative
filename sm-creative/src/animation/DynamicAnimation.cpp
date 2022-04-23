@@ -18,7 +18,7 @@ void DynamicAnimation::reset () {
     timeSinceLastFrame = 0.f;
 }
 
-DynamicAnimation::DynamicAnimation (const std::vector<f32>& frameTimes, const std::vector<ui32>& frames, const uvec2& slices, const uvec2& sliceSize) :
+DynamicAnimation::DynamicAnimation (const uvec2& slices, const vec2& sliceSize, const std::vector<f32>& frameTimes, const std::vector<ui32>& frames) :
     frameTimes(frameTimes)
 {
     if (frameTimes.size() != frames.size()) {
@@ -28,7 +28,7 @@ DynamicAnimation::DynamicAnimation (const std::vector<f32>& frameTimes, const st
     initialize(frames, slices, sliceSize);
 }
 
-DynamicAnimation::DynamicAnimation (const f32 frameTime, const std::vector<ui32>& frames, const uvec2& slices, const uvec2& sliceSize) :
+DynamicAnimation::DynamicAnimation (const uvec2& slices, const vec2& sliceSize, const f32 frameTime, const std::vector<ui32>& frames) :
     frameTimes(frames.size())
 {
     for (size_t i = 0; i < frameTimes.size(); i++) {
@@ -39,7 +39,7 @@ DynamicAnimation::DynamicAnimation (const f32 frameTime, const std::vector<ui32>
     initialize(frames, slices, sliceSize);
 }
 
-DynamicAnimation::DynamicAnimation (const f32 frameTime, const std::vector<ui32>& frames, const uvec2& slices, const uvec2& sliceSize, std::function<void()> callback) :
+DynamicAnimation::DynamicAnimation (const uvec2& slices, const vec2& sliceSize, const f32 frameTime, const std::vector<ui32>& frames, std::function<void()> callback) :
     frameTimes(frames.size()),
     hasCallback(true),
     callback(callback)
@@ -80,7 +80,7 @@ void DynamicAnimation::setCallback(std::function<void()>& callback) {
     this->callback = callback;
 }
 
-void DynamicAnimation::initialize (const std::vector<ui32>& frames, const uvec2& slices, const uvec2& sliceSize) {
+void DynamicAnimation::initialize (const std::vector<ui32>& frames, const uvec2& slices, const vec2& sliceSize) {
     const ui32 totalFrames = slices.x * slices.y;
 
     for (const ui32& frame : frames) {

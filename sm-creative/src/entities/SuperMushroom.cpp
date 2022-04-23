@@ -1,18 +1,19 @@
 #include "entities/SuperMushroom.h"
 #include "entities/Player.h"
 
-SuperMushroom::SuperMushroom (SceneLevel* level, const vec2& size, bool startingDirectionRight) :
-    Item(
-        level,
-        size,
-        AnimationState({
-            new StaticAnimation(uvec2(1, 1), uvec2(16, 16), 0)
-        })
-    ),
+SuperMushroom::SuperMushroom (bool startingDirectionRight) :
     startingDirectionRight(startingDirectionRight)
 {
     flipSpriteWhenLookingLeft = false;
     gravityScale = 0.f;
+}
+
+void SuperMushroom::initializeAnimations () {
+    StaticAnimation* anim = new StaticAnimation({ 1, 1 }, textureSize, 0);
+
+    animations.setAnimations({
+        anim
+    });
 }
 
 void SuperMushroom::onStart () {

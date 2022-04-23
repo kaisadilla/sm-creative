@@ -16,7 +16,9 @@ private:
     bool startingDirectionRight;
 
 public:
-    Goomba(SceneLevel* level, const vec2& size, bool avoidsCliffs, bool startingDirectionRight);
+    Goomba(bool avoidsCliffs, bool startingDirectionRight);
+
+    void initializeAnimations() override;
 
     void onStart() override;
     void onUpdate() override;

@@ -2,18 +2,20 @@
 #include "entities/Player.h"
 #include "game/scenes/SceneLevel.h"
 
-Goomba::Goomba(SceneLevel* level, const vec2& size, bool avoidsCliffs, bool startingDirectionRight) :
-    Mob(
-        level,
-        size,
-        AnimationState({
-            new DynamicAnimation(0.2f, {0, 1}, uvec2(3, 1), uvec2(16, 16)),
-            new DynamicAnimation(5.f , {2}   , uvec2(3, 1), uvec2(16, 16)),
-        })
-    ),
-    IAvoidCliffs(avoidsCliffs, size.y),
+Goomba::Goomba(bool avoidsCliffs, bool startingDirectionRight) :
+    IAvoidCliffs(avoidsCliffs, size.y), // TODO: Size is not yet defined at this point.
     startingDirectionRight(startingDirectionRight)
 {}
+
+void Goomba::initializeAnimations () {
+    DynamicAnimation* aWalking = new DynamicAnimation({ 3, 1 }, textureSize, 0.2f, { 0, 1 });
+    StaticAnimation*  aStomped = new StaticAnimation({ 3, 1 }, textureSize, 2);
+
+    animations.setAnimations({
+        aWalking,
+        aStomped
+    });
+}
 
 void Goomba::onStart () {
     Mob::onStart();

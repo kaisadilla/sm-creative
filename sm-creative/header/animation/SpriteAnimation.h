@@ -17,7 +17,7 @@ protected:
     /// <param name="index">The index of the slice, left to right and then top to bottom.</param>
     /// <param name="slices">The dimensions of the spritesheet, in sprites.</param>
     /// <param name="sliceSize">The size of each sprite, in pixels.</param>
-    sf::IntRect calculateSliceDimensions(const uvec2& slices, const uvec2& sliceSize, const ui32 index);
+    sf::IntRect calculateSliceDimensions(const uvec2& slices, const vec2& sliceSize, const ui32 index);
 
     /// <summary>
     /// Returns the coordinates of the same slice given, but mirrored (flipped horizontally).

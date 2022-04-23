@@ -21,9 +21,9 @@ private:
     std::function<void()> callback = nullptr;
 
 public:
-    DynamicAnimation(const std::vector<f32>& frameTimes, const std::vector<ui32>& frames, const uvec2& slices, const uvec2& sliceSize);
-    DynamicAnimation(const f32 frameTime, const std::vector<ui32>& frames, const uvec2& slices, const uvec2& sliceSize);
-    DynamicAnimation(const f32 frameTime, const std::vector<ui32>& frames, const uvec2& slices, const uvec2& sliceSize, std::function<void()> callback);
+    DynamicAnimation(const uvec2& slices, const vec2& sliceSize, const std::vector<f32>& frameTimes, const std::vector<ui32>& frames);
+    DynamicAnimation(const uvec2& slices, const vec2& sliceSize, const f32 frameTime, const std::vector<ui32>& frames);
+    DynamicAnimation(const uvec2& slices, const vec2& sliceSize, const f32 frameTime, const std::vector<ui32>& frames, std::function<void()> callback);
     DynamicAnimation(const DynamicAnimation& animation);
     ~DynamicAnimation();
 
@@ -36,6 +36,6 @@ public:
     void setCallback(std::function<void()>& callback);
 
 private:
-    void initialize(const std::vector<ui32>& frames, const uvec2& slices, const uvec2& sliceSize);
+    void initialize(const std::vector<ui32>& frames, const uvec2& slices, const vec2& sliceSize);
     void buildFrameTimeVector(const f32& frameTime);
 };

@@ -1,5 +1,7 @@
 #include "game/Game.h"
 #include "assets/data/LevelData.h"
+#include "game/scenes/LevelScene.h"
+#include "game/scenes/LevelReader.h"
 
 Game::Game () :
     window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "M-Guy editable", sf::Style::Close),
@@ -16,6 +18,8 @@ void Game::initialize () {
     setupDebugInfo();
 
     sf::Listener::setGlobalVolume(50.f);
+
+    LevelScene* ls = LevelReader::loadLevel("level1-1-test");
 
     scene.onEnter();
     Time::start();
