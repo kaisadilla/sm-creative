@@ -7,8 +7,8 @@
 #include "Debug.h"
 #include "SM_Time.h"
 #include "JobManager.h"
-#include "game/scenes/SceneLevel.h"
 #include "utils/FpsCounter.h"
+#include "game/scenes/Scene.h"
 
 class Game {
 private:
@@ -22,7 +22,7 @@ private:
     FpsCounter fpsCounter;
     f32 timeSinceLastFpsUpdate = 0.f;
 
-    SceneLevel scene;
+    Scene* scene;
 
     // Debug information;
     sf::Font debugFont;

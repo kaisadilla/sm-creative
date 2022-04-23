@@ -1,6 +1,6 @@
 #pragma once
 
-#include "entities/SuperMushroom.h"
+#include "SuperMushroom.h"
 
-#include "entities/Goomba.h"
-#include "entities/Koopa.h"
+#include "Goomba.h"
+#include "Koopa.h"

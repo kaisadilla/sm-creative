@@ -1,5 +1,5 @@
 #include "entities/Entity.h"
-#include "game/scenes/SceneLevel.h"
+#include "game/scenes/LevelScene.h"
 
 Entity::~Entity () {
     std::cout << "Destroying entity with id " << id << "\n";
@@ -16,7 +16,7 @@ void Entity::updatePhysics () {
 void Entity::setSprite (const ui32 spriteIndex) {
     const string& texName = Assets::getEntitySpriteAt(spriteIndex);
 
-    texture.loadFromFile("res/sprites/entities" + texName + ".png");
+    texture.loadFromFile("res/sprites/entities/" + texName + ".png");
     sprite = sf::RectangleShape(entitySize);
     sprite.setTexture(&texture);
     sprite.setTextureRect(sf::IntRect(0, 0, textureSize.x, textureSize.y));
@@ -36,6 +36,10 @@ void Entity::setColliderSize (const sf::IntRect& colliderPosition) {
     Collider::calculateVectorsInsideSprite(size, colliderPosition, colliderCenter, colliderEdge);
     collider.setRelativeCenter(colliderCenter);
     collider.setDistanceToEdge(colliderEdge);
+}
+
+void Entity::setLevel (LevelScene* level) {
+    this->level = level;
 }
 
 void Entity::initializeDefaultSpriteAndColliderSizes (const vec2& spriteSize, const sf::IntRect& colliderPosition) {

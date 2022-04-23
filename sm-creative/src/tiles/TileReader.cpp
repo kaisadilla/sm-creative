@@ -1,11 +1,12 @@
 #include "tiles/TileReader.h"
 
 #include "assets/Assets.h"
-#include "tiles/Block.h"
-#include "tiles/BackgroundTile.h"
+#include "tiles/tiles.h"
 
 
 Tile* TileReader::getNextTile (Buffer& reader) {
+    // The position of the cursor before we begin reading this tile.
+    const ui32 startOffset = reader.getReadOffset();
     Tile* tile = nullptr;
 
     const ui32 tileType = reader.readUInt32_LE();
@@ -25,9 +26,38 @@ Tile* TileReader::getNextTile (Buffer& reader) {
     else if (tileType == ID_BACKGROUND) {
         tile = new BackgroundTile();
     }
+    else if (tileType == ID_QUESTION_BLOCK) {
+        const bool isHidden = reader.readUInt8();
+        const byte contentType = reader.readUInt8();
+        const byte hitCount = reader.readUInt8();
 
-    tile->setPosition(ivec2(posX, posY));
-    tile->setAnimation(std::unique_ptr<SpriteAnimation>(animation));
+        tile = new QuestionBlock(isHidden, std::unique_ptr<Entity>(), hitCount);
+    }
+    else if (tileType == ID_DONUT_BLOCK) {
+        tile = new DonutBlock();
+    }
+    else if (tileType == ID_PLATFORM_TOP) {
+        tile = new PlatformTop();
+    }
+    else if (tileType == ID_BREAKABLE_BLOCK) {
+        tile = new BreakableBlock();
+    }
+    else if (tileType == ID_PIPE_ORIGIN) {
+        const bool containsWarp = reader.readUInt8();
+        const bool containsEntity = reader.readUInt8();
+        tile = new PipeOrigin();
+    }
+    else if (tileType == ID_PIPE_COMPONENT) {
+        tile = new PipeComponent();
+    }
+    else {
+        std::cerr << "Invalid tile behavior ID: " << tileType << " (Address: 0x" << std::hex << startOffset << "|" << reader.getReadOffset() << std::dec << ")\n";
+    }
+
+    if (tile != nullptr) {
+        tile->setGridPosition(ivec2(posX, posY));
+        tile->setAnimation(std::unique_ptr<SpriteAnimation>(animation));
+    }
 
     return tile;
 }
@@ -47,8 +77,8 @@ SpriteAnimation* TileReader::getNextTileAnimation(Buffer& reader) {
 }
 
 SpriteAnimation* TileReader::getNextTileStaticAnimation (Buffer& reader) {
-    const uvec2 slices = uvec2(Assets::texturesPerRow, Assets::texturesPerRow);
-    const uvec2 sliceSize = uvec2(Assets::tileSize, Assets::tileSize);
+    const uvec2 slices(Assets::texturesPerRow, Assets::texturesPerRow);
+    const vec2 sliceSize(Assets::tileSize, Assets::tileSize);
 
     const ui32 spriteIndex = reader.readUInt32_LE();
     const ui32 tileIndex = Assets::tileIndices[spriteIndex][0];
@@ -57,8 +87,8 @@ SpriteAnimation* TileReader::getNextTileStaticAnimation (Buffer& reader) {
 }
 
 SpriteAnimation* TileReader::getNextTileDynamicAnimation (Buffer& reader) {
-    const uvec2 slices = uvec2(Assets::texturesPerRow, Assets::texturesPerRow);
-    const uvec2 sliceSize = uvec2(Assets::tileSize, Assets::tileSize);
+    const uvec2 slices(Assets::texturesPerRow, Assets::texturesPerRow);
+    const vec2 sliceSize(Assets::tileSize, Assets::tileSize);
 
     const ui32 spriteIndex = reader.readUInt32_LE();
     const ui32 sliceCount = reader.readUInt8();
@@ -78,7 +108,7 @@ SpriteAnimation* TileReader::getNextTileDynamicAnimation (Buffer& reader) {
     // frame is a value
     if (frameTimesLength == 0) {
         const ui32 frameTime = reader.readFloat_LE();
-        return new DynamicAnimation(frameTime, frames, slices, sliceSize);
+        return new DynamicAnimation(slices, sliceSize, frameTime, frames);
     }
     // frame is an array of values.
     else {
@@ -88,6 +118,6 @@ SpriteAnimation* TileReader::getNextTileDynamicAnimation (Buffer& reader) {
             frameTimes[i] = reader.readFloat_LE();
         }
 
-        return new DynamicAnimation(frameTimes, frames, slices, sliceSize);
+        return new DynamicAnimation(slices, sliceSize, frameTimes, frames);
     }
 }

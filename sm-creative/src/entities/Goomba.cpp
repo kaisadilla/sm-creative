@@ -1,6 +1,5 @@
 #include "entities/Goomba.h"
 #include "entities/Player.h"
-#include "game/scenes/SceneLevel.h"
 
 Goomba::Goomba(bool avoidsCliffs, bool startingDirectionRight) :
     IAvoidCliffs(avoidsCliffs, size.y), // TODO: Size is not yet defined at this point.

@@ -1,5 +1,4 @@
 #include "entities/behavior/IAvoidCliffs.h"
-#include "game/scenes/SceneLevel.h"
 
 IAvoidCliffs::IAvoidCliffs(const bool avoidsCliffs, const f32 mobHeight) :
     offsetDown((i32)std::ceilf(mobHeight / 16.f)),
@@ -21,10 +20,12 @@ void IAvoidCliffs::checkCliffs(Mob* mob, f32 speed) {
         checkedCliffTile = ivec2(gridPos.x + 1, gridPos.y + offsetDown);
     }
 
-    const WorldTile* tileAtLeft = mob->level->getTileAt(checkedCliffTile.x, checkedCliffTile.y);
-    if (tileAtLeft == nullptr || tileAtLeft->isAirTile()) {
-        mob->velocity.x = speed;
-    }
+    // TODO: Uncomment.
+
+    //const WorldTile* tileAtLeft = mob->level->getTileAt(checkedCliffTile.x, checkedCliffTile.y);
+    //if (tileAtLeft == nullptr || tileAtLeft->isAirTile()) {
+    //    mob->velocity.x = speed;
+    //}
 }
 
 void IAvoidCliffs::drawDebugInfo_cliffDetection(sf::RenderWindow& window) {

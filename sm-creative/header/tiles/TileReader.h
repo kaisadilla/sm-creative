@@ -22,6 +22,11 @@ private:
         SPRITE_TYPE_DYNAMIC
     };
 
+    enum ContentType {
+        CONTENT_TYPE_ENTITY,
+        CONTENT_TYPE_TILE
+    };
+
 public:
     static Tile* getNextTile(Buffer& reader);
 

@@ -4,6 +4,7 @@
 
 #include "root.h"
 #include "SM_Time.h"
+#include "assets/Assets.h"
 #include "animation/AnimationState.h"
 #include "physics/Collider.h"
 #include "physics/IGameObject.h"
@@ -43,7 +44,7 @@ protected:
     /// <summary>
     /// The level scene this entity is currently in.
     /// </summary>
-    LevelScene* scene = nullptr;
+    LevelScene* level = nullptr;
     /// <summary>
     /// If true, the entity won't be pushed out of solid tiles when it collides with them.
     /// If the entity has gravity, this means it will fall through the floor.
@@ -77,7 +78,7 @@ protected:
      **********/
     AnimationState animations;
     sf::Texture texture;
-    sf::RectangleShape sprite;
+    sf::RectangleShape sprite; // TODO: Replace with sf::Sprite
     f32 animationSpeed = 1.f;
     /// <summary>
     /// If true, the sprite will be rendered flipped horizontally.
@@ -106,10 +107,6 @@ protected:
     /// If this value is greater than zero, collisions with entities are ignored.
     /// </summary>
     f32 ignoreEntityCollisionTimer = 0.f;
-    
-
-    // TODO: REMOVE
-    SceneLevel* level;
 
 public:
     Entity() {};
@@ -122,6 +119,7 @@ public:
     void setDefaultSizes(const vec2& entitySize, const vec2& textureSize, const sf::IntRect& collider);
     void setSprite(const ui32 spriteIndex);
     void setColliderSize(const sf::IntRect& colliderPosition); // TODO: Rename to setColliderPosition.
+    void setLevel(LevelScene* level);
     virtual void initializeAnimations() = 0;
 
     /**********
@@ -138,7 +136,7 @@ public:
     // remove:
 
     /// <summary>
-    /// Changes the sizes of this mob's sprite and collider. The values given
+    /// Changes the sizes of this entity's sprite and collider. The values given
     /// are set up as its default values.
     /// </summary>
     /// <param name="spriteSize">The size of the sprite, in pixels.</param>
@@ -177,14 +175,14 @@ public:
     }
 
     /// <summary>
-    /// Returns true if this mob is marked to be deleted.
+    /// Returns true if this entity is marked to be deleted.
     /// </summary>
     inline bool getDisposePending () {
         return disposePending;
     }
 
     /// <summary>
-    /// Returns the exact position of the mob inside the level.
+    /// Returns the exact position of the entity inside the level.
     /// </summary>
     inline vec2 getPosition () const {
         return position;
@@ -195,14 +193,14 @@ public:
     }
 
     /// <summary>
-    /// Returns the position of the mob aligned with the pixel grid.
+    /// Returns the position of the entity aligned with the pixel grid.
     /// </summary>
     inline vec2 getPixelPosition () const {
         return vec2((f32)(i32)position.x, (f32)(i32)position.y);
     }
 
     /// <summary>
-    /// Returns the position the mob is currently in within the level's tile grid.
+    /// Returns the position the entity is currently in within the level's tile grid.
     /// </summary>
     /// <returns></returns>
     inline ivec2 getGridPosition () const {
@@ -210,7 +208,7 @@ public:
     }
 
     /// <summary>
-    /// For the tile cell the mob is currently in, returns its offset (in pixels) from the cell's top-left corner.
+    /// For the tile cell the entity is currently in, returns its offset (in pixels) from the cell's top-left corner.
     /// </summary>
     inline ivec2 getGridPositionOffset () const {
         return ivec2((i32)position.x & 0xf, (i32)position.y & 0xf);
@@ -232,6 +230,10 @@ public:
         this->position = position;
         collider.setPosition(position);
         sprite.setPosition(getPixelPosition() + vec2(0, 1));
+    }
+
+    inline void setGridPosition (const ivec2& position) {
+        setPosition(vec2(position.x * PIXELS_PER_TILE, position.y * PIXELS_PER_TILE));
     }
 
     inline void draw (sf::RenderWindow& window) const {

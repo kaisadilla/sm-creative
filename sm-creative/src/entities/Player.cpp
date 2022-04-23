@@ -1,7 +1,7 @@
 #include "entities/Player.h"
 #include "entities/Item.h"
 #include "entities/Mob.h"
-#include "game/scenes/SceneLevel.h"
+#include "game/scenes/LevelScene.h"
 
 Player::Player () {
     destroyWhenOutOfBounds = false;

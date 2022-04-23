@@ -4,16 +4,17 @@
 #include "assets/Assets.h"
 #include "tiles/Tile.h"
 #include "entities/Entity.h"
+#include "player/Camera.h"
 
 class LevelScene : public Scene {
     friend class LevelReader;
 
 private:
-    i32 width = 0;
-    i32 height = 0;
+    ui32 width = 0;
+    ui32 height = 0;
 
-    sf::Texture texBackground;
-    sf::Sprite background;
+    sf::Texture backgroundTexture;
+    sf::Sprite backgroundImage;
     sf::Music music;
 
     std::vector<std::unique_ptr<Tile>> backgroundLayer;
@@ -23,9 +24,26 @@ private:
 
     std::vector<std::unique_ptr<Entity>> entities;
 
+    Camera camera;
+
 public:
     LevelScene();
 
-private:
+    void onEnter() override;
+    void onDraw(sf::RenderWindow& window) override;
 
+private:
+    void loadBackground(const string& name);
+    void loadMusic(const string& name);
+
+    void drawLayer(sf::RenderWindow& window, std::vector<std::unique_ptr<Tile>>& layer);
+
+public:
+    inline ui32 getWidth () const {
+        return width;
+    }
+
+    inline ui32 getHeight () const {
+        return height;
+    }
 };

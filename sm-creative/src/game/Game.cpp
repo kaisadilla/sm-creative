@@ -4,8 +4,7 @@
 #include "game/scenes/LevelReader.h"
 
 Game::Game () :
-    window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "M-Guy editable", sf::Style::Close),
-    scene(WINDOW_WIDTH, WINDOW_HEIGHT, LevelData())
+    window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "M-Guy editable", sf::Style::Close)
 {}
 
 void Game::initialize () {
@@ -19,9 +18,11 @@ void Game::initialize () {
 
     sf::Listener::setGlobalVolume(50.f);
 
-    LevelScene* ls = LevelReader::loadLevel("level1-1-test");
+    //scene = LevelReader::loadLevel("level1-1-test");
+    scene = LevelReader::loadLevel("level1-1");
 
-    scene.onEnter();
+    scene->setWindowSize(window.getSize(), vec2(2.f, 2.f));
+    scene->onEnter();
     Time::start();
 }
 
@@ -38,12 +39,12 @@ void Game::update () {
 
     updateFps();
     pollEvents();
-    scene.onUpdate();
+    //scene.onUpdate(); // TODO: Uncomment
 }
 
 void Game::draw () {
     window.clear();
-    scene.onDraw(window);
+    scene->onDraw(window);
 
     if (Debug::showDebugInfo) drawDebugInfo();
 
@@ -51,7 +52,7 @@ void Game::draw () {
 }
 
 void Game::lateUpdate () {
-    scene.onLateUpdate();
+    //scene.onLateUpdate(); // TODO: Uncomment
 }
 
 bool Game::isOpen () {
@@ -86,7 +87,7 @@ void Game::setupDebugInfo () {
 }
 
 void Game::fixedUpdate () {
-    scene.onFixedUpdate();
+    //scene.onFixedUpdate(); // TODO: Uncomment
 }
 
 void Game::updateFps () {
@@ -147,7 +148,7 @@ void Game::pollEvents () {
             }
         }
 
-        scene.onEvent(evt);
+        //scene.onEvent(evt); // TODO: Uncomment
     }
 }
 

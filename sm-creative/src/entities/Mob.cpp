@@ -1,5 +1,4 @@
 #include "entities/Mob.h"
-#include "game/scenes/SceneLevel.h"
 
 void Mob::checkCollisionWithEnemies (const std::vector<Mob*>& enemies, int start) {
     if (collidesWithEntities()) {

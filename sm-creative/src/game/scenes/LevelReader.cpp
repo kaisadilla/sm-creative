@@ -2,10 +2,12 @@
 #include "libraries/Buffer.hpp"
 #include "tiles/TileReader.h"
 #include "entities/EntityReader.h"
+#include "utils/files.h"
 
 LevelScene* LevelReader::loadLevel(const string& fileName) {
-    std::ifstream input("res/data/levels/" + fileName + ".sm-binl");
-    std::vector<byte_f> buffer(std::istreambuf_iterator<char>(input), {});
+    //std::ifstream input("res/data/levels/" + fileName + ".sm-binl", std::ios::in | std::ios::binary);
+    //std::vector<byte_f> buffer((std::istreambuf_iterator<char>(input)), std::istreambuf_iterator<char>());
+    auto& buffer = utils::readBinaryFile("res/data/levels/" + fileName + ".sm-binl");
     Buffer reader(buffer);
 
     LevelScene* level = new LevelScene();
@@ -57,7 +59,11 @@ LevelScene* LevelReader::loadLevel(const string& fileName) {
         level->entities[i] = std::unique_ptr<Entity>(entity);
     }
 
-    int k = 3;
+    level->width = width;
+    level->height = height;
+
+    level->loadBackground(Assets::getBackgroundImageAt(background));
+    level->loadMusic(Assets::getMusicAt(music));
 
     return level;
 }

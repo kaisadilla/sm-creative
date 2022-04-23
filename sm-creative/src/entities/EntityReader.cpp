@@ -55,6 +55,7 @@ Entity* EntityReader::getNextEntity (Buffer& reader) {
     const vec2 spriteSize(spriteSizeX, spriteSizeY);
     const sf::IntRect collider(colliderTop, colliderLeft, colliderWidth, colliderHeight);
 
+    entity->setGridPosition(ivec2(posX, posY));
     entity->setDefaultSizes(entitySize, spriteSize, collider);
     entity->setSprite(spriteIndex);
     entity->initializeAnimations();

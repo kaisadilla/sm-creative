@@ -20,4 +20,10 @@ namespace utils {
 
         return file_content;
     }
+
+    std::vector<unsigned char> readBinaryFile (const std::string& filePath) {
+        std::ifstream in(filePath, std::ios::in | std::ios::binary);
+        std::vector<unsigned char> data((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
+        return data;
+    }
 }

@@ -1,6 +1,5 @@
 #include "entities/Koopa.h"
 #include "entities/Player.h"
-#include "game/scenes/SceneLevel.h"
 
 Koopa::Koopa(bool avoidsCliffs, bool startingDirectionRight, bool canRevive, bool playerCanGrabShell) :
     IAvoidCliffs(avoidsCliffs, size.y),
