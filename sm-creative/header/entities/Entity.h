@@ -13,6 +13,7 @@
 class LevelScene;
 class SceneLevel; // TODO: REMOVE
 class Player;
+class Tile;
 
 class Entity : public IGameObject {
 protected:
@@ -129,9 +130,18 @@ public:
     virtual void onUpdate();
     virtual void onFixedUpdate();
 
+    virtual void onCollisionWithTile(Collision& collision, Tile& tile) {};
+    virtual void onCollisionWithEntity(Collision& collision, Entity& entity) {};
+    virtual void onCollisionWithPlayer(Collision& collision, Player& player) {};
+
     /***********
      * PHYSICS *
      ***********/
+    virtual void updatePhysics();
+    void move(vec2 direction);
+    void move(f32 x, f32 y);
+    void checkCollisionWithTiles (const std::vector<std::unique_ptr<Tile>>& tiles, const i32 startingIndex = 0);
+    void checkCollisionWithEntities (const std::vector<std::unique_ptr<Entity>>& entities, const i32 startingIndex = 0);
 
     // remove:
 
@@ -143,27 +153,20 @@ public:
     /// <param name="colliderPosition">The position of the collider relative to the sprite.</param>
     void initializeDefaultSpriteAndColliderSizes(const vec2& spriteSize, const sf::IntRect& colliderPosition); // TODO: DELETE
 
-    void setSprite(const char* name, vec2 size);
-
-    void move(vec2 direction);
-    void move(f32 x, f32 y);
-    virtual void updatePhysics();
-    virtual void checkCollisionsWithTiles(const std::vector<Collider>& colliders);
-
     virtual void jump(f32 strength);
     virtual void takeDamage(bool forceDeath, Direction direction = Direction::NONE) = 0;
     virtual void die();
     virtual void dispose();
-
-    virtual void onCollisionWithTile(Collision& collision) {};
-    virtual void onCollisionWithPlayer(Collision& collision, Player& player) {};
     virtual void checkOutOfBounds();
 
     virtual void drawDebugInfo(sf::RenderWindow& window) {};
 
 protected:
-    bool isCollisionValid(const Collision& collision) const;
+    bool isCollisionValid(const Collision& collision, const Tile& tile) const;
     virtual void checkLookingLeft();
+
+public:
+    void __TEMPORARY_set_sprite_by_filename(const char* name, vec2 size);
 
 public:
     inline i32 getId () const {

@@ -63,15 +63,12 @@ public:
     void onUpdate() override;
     void onFixedUpdate() override;
 
-    void checkCollisionWithEnemies(const std::vector<Mob*>& enemies);
-    void checkCollisionWithItems(const std::vector<std::unique_ptr<Item>>& items);
-
     void setMode(MarioMode mode);
     void takeDamage(bool forceDeath, Direction direction = Direction::NONE) override;
     void die() override;
 
 private:
-    void onCollisionWithTile(Collision& collision) override;
+    void onCollisionWithTile(Collision& collision, Tile& tile) override;
 
     void input();
     void playerJumpStart();

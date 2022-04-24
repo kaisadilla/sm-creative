@@ -24,7 +24,7 @@ public:
     void onUpdate() override;
     void onFixedUpdate() override;
 
-    void onCollisionWithTile(Collision& collision) override;
+    void onCollisionWithTile(Collision& collision, Tile& tile) override;
     void onCollisionWithMob(Collision& collision, Mob* mob) override;
     void onCollisionWithPlayer(Collision& collision, Player& player) override;
 

@@ -35,7 +35,7 @@ void Goomba::onFixedUpdate () {
     }
 }
 
-void Goomba::onCollisionWithTile (Collision& collision) {
+void Goomba::onCollisionWithTile (Collision& collision, Tile& tile) {
     if (collision.direction == Direction::LEFT) {
         velocity.x = WALKING_SPEED;
     }

@@ -34,7 +34,7 @@ void Collider::calculateVectorsInsideSprite (const vec2& spriteSize, const sf::I
     distanceToEdge = vec2(xHalf, yHalf);
 }
 
-bool Collider::checkColision(const Collider& collider, Collision& collision) {
+bool Collider::checkCollision(const Collider& collider, Collision& collision) {
     // the distances of the centers of the two items.
     f32 xDelta = getAbsoluteCenter().x - collider.getAbsoluteCenter().x;
     f32 yDelta = getAbsoluteCenter().y - collider.getAbsoluteCenter().y;

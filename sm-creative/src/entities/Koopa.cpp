@@ -55,7 +55,7 @@ void Koopa::onFixedUpdate () {
     checkShellRevive();
 }
 
-void Koopa::onCollisionWithTile (Collision& collision) {
+void Koopa::onCollisionWithTile (Collision& collision, Tile& tile) {
     if (collision.direction == Direction::LEFT) {
         velocity.x = isShell ? SHELL_SPEED : WALKING_SPEED;
     }

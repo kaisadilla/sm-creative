@@ -1,5 +1,6 @@
 #include "entities/Entity.h"
 #include "game/scenes/LevelScene.h"
+#include "tiles/Tile.h"
 
 Entity::~Entity () {
     std::cout << "Destroying entity with id " << id << "\n";
@@ -20,14 +21,6 @@ void Entity::setSprite (const ui32 spriteIndex) {
     sprite = sf::RectangleShape(entitySize);
     sprite.setTexture(&texture);
     sprite.setTextureRect(sf::IntRect(0, 0, textureSize.x, textureSize.y));
-}
-
-void Entity::setSprite (const char* name, vec2 size) {
-    texture.loadFromFile(string("res/sprites/entities/") + name + string(".png"));
-
-    sprite = sf::RectangleShape(vec2(size.x, size.y));
-    sprite.setTexture(&texture);
-    sprite.setTextureRect(sf::IntRect(0, 0, size.x, size.y));
 }
 
 void Entity::setColliderSize (const sf::IntRect& colliderPosition) {
@@ -74,70 +67,6 @@ void Entity::dispose () {
     disposePending = true;
 }
 
-void Entity::checkCollisionsWithTiles (const std::vector<Collider>& colliders) {
-    constexpr f32 COLLISION_THRESHOLD = 1.5f;
-
-    if (ignoresTiles) {
-        return;
-    }
-
-    isGrounded = false;
-    std::vector<const Collider*> secondRound;
-
-    for (const Collider& otherCollider : colliders) {
-        Collision collision;
-
-        if (collider.checkColision(otherCollider, collision)) {
-            if (!isCollisionValid(collision)) continue;
-
-            if (collision.direction == Direction::UP || collision.direction == Direction::DOWN) {
-                collided = true;
-                if (!canGoThroughTiles) {
-                    if (std::abs(collision.intersection.x) > COLLISION_THRESHOLD) {
-                        move(0, collision.intersection.y);
-                        velocity.y = 0.f;
-
-                        if (collision.direction == Direction::DOWN) {
-                            isGrounded = true;
-                        }
-                    }
-                }
-
-                onCollisionWithTile(collision);
-            }
-            else if (collision.direction == Direction::LEFT || collision.direction == Direction::RIGHT) {
-                secondRound.push_back(&otherCollider);
-            }
-        }
-    }
-
-    for (const Collider* otherCollider : secondRound) {
-        Collision collision;
-
-        if (collider.checkColision(*otherCollider, collision)) {
-            if (!isCollisionValid(collision)) continue;
-
-            collided = true;
-            if (!canGoThroughTiles) {
-                velocity.x = 0.f;
-
-                if (std::abs(collision.intersection.y) > COLLISION_THRESHOLD) {
-                    move(collision.intersection.x, 0);
-                }
-            }
-
-            onCollisionWithTile(collision);
-        }
-    }
-
-    //if (isGrounded) {
-    //    sprite.setFillColor(sf::Color::Green);
-    //}
-    //else {
-    //    sprite.setFillColor(collided ? sf::Color::Red : sf::Color::White);
-    //}
-}
-
 void Entity::move (vec2 direction) {
     setPosition(vec2(position.x + direction.x, position.y + direction.y));
 }
@@ -178,18 +107,105 @@ void Entity::onFixedUpdate () {
     checkOutOfBounds();
 }
 
+void Entity::checkCollisionWithTiles (const std::vector<std::unique_ptr<Tile>>& tiles, const i32 startingIndex) {
+    constexpr f32 COLLISION_THRESHOLD = 1.5f;
+
+    if (ignoresTiles) {
+        return;
+    }
+
+    isGrounded = false;
+
+    std::vector<i32> secondRound;
+    Collision collision;
+
+    for (i32 i = startingIndex; i < tiles.size(); i++) {
+        const auto& tile = tiles[i];
+
+        if (collider.checkCollision(tile->getCollider(), collision)) {
+            if (!isCollisionValid(collision, *tile)) continue;
+
+            if (collision.direction == Direction::UP || collision.direction == Direction::DOWN) {
+                collided = true;
+
+                if (!canGoThroughTiles) {
+                    if (std::abs(collision.intersection.x) > COLLISION_THRESHOLD) {
+                        move(0, collision.intersection.y);
+                        velocity.y = 0.f;
+
+                        if (collision.direction == Direction::DOWN) {
+                            isGrounded = true;
+                        }
+                    }
+                }
+
+                onCollisionWithTile(collision, *tile);
+            }
+            else if (collision.direction == Direction::LEFT || collision.direction == Direction::RIGHT) {
+                secondRound.push_back(i);
+            }
+        }
+    }
+
+    for (const i32 i : secondRound) {
+        const auto& tile = tiles[i];
+
+        if (collider.checkCollision(tile->getCollider(), collision)) {
+            if (!isCollisionValid(collision, *tile)) continue;
+
+            collided = true;
+            if (!canGoThroughTiles) {
+                velocity.x = 0.f;
+
+                if (std::abs(collision.intersection.y) > COLLISION_THRESHOLD) {
+                    move(collision.intersection.x, 0);
+                }
+            }
+
+            onCollisionWithTile(collision, *tile);
+        }
+    }
+}
+
+void Entity::checkCollisionWithEntities (const std::vector<std::unique_ptr<Entity>>& entities, const i32 startingIndex) {
+    if (!collidesWithEntities()) {
+        return;
+    }
+
+    Collision collision;
+
+    for (i32 i = startingIndex; i < entities.size(); i++) {
+        const auto& entity = entities[i];
+
+        if (collider.checkCollision(entity->getCollider(), collision)) {
+            if (entity->collidesWithEntities()) {
+                // two ifs because the "ignoresMobs" property could change
+                //after each collision event.
+                if (!this->ignoresMobs && !entity->ignoresMobs) {
+                    this->onCollisionWithEntity(collision, *entity);
+                }
+                if (!this->ignoresMobs && !entity->ignoresMobs) {
+                    entity->onCollisionWithEntity(collision, *this);
+                }
+            }
+        }
+    }
+}
+
 void Entity::checkOutOfBounds () {
-    if (position.x < -32.f || position.x > level->getWidth() + 32.f) {
+    if (position.x < -32.f || position.x > level->getPixelWidth() + 32.f) {
         dispose();
     }
-    else if (position.y < -240.f || position.y > level->getHeight() + 32.f) {
+    else if (position.y < -240.f || position.y > level->getPixelHeight() + 32.f) {
         dispose();
     }
 }
 
-bool Entity::isCollisionValid (const Collision& collision) const {
-    WorldTile* tile = (WorldTile*)collision.collider->getGameObject();
-    return tile->getTile()->hasMobCollided(collision, velocity);
+bool Entity::isCollisionValid (const Collision& collision, const Tile& tile) const {
+    return true;
+    // TODO: tile does indeed have a valid collision method.
+    //WorldTile* tile = (WorldTile*)collision.collider->getGameObject();
+    //return tile->getTile()->hasMobCollided(collision, velocity);
 }
 
 void Entity::checkLookingLeft () {
@@ -200,4 +216,12 @@ void Entity::checkLookingLeft () {
     else if (velocity.x > 0.f) {
         isLookingLeft = false;
     }
+}
+
+void Entity::__TEMPORARY_set_sprite_by_filename (const char* name, vec2 size) {
+    texture.loadFromFile(string("res/sprites/entities/") + name + string(".png"));
+
+    sprite = sf::RectangleShape(vec2(size.x, size.y));
+    sprite.setTexture(&texture);
+    sprite.setTextureRect(sf::IntRect(0, 0, size.x, size.y));
 }

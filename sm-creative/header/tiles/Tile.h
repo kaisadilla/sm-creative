@@ -4,8 +4,10 @@
 #include "SM_Time.h"
 #include "animation/StaticAnimation.h"
 #include "animation/DynamicAnimation.h"
+#include "physics/Collider.h"
+#include "physics/IGameObject.h"
 
-class Tile {
+class Tile : public IGameObject {
     friend class TileReader;
 
 protected:
@@ -13,8 +15,15 @@ protected:
     std::unique_ptr<SpriteAnimation> animation;
     sf::Sprite sprite;
 
+    /************
+     * COLLIDER *
+     ************/
+    Collider collider;
+
 public:
     Tile();
+
+    GameObjectType getType() override { return GameObjectType::Tile; }
     
     void onUpdate();
 
@@ -24,6 +33,10 @@ public:
     /// </summary>
     inline vec2 getPixelPosition () const {
         return vec2(std::floorf(position.x), std::floorf(position.y));
+    }
+
+    inline Collider getCollider () const {
+        return collider;
     }
 
     inline void setPosition (const vec2& position) {

@@ -26,7 +26,7 @@ void SuperMushroom::onUpdate () {
     Item::onUpdate();
 }
 
-void SuperMushroom::onCollisionWithTile (Collision& collision) {
+void SuperMushroom::onCollisionWithTile (Collision& collision, Tile& tile) {
     if (collision.direction == Direction::LEFT) {
         velocity.x = SPEED_X;
     }

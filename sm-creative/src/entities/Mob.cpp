@@ -7,7 +7,7 @@ void Mob::checkCollisionWithEnemies (const std::vector<Mob*>& enemies, int start
         for (i32 i = start; i < enemies.size(); i++) {
             const auto& enemy = enemies[i];
 
-            if (collider.checkColision(enemy->getCollider(), collision)) {
+            if (collider.checkCollision(enemy->getCollider(), collision)) {
                 if (enemy->collidesWithEntities()) {
                     // two ifs because the "ignoresMobs" properties could change
                     // after each collision event.

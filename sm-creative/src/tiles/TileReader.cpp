@@ -4,7 +4,7 @@
 #include "tiles/tiles.h"
 
 
-Tile* TileReader::getNextTile (Buffer& reader) {
+Tile* TileReader::getNextTile (Buffer& reader, const bool generateCollider) {
     // The position of the cursor before we begin reading this tile.
     const ui32 startOffset = reader.getReadOffset();
     Tile* tile = nullptr;
@@ -57,6 +57,14 @@ Tile* TileReader::getNextTile (Buffer& reader) {
     if (tile != nullptr) {
         tile->setGridPosition(ivec2(posX, posY));
         tile->setAnimation(std::unique_ptr<SpriteAnimation>(animation));
+
+        if (generateCollider) {
+            const vec2 colliderPosition = vec2(posX * PIXELS_PER_TILE, posY * PIXELS_PER_TILE);
+            const vec2 colliderCenter = vec2(PIXELS_PER_TILE / 2.f, PIXELS_PER_TILE / 2.f);
+            const vec2 colliderDistanceToEdge = vec2(PIXELS_PER_TILE / 2.f, PIXELS_PER_TILE / 2.f);
+
+            tile->collider = Collider(tile, colliderPosition, colliderCenter, colliderDistanceToEdge);
+        }
     }
 
     return tile;

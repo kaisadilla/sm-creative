@@ -57,7 +57,7 @@ void Player::onFixedUpdate () {
     checkLevelBoundaries();
 }
 
-void Player::onCollisionWithTile (Collision& collision) {
+void Player::onCollisionWithTile (Collision& collision, Tile& tile) {
     if (collision.direction == Direction::UP) {
         playerJumpEnd(true);
     }
@@ -155,30 +155,6 @@ void Player::playerJumpEnd (bool forced) {
     }
 }
 
-void Player::checkCollisionWithEnemies (const std::vector<Mob*>& enemies) {
-    if (!isDead) {
-        Collision collision;
-        for (const auto& enemy : enemies) {
-            if (collider.checkColision(enemy->getCollider(), collision)) {
-                if (enemy->collidesWithEntities()) {
-                    enemy->onCollisionWithPlayer(collision, *this);
-                }
-            }
-        }
-    }
-}
-
-void Player::checkCollisionWithItems (const std::vector<std::unique_ptr<Item>>& items) {
-    if (!isDead) {
-        Collision collision;
-        for (const auto& item : items) {
-            if (collider.checkColision(item->getCollider(), collision)) {
-                item->onCollisionWithPlayer(collision, *this);
-            }
-        }
-    }
-}
-
 void Player::setMode (MarioMode mode) {
     if (mode == MarioMode::BIG) {
         currentMode = mode;
@@ -194,7 +170,7 @@ void Player::die () {
     Entity::die();
     sound_death.play();
 }
-
+ 
 void Player::setAnimationState () {
     animationSpeed = 1.f;
     if (isDead) {
@@ -206,7 +182,7 @@ void Player::setAnimationState () {
                 animations.setState(getCurrentAnimState_still());
             }
             else if (velocity.x < 0.f) {
-                // if the player is moving left but pressing right, it is skidding.
+                // if the player is moving left but pressing right, they are skidding.
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) {
                     animations.setState(getCurrentAnimState_skid());
                 }
@@ -216,7 +192,7 @@ void Player::setAnimationState () {
                 }
             }
             else if (velocity.x > 0.f) {
-                // if the player is moving right but pressing left, it is skidding.
+                // if the player is moving right but pressing left, they are skidding.
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)) {
                     animations.setState(getCurrentAnimState_skid());
                 }
@@ -236,8 +212,8 @@ void Player::checkLevelBoundaries () {
     if (position.x < 0) {
         position.x = 0;
     }
-    else if (position.x > level->getWidth() - size.y) {
-        position.x = level->getWidth() - size.y;
+    else if (position.x > level->getPixelWidth() - size.y) {
+        position.x = level->getPixelWidth() - size.y;
     }
 }
 

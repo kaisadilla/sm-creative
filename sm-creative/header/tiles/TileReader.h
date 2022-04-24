@@ -28,7 +28,7 @@ private:
     };
 
 public:
-    static Tile* getNextTile(Buffer& reader);
+    static Tile* getNextTile(Buffer& reader, const bool generateCollider);
 
 private:
     static SpriteAnimation* getNextTileAnimation(Buffer& reader);

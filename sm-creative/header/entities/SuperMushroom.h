@@ -19,7 +19,7 @@ public:
     void onStart() override;
     void onUpdate() override;
 
-    void onCollisionWithTile(Collision& collision) override;
+    void onCollisionWithTile(Collision& collision, Tile& tile) override;
     void onCollisionWithPlayer(Collision& collision, Player& player) override;
 
     void updatePhysics() override;

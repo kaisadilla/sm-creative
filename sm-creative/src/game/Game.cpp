@@ -18,7 +18,6 @@ void Game::initialize () {
 
     sf::Listener::setGlobalVolume(50.f);
 
-    //scene = LevelReader::loadLevel("level1-1-test");
     scene = LevelReader::loadLevel("level1-1");
 
     scene->setWindowSize(window.getSize(), vec2(2.f, 2.f));
@@ -39,7 +38,7 @@ void Game::update () {
 
     updateFps();
     pollEvents();
-    //scene.onUpdate(); // TODO: Uncomment
+    scene->onUpdate();
 }
 
 void Game::draw () {
@@ -52,7 +51,7 @@ void Game::draw () {
 }
 
 void Game::lateUpdate () {
-    //scene.onLateUpdate(); // TODO: Uncomment
+    scene->onLateUpdate();
 }
 
 bool Game::isOpen () {
@@ -65,7 +64,7 @@ void Game::setupDebugInfo () {
     }
 
     infoFps.setFont(debugFont);
-    infoFps.setString("FPS: 0");
+    infoFps.setString("FPS: 0" + cappedFps ? "[capped]" : "");
     infoFps.setPosition(8.f, 2.f);
     infoFps.setCharacterSize(12);
     infoFps.setFillColor(sf::Color::White);
@@ -87,14 +86,14 @@ void Game::setupDebugInfo () {
 }
 
 void Game::fixedUpdate () {
-    //scene.onFixedUpdate(); // TODO: Uncomment
+    scene->onFixedUpdate();
 }
 
 void Game::updateFps () {
     fpsCounter.count();
 
     if (fpsCounter.isUpdated()) {
-        infoFps.setString("FPS: " + std::to_string(fpsCounter.getFps()));
+        infoFps.setString("FPS: " + std::to_string(fpsCounter.getFps()) + (cappedFps ? " [capped]" : ""));
     }
 
     //if (fpsCounter.isUpdated()) {
@@ -132,6 +131,16 @@ void Game::pollEvents () {
             else if (evt.key.code == sf::Keyboard::Key::F5) {
                 Debug::drawDebugInfo = !Debug::drawDebugInfo;
             }
+            else if (evt.key.code == sf::Keyboard::Key::F10) {
+                if (cappedFps) {
+                    window.setFramerateLimit(0);
+                }
+                else {
+                    window.setFramerateLimit(180);
+                }
+
+                cappedFps = !cappedFps;
+            }
             else if (evt.key.code == sf::Keyboard::Key::F11) {
                 if (Time::getTimeScale() == 1.f) {
                     Time::setTimeScale(0.5f);
@@ -148,7 +157,7 @@ void Game::pollEvents () {
             }
         }
 
-        //scene.onEvent(evt); // TODO: Uncomment
+        scene->onEvent(evt);
     }
 }
 

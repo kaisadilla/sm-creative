@@ -12,7 +12,7 @@ private:
     vec2 relativeCenter;
     vec2 distanceToEdge;
     
-    bool collidedThisFrame;
+    bool collidedThisFrame = false;
 
 public:
     Collider();
@@ -31,7 +31,7 @@ public:
     /// <param name="distanceToEdge">Returns the distance to the edge obtained by the calculation.</param>
     static void calculateVectorsInsideSprite(const vec2& spriteSize, const sf::IntRect& colliderPosition, vec2& relativeCenter, vec2& distanceToEdge);
 
-    bool checkColision(const Collider& collider, Collision& collision);
+    bool checkCollision(const Collider& collider, Collision& collision);
     sf::FloatRect getRelativeBounds() const;
     sf::FloatRect getAbsoluteBounds() const;
 

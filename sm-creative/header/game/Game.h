@@ -19,6 +19,7 @@ private:
     f32 cumulativeFixedTime = 0.f;
 
     // FPS counter.
+    bool cappedFps = true;
     FpsCounter fpsCounter;
     f32 timeSinceLastFpsUpdate = 0.f;
 
