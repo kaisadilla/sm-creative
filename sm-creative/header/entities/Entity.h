@@ -12,6 +12,8 @@
 
 class LevelScene;
 class SceneLevel; // TODO: REMOVE
+class Item;
+class Mob;
 class Player;
 class Tile;
 
@@ -130,10 +132,6 @@ public:
     virtual void onUpdate();
     virtual void onFixedUpdate();
 
-    virtual void onCollisionWithTile(Collision& collision, Tile& tile) {};
-    virtual void onCollisionWithEntity(Collision& collision, Entity& entity) {};
-    virtual void onCollisionWithPlayer(Collision& collision, Player& player) {};
-
     /***********
      * PHYSICS *
      ***********/
@@ -163,7 +161,16 @@ public:
 
 protected:
     bool isCollisionValid(const Collision& collision, const Tile& tile) const;
+
+    virtual void onCollisionWithTile(Collision& collision, Tile& tile) {};
+    virtual void onCollisionWithItem(Collision& collision, Item* item) {};
+    virtual void onCollisionWithEnemy(Collision& collision, Mob* enemy) {};
+    virtual void onCollisionWithPlayer(Collision& collision, Player* player) {};
+
     virtual void checkLookingLeft();
+
+private:
+    void triggerCollisionWithEntityEvent(Collision& collision, Entity* entity);
 
 public:
     void __TEMPORARY_set_sprite_by_filename(const char* name, vec2 size);

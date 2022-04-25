@@ -25,8 +25,8 @@ public:
     void onFixedUpdate() override;
 
     void onCollisionWithTile(Collision& collision, Tile& tile) override;
-    void onCollisionWithMob(Collision& collision, Mob* mob) override;
-    void onCollisionWithPlayer(Collision& collision, Player& player) override;
+    void onCollisionWithEnemy(Collision& collision, Mob* enemy) override;
+    void onCollisionWithPlayer(Collision& collision, Player* player) override;
 
     void takeDamage(bool forceDeath, Direction direction = Direction::NONE) override;
     void die() override;

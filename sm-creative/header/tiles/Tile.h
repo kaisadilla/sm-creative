@@ -5,6 +5,7 @@
 #include "animation/StaticAnimation.h"
 #include "animation/DynamicAnimation.h"
 #include "physics/Collider.h"
+#include "physics/Collision.h"
 #include "physics/IGameObject.h"
 
 class Tile : public IGameObject {
@@ -26,6 +27,8 @@ public:
     GameObjectType getType() override { return GameObjectType::Tile; }
     
     void onUpdate();
+
+    virtual bool hasMobCollided(const Collision& collision, const vec2& mobVelocity) const;
 
 public:
     /// <summary>

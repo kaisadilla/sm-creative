@@ -1,28 +1,5 @@
 #include "entities/Mob.h"
 
-void Mob::checkCollisionWithEnemies (const std::vector<Mob*>& enemies, int start) {
-    if (collidesWithEntities()) {
-        Collision collision;
-        
-        for (i32 i = start; i < enemies.size(); i++) {
-            const auto& enemy = enemies[i];
-
-            if (collider.checkCollision(enemy->getCollider(), collision)) {
-                if (enemy->collidesWithEntities()) {
-                    // two ifs because the "ignoresMobs" properties could change
-                    // after each collision event.
-                    if (!this->ignoresMobs && !enemy->ignoresMobs) {
-                        this->onCollisionWithMob(collision, enemy);
-                    }
-                    if (!this->ignoresMobs && !enemy->ignoresMobs) {
-                        enemy->onCollisionWithMob(collision, this);
-                    }
-                }
-            }
-        }
-    }
-}
-
 void Mob::onUpdate () {
     Entity::onUpdate();
 }

@@ -44,7 +44,7 @@ void Goomba::onCollisionWithTile (Collision& collision, Tile& tile) {
     }
 }
 
-void Goomba::onCollisionWithMob (Collision& collision, Mob* mob) {
+void Goomba::onCollisionWithEnemy (Collision& collision, Mob* enemy) {
     if (collision.getDirectionForGameObject(this) == Direction::LEFT) {
         velocity.x = -WALKING_SPEED;
     }
@@ -53,15 +53,15 @@ void Goomba::onCollisionWithMob (Collision& collision, Mob* mob) {
     }
 }
 
-void Goomba::onCollisionWithPlayer (Collision& collision, Player& player) {
+void Goomba::onCollisionWithPlayer (Collision& collision, Player* player) {
     if (!isDead) {
-        if (isBeingTrampledByPlayer(player.getColliderPosition())) {
+        if (isBeingTrampledByPlayer(player->getColliderPosition())) {
             takeDamage(false);
             sound_stomp.play();
-            player.jump(16.f * 16.f);
+            player->jump(16.f * 16.f);
         }
         else {
-            player.takeDamage(false);
+            player->takeDamage(false);
         }
     }
 }

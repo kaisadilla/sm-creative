@@ -56,6 +56,8 @@ private:
     void drawColliders(sf::RenderWindow& window);
     void drawDebugInfo(sf::RenderWindow& window);
 
+    void deleteDisposedEntities();
+
 public:
     inline ui32 getGridWidth () const {
         return width;

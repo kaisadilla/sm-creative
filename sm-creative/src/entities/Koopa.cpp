@@ -64,10 +64,10 @@ void Koopa::onCollisionWithTile (Collision& collision, Tile& tile) {
     }
 }
 
-void Koopa::onCollisionWithMob (Collision& collision, Mob* mob) {
+void Koopa::onCollisionWithEnemy (Collision& collision, Mob* enemy) {
     if (isShell) {
         if (std::abs(velocity.x) > 0.1f) {
-            mob->takeDamage(true, collision.getHorizontalDirectionForGameObject(mob));
+            enemy->takeDamage(true, collision.getHorizontalDirectionForGameObject(enemy));
         }
     }
     else {
@@ -80,36 +80,36 @@ void Koopa::onCollisionWithMob (Collision& collision, Mob* mob) {
     }
 }
 
-void Koopa::onCollisionWithPlayer (Collision& collision, Player& player) {
+void Koopa::onCollisionWithPlayer (Collision& collision, Player* player) {
     if (!isDead) {
         if (isShell) {
             if (std::abs(velocity.x) < 0.1f) {
                 pushShell(collision.horizontalDirection, collision.intersection.x);
             }
             else {
-                if (isBeingTrampledByPlayer(player.getColliderPosition())) {
+                if (isBeingTrampledByPlayer(player->getColliderPosition())) {
                     stopShell();
-                    player.jump(16.f * 16.f);
+                    player->jump(16.f * 16.f);
                 }
                 else {
-                    player.takeDamage(false);
+                    player->takeDamage(false);
                 }
             }
         }
         else {
-            if (isBeingTrampledByPlayer(player.getColliderPosition())) {
+            if (isBeingTrampledByPlayer(player->getColliderPosition())) {
                 if (canRevive) {
                     takeDamage(false);
-                    player.jump(16.f * 16.f);
+                    player->jump(16.f * 16.f);
                 }
                 else {
                     die();
                 }
                 sound_stomp.play();
-                player.jump(16.f * 16.f);
+                player->jump(16.f * 16.f);
             }
             else {
-                player.takeDamage(false);
+                player->takeDamage(false);
             }
         }
     }

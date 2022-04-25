@@ -35,10 +35,10 @@ void SuperMushroom::onCollisionWithTile (Collision& collision, Tile& tile) {
     }
 }
 
-void SuperMushroom::onCollisionWithPlayer (Collision& collision, Player& player) {
+void SuperMushroom::onCollisionWithPlayer (Collision& collision, Player* player) {
     isDead = true;
     despawnTimer = 0.f;
-    player.setMode(Player::MarioMode::BIG);
+    player->setMode(Player::MarioMode::BIG);
 }
 
 void SuperMushroom::updatePhysics () {

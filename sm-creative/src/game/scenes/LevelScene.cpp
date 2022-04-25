@@ -18,7 +18,7 @@ void LevelScene::onEnter () {
     __TEMPORARY_spritePause.setTexture(__TEMPORARY_texPause);
     __TEMPORARY_spritePause.setTextureRect(sf::IntRect(ivec2(0, 0), (ivec2)__TEMPORARY_texPause.getSize()));
 
-    //music.play();
+    music.play();
 }
 
 void LevelScene::onUpdate () {
@@ -28,6 +28,8 @@ void LevelScene::onUpdate () {
 
     player.onUpdate();
     camera.updatePosition(player.getPixelPosition());
+
+    deleteDisposedEntities();
 }
 
 void LevelScene::onFixedUpdate () {
@@ -127,6 +129,19 @@ void LevelScene::drawColliders (sf::RenderWindow& window) {
 void LevelScene::drawDebugInfo (sf::RenderWindow& window) {
     for (const auto& entity : entities) {
         entity->drawDebugInfo(window);
+    }
+}
+
+void LevelScene::deleteDisposedEntities () {
+    auto& it = entities.begin();
+
+    while (it != entities.end()) {
+        if ((*it)->getDisposePending()) {
+            it = entities.erase(it);
+        }
+        else {
+            it++;
+        }
     }
 }
 

@@ -9,7 +9,7 @@ public:
 
     GameObjectType getType() override { return GameObjectType::Item; }
 
-    virtual void onCollisionWithPlayer(Collision& collision, Player& player) override = 0;
+    virtual void onCollisionWithPlayer(Collision& collision, Player* player) override = 0;
 
     virtual void takeDamage(bool forceDeath, Direction direction = Direction::NONE);
 };

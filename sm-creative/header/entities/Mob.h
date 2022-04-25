@@ -21,12 +21,9 @@ public:
 
     GameObjectType getType() override { return GameObjectType::Enemy; }
 
-    void checkCollisionWithEnemies(const std::vector<Mob*>& enemies, int start);
-
     virtual void onUpdate();
 
-    virtual void onCollisionWithMob(Collision& collision, Mob* mob) {};
-    virtual void onCollisionWithPlayer(Collision& collision, Player& player) override = 0;
+    virtual void onCollisionWithPlayer(Collision& collision, Player* player) override = 0;
 
     void dieWithStyle(Direction direction);
 

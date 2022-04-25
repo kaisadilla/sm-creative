@@ -1,4 +1,7 @@
 #include "entities/Entity.h"
+#include "entities/Mob.h"
+#include "entities/Item.h"
+#include "entities/Player.h"
 #include "game/scenes/LevelScene.h"
 #include "tiles/Tile.h"
 
@@ -182,10 +185,10 @@ void Entity::checkCollisionWithEntities (const std::vector<std::unique_ptr<Entit
                 // two ifs because the "ignoresMobs" property could change
                 //after each collision event.
                 if (!this->ignoresMobs && !entity->ignoresMobs) {
-                    this->onCollisionWithEntity(collision, *entity);
+                    this->triggerCollisionWithEntityEvent(collision, entity.get());
                 }
                 if (!this->ignoresMobs && !entity->ignoresMobs) {
-                    entity->onCollisionWithEntity(collision, *this);
+                    entity->triggerCollisionWithEntityEvent(collision, this);
                 }
             }
         }
@@ -202,10 +205,7 @@ void Entity::checkOutOfBounds () {
 }
 
 bool Entity::isCollisionValid (const Collision& collision, const Tile& tile) const {
-    return true;
-    // TODO: tile does indeed have a valid collision method.
-    //WorldTile* tile = (WorldTile*)collision.collider->getGameObject();
-    //return tile->getTile()->hasMobCollided(collision, velocity);
+    return tile.hasMobCollided(collision, velocity);
 }
 
 void Entity::checkLookingLeft () {
@@ -215,6 +215,18 @@ void Entity::checkLookingLeft () {
     }
     else if (velocity.x > 0.f) {
         isLookingLeft = false;
+    }
+}
+
+void Entity::triggerCollisionWithEntityEvent (Collision& collision, Entity* entity) {
+    if (entity->getType() == GameObjectType::Enemy) {
+        onCollisionWithEnemy(collision, dynamic_cast<Mob*>(entity));
+    }
+    else if (entity->getType() == GameObjectType::Item) {
+        onCollisionWithItem(collision, dynamic_cast<Item*>(entity));
+    }
+    else if (entity->getType() == GameObjectType::Player) {
+        onCollisionWithPlayer(collision, dynamic_cast<Player*>(entity));
     }
 }
 
