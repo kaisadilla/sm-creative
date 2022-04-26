@@ -23,7 +23,7 @@ private:
     FpsCounter fpsCounter;
     f32 timeSinceLastFpsUpdate = 0.f;
 
-    Scene* scene;
+    std::unique_ptr<Scene> scene;
 
     // Debug information;
     sf::Font debugFont;

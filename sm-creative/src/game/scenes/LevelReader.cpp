@@ -3,7 +3,16 @@
 #include "entities/EntityReader.h"
 #include "utils/files.h"
 
+#include <chrono>
+
 LevelScene* LevelReader::loadLevel(const string& fileName) {
+    using std::chrono::high_resolution_clock;
+    using std::chrono::duration_cast;
+    using std::chrono::duration;
+    using std::chrono::milliseconds;
+
+    auto t1 = high_resolution_clock::now();
+
     //std::ifstream input("res/data/levels/" + fileName + ".sm-binl", std::ios::in | std::ios::binary);
     //std::vector<byte_f> buffer((std::istreambuf_iterator<char>(input)), std::istreambuf_iterator<char>());
     auto& buffer = utils::readBinaryFile("res/data/levels/" + fileName + ".sm-binl");
@@ -40,6 +49,10 @@ LevelScene* LevelReader::loadLevel(const string& fileName) {
 
     level->loadBackground(Assets::getBackgroundImageAt(background));
     level->loadMusic(Assets::getMusicAt(music));
+
+    auto t2 = high_resolution_clock::now();
+    auto ms_int = duration_cast<milliseconds>(t2 - t1);
+    std::cout << "Loaded level in " << ms_int.count() << "ms.\n";
 
     return level;
 }

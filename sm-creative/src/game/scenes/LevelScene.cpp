@@ -4,10 +4,15 @@
 
 LevelScene::LevelScene () {}
 
+LevelScene::~LevelScene () {
+    //std::cout << "Deleted level started" << "\n";
+    //music.stop();
+    //std::cout << "Deleted level" << "\n";
+}
+
 void LevelScene::onEnter () {
     camera = Camera(uvec2(getPixelWidth(), getPixelHeight()), uvec2(windowSize.x / windowZoom.x, windowSize.y / windowZoom.y));
     __TEMPORARY_initialize_player();
-    //camera.updatePosition(vec2(5 * 16, 20 * 16));
 
     for (const auto& entity : entities) {
         entity->onStart();
@@ -22,6 +27,9 @@ void LevelScene::onEnter () {
 }
 
 void LevelScene::onUpdate () {
+    for (const auto& tile : foregroundLayer) {
+        tile->onUpdate();
+    }
     for (const auto& entity : entities) {
         entity->onUpdate();
     }
@@ -146,7 +154,7 @@ void LevelScene::deleteDisposedEntities () {
 }
 
 void LevelScene::__TEMPORARY_initialize_player () {
-    player.setDefaultSizes(vec2(32.f, 32.f), vec2(32.f, 32.f), sf::IntRect(11, 17, 10, 15));
+    player.setDefaultSizes(vec2(32.f, 32.f), vec2(32.f, 32.f), sf::IntRect(11, 18, 10, 14));
     player.setGridPosition(ivec2(0.f, 22.f));
     player.__TEMPORARY_set_sprite_by_filename("mario", vec2(32, 32));
     player.initializeAnimations();

@@ -38,6 +38,7 @@ private:
 
 public:
     LevelScene();
+    ~LevelScene();
 
     void onEnter() override;
     void onUpdate() override;

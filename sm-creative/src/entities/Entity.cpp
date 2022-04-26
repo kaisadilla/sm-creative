@@ -5,6 +5,10 @@
 #include "game/scenes/LevelScene.h"
 #include "tiles/Tile.h"
 
+Entity::Entity() :
+    collider(this)
+{}
+
 Entity::~Entity () {
     std::cout << "Destroying entity with id " << id << "\n";
     animations.free();
@@ -182,14 +186,8 @@ void Entity::checkCollisionWithEntities (const std::vector<std::unique_ptr<Entit
 
         if (collider.checkCollision(entity->getCollider(), collision)) {
             if (entity->collidesWithEntities()) {
-                // two ifs because the "ignoresMobs" property could change
-                //after each collision event.
-                if (!this->ignoresMobs && !entity->ignoresMobs) {
-                    this->triggerCollisionWithEntityEvent(collision, entity.get());
-                }
-                if (!this->ignoresMobs && !entity->ignoresMobs) {
-                    entity->triggerCollisionWithEntityEvent(collision, this);
-                }
+                this->triggerCollisionWithEntityEvent(collision, entity.get());
+                entity->triggerCollisionWithEntityEvent(collision, this);
             }
         }
     }
@@ -220,7 +218,9 @@ void Entity::checkLookingLeft () {
 
 void Entity::triggerCollisionWithEntityEvent (Collision& collision, Entity* entity) {
     if (entity->getType() == GameObjectType::Enemy) {
-        onCollisionWithEnemy(collision, dynamic_cast<Mob*>(entity));
+        if (!this->ignoresMobs && !entity->ignoresMobs) {
+            onCollisionWithEnemy(collision, dynamic_cast<Mob*>(entity));
+        }
     }
     else if (entity->getType() == GameObjectType::Item) {
         onCollisionWithItem(collision, dynamic_cast<Item*>(entity));

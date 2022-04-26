@@ -115,7 +115,7 @@ SpriteAnimation* TileReader::getNextTileDynamicAnimation (Buffer& reader) {
 
     // frame is a value
     if (frameTimesLength == 0) {
-        const ui32 frameTime = reader.readFloat_LE();
+        f32 frameTime = reader.readFloat_LE();
         return new DynamicAnimation(slices, sliceSize, frameTime, frames);
     }
     // frame is an array of values.

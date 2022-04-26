@@ -61,6 +61,8 @@ void Player::onCollisionWithTile (Collision& collision, Tile& tile) {
     if (collision.direction == Direction::UP) {
         playerJumpEnd(true);
     }
+
+    tile.onCollisionWithPlayer(collision, this);
 }
 
 void Player::input () {
@@ -104,16 +106,22 @@ void Player::input () {
         }
     }
 
+    // TODO: Replace this with keydown and keyup, giving a 0.1 s buffer time for the jump.
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::X)) {
         if (isJumping) {
             playerJump();
         }
-        else if (!isJumping && isGrounded) {
+        else if (!isJumping && jumpReleased && isGrounded) {
             playerJumpStart();
         }
+
+        jumpReleased = false;
     }
     else if (isJumping) {
         playerJumpEnd(false);
+    }
+    else {
+        jumpReleased = true;
     }
 }
 
@@ -242,9 +250,9 @@ void Player::checkLookingLeft () {
 
 void Player::updateColliderDimensions () {
     if (currentMode == MarioMode::SMALL) {
-        setColliderSize(sf::IntRect(11, 17, 10, 15));
+        setColliderSize(sf::IntRect(11, 18, 10, 14));
     }
     else if (currentMode == MarioMode::BIG) {
-        setColliderSize(sf::IntRect(10, 6, 12, 26));
+        setColliderSize(sf::IntRect(10, 7, 12, 25));
     }
 }

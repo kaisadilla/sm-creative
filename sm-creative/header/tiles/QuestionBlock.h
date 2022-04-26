@@ -20,4 +20,10 @@ private:
 public:
     QuestionBlock(const bool isHidden, std::unique_ptr<Entity>& containedEntity, const i32 hitCount);
     QuestionBlock(const bool isHidden, std::unique_ptr<Tile>& containedTile, const i32 hitCount);
+
+    void onCollisionWithPlayer (Collision& collision, Player* player) override {
+        if (collision.direction == Direction::UP) {
+            std::cout << "I WAS HIT FROM BELOW! :(" << "\n";
+        }
+    };
 };

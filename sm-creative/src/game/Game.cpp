@@ -18,7 +18,7 @@ void Game::initialize () {
 
     sf::Listener::setGlobalVolume(50.f);
 
-    scene = LevelReader::loadLevel("level1-1");
+    scene = std::unique_ptr<LevelScene>(LevelReader::loadLevel("level1-1"));
 
     scene->setWindowSize(window.getSize(), vec2(2.f, 2.f));
     scene->onEnter();
@@ -117,10 +117,11 @@ void Game::pollEvents () {
                 Time::pauseOrResume();
             }
             else if (evt.key.code == sf::Keyboard::Key::F2) {
-                //SceneLevel* newScene = new SceneLevel(WINDOW_WIDTH, WINDOW_HEIGHT, Assets::levels["level1-1"]);
-                //memcpy(&scene, newScene, sizeof(newScene));
-                //delete newScene;
-                //scene.onEnter();
+                scene.reset();
+                scene = std::unique_ptr<LevelScene>(LevelReader::loadLevel("level1-1"));
+
+                scene->setWindowSize(window.getSize(), vec2(2.f, 2.f));
+                scene->onEnter();
             }
             else if (evt.key.code == sf::Keyboard::Key::F3) {
                 Debug::showDebugInfo = !Debug::showDebugInfo;

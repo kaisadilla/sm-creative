@@ -46,6 +46,7 @@ private:
     f32 jumpMinTime = 0.f;
     f32 jumpMaxTime = 0.f;
     bool isJumping = false;
+    bool jumpReleased = true;
 
     /**********
      * SOUNDS *

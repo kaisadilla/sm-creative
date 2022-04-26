@@ -112,8 +112,7 @@ protected:
     f32 ignoreEntityCollisionTimer = 0.f;
 
 public:
-    Entity() {};
-    //Entity(SceneLevel* level, vec2 size, AnimationState& animation);
+    Entity();
     ~Entity();
 
     /******************
@@ -170,6 +169,12 @@ protected:
     virtual void checkLookingLeft();
 
 private:
+    /// <summary>
+    /// Triggers the onCollision event appropriate for the type of entity given,
+    /// verifying first that the collision should be triggered for that type of entity.
+    /// </summary>
+    /// <param name="collision">The collision that will trigger this event.</param>
+    /// <param name="entity">The entity this one collided with.</param>
     void triggerCollisionWithEntityEvent(Collision& collision, Entity* entity);
 
 public:
@@ -233,7 +238,7 @@ public:
     }
 
     inline bool collidesWithEntities () {
-        return ignoreEntityCollisionTimer <= 0.f;
+        return !isDead && ignoreEntityCollisionTimer <= 0.f;
     }
 
     inline void setPosition (const vec2& position) {

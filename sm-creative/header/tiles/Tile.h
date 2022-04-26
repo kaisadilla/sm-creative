@@ -8,6 +8,8 @@
 #include "physics/Collision.h"
 #include "physics/IGameObject.h"
 
+class Player;
+
 class Tile : public IGameObject {
     friend class TileReader;
 
@@ -29,6 +31,13 @@ public:
     void onUpdate();
 
     virtual bool hasMobCollided(const Collision& collision, const vec2& mobVelocity) const;
+    
+    /// <summary>
+    /// An event that must be called manually by the Player class when necessary.
+    /// </summary>
+    /// <param name="collision">The collision that triggered this effect.</param>
+    /// <param name="player">The player that triggered this effect.</param>
+    virtual void onCollisionWithPlayer(Collision& collision, Player* player) {};
 
 public:
     /// <summary>
