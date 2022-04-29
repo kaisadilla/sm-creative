@@ -23,6 +23,11 @@ void Game::initialize () {
     scene->setWindowSize(window.getSize(), vec2(2.f, 2.f));
     scene->onEnter();
     Time::start();
+
+    uiFont.loadFromFile("res/bitfonts/smb3-font.json");
+    uiText.setFont(uiFont);
+    uiText.setPosition(vec2(150, 150));
+    uiText.setString("092138");
 }
 
 void Game::update () {
@@ -46,6 +51,8 @@ void Game::draw () {
     scene->onDraw(window);
 
     if (Debug::showDebugInfo) drawDebugInfo();
+
+    window.draw(uiText);
 
     window.display();
 }

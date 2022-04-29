@@ -17,7 +17,7 @@ protected:
     sf::Sound sound_kick;
 
 public:
-    Mob() {};
+    Mob();
 
     GameObjectType getType() override { return GameObjectType::Enemy; }
 
@@ -29,8 +29,8 @@ public:
 
 protected:
     /// <summary>
-    /// Returns true if the player is in a position where it should be
-    /// considered they are stepping on the mob, rather than running into it.
+    /// Returns true if the position of the player relative to this enemy is
+    /// considered as stomping this enemy, rather than running into it.
     /// </summary>
     /// <param name="playerCollider"></param>
     virtual bool isBeingTrampledByPlayer(const sf::FloatRect& playerCollider);

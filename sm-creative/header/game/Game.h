@@ -9,6 +9,7 @@
 #include "JobManager.h"
 #include "utils/FpsCounter.h"
 #include "game/scenes/Scene.h"
+#include "ui/BitmapText.h"
 
 class Game {
 private:
@@ -24,6 +25,9 @@ private:
     f32 timeSinceLastFpsUpdate = 0.f;
 
     std::unique_ptr<Scene> scene;
+
+    BitmapFont uiFont;
+    BitmapText uiText;
 
     // Debug information;
     sf::Font debugFont;

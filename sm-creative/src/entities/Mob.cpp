@@ -1,5 +1,10 @@
 #include "entities/Mob.h"
 
+Mob::Mob () {
+    sound_stomp.setBuffer(Assets::sound_stomp);
+    sound_kick.setBuffer(Assets::sound_kick);
+}
+
 void Mob::onUpdate () {
     Entity::onUpdate();
 }
