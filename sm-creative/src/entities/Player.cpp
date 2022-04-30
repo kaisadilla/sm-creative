@@ -178,6 +178,11 @@ void Player::die () {
     Entity::die();
     sound_death.play();
 }
+
+void Player::earnCoin () {
+    level->addCoins(1);
+    level->addScore(100);
+}
  
 void Player::setAnimationState () {
     animationSpeed = 1.f;

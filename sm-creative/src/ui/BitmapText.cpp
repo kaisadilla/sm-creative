@@ -6,14 +6,6 @@ void BitmapText::draw (sf::RenderTarget& target, sf::RenderStates states) const 
     }
 }
 
-void BitmapText::setPosition (const vec2& position) {
-    this->position = position;
-}
-
-void BitmapText::setFont (const BitmapFont& font) {
-    this->font = font;
-}
-
 void BitmapText::setString (const string& string) {
     stringSprites.clear();
 
@@ -24,11 +16,12 @@ void BitmapText::setString (const string& string) {
         sf::IntRect rect = font.getCharacterRect(c);
 
         sf::Sprite charSprite;
+        charSprite.setScale(scale);
         charSprite.setTexture(font.getTexture());
         charSprite.setTextureRect(rect);
         charSprite.setPosition(position.x + xOffset, position.y);
 
-        xOffset += rect.width;
+        xOffset += rect.width * scale.x;
         stringSprites.push_back(charSprite);
     }
 }

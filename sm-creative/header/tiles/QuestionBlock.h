@@ -2,6 +2,7 @@
 
 #include "Tile.h"
 #include "entities/Entity.h"
+#include "entities/Player.h"
 
 class QuestionBlock : public Tile {
 private:
@@ -10,12 +11,20 @@ private:
         Tile
     };
 
+    enum class State {
+        Active,
+        Empty
+    };
+
 private:
     bool isHidden;
     ContentType contentType;
     std::unique_ptr<Entity> containedEntity;
     std::unique_ptr<Tile> containedTile;
-    i32 hitCount;
+    i32 maxHitCount;
+
+    State currentState = State::Active;
+    i32 currentHits = 0;
 
 public:
     QuestionBlock(const bool isHidden, std::unique_ptr<Entity>& containedEntity, const i32 hitCount);
@@ -23,7 +32,12 @@ public:
 
     void onCollisionWithPlayer (Collision& collision, Player* player) override {
         if (collision.direction == Direction::UP) {
-            std::cout << "I WAS HIT FROM BELOW! :(" << "\n";
+            currentHits++;
+            player->earnCoin();
+
+            if (currentHits >= maxHitCount) {
+                currentState = State::Empty;
+            }
         }
     };
 };

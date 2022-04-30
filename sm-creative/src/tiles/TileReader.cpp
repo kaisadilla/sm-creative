@@ -15,8 +15,15 @@ Tile* TileReader::getNextTile (Buffer& reader, const bool generateCollider) {
     const ui16 posX = reader.readUInt16_LE();
     const ui16 posY = reader.readUInt16_LE();
 
-    // sprite
-    SpriteAnimation* animation = getNextTileAnimation(reader);
+    // animations
+    const byte animationLength = reader.readUInt8();
+    std::vector<SpriteAnimation*> animations(animationLength);
+
+    for (i32 i = 0; i < animationLength; i++) {
+        animations[i] = getNextTileAnimation(reader);
+    }
+
+    //SpriteAnimation* animation = getNextTileAnimation(reader);
 
     if (tileType == ID_BLOCK) {
         const bool isHidden = reader.readUInt8();
@@ -56,7 +63,7 @@ Tile* TileReader::getNextTile (Buffer& reader, const bool generateCollider) {
 
     if (tile != nullptr) {
         tile->setGridPosition(ivec2(posX, posY));
-        tile->setAnimation(std::unique_ptr<SpriteAnimation>(animation));
+        tile->setAnimation(std::unique_ptr<SpriteAnimation>(animations[0]));
 
         if (generateCollider) {
             const vec2 colliderPosition = vec2(posX * PIXELS_PER_TILE, posY * PIXELS_PER_TILE);
@@ -89,7 +96,10 @@ SpriteAnimation* TileReader::getNextTileStaticAnimation (Buffer& reader) {
     const vec2 sliceSize(Assets::tileSize, Assets::tileSize);
 
     const ui32 spriteIndex = reader.readUInt32_LE();
-    const ui32 tileIndex = Assets::tileIndices[spriteIndex][0];
+    const ui32 sliceCount = reader.readUInt8();
+    const ui32 frame = reader.readUInt8();
+
+    const ui32 tileIndex = Assets::tileIndices[spriteIndex][frame];
 
     return new StaticAnimation(slices, sliceSize, tileIndex);
 }
@@ -100,9 +110,6 @@ SpriteAnimation* TileReader::getNextTileDynamicAnimation (Buffer& reader) {
 
     const ui32 spriteIndex = reader.readUInt32_LE();
     const ui32 sliceCount = reader.readUInt8();
-    // TODO: Remove these from the binary file.
-    const ui32 __unused_sizeX = reader.readUInt8();
-    const ui32 __unused_sizeY = reader.readUInt8();
 
     const ui32 framesLength = reader.readUInt8();
     std::vector<ui32> frames(framesLength);

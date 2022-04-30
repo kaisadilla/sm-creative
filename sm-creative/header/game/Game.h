@@ -9,12 +9,22 @@
 #include "JobManager.h"
 #include "utils/FpsCounter.h"
 #include "game/scenes/Scene.h"
-#include "ui/BitmapText.h"
 
 class Game {
 private:
     static constexpr ui32 WINDOW_WIDTH = WINDOW_WIDTH_IN_TILES * PIXELS_PER_TILE;
     static constexpr ui32 WINDOW_HEIGHT = WINDOW_HEIGHT_IN_TILES * PIXELS_PER_TILE;
+
+public:
+    /**********
+     * SCORES *
+     **********/
+    i32 lives = 3;
+    i32 coins = 0;
+    i32 score = 0;
+    i32 yoshiCoins = 0;
+    i32 endLevelItems[3] = { 0, 0, 0 };
+
 private:
     sf::RenderWindow window;
     f32 cumulativeFixedTime = 0.f;
@@ -25,9 +35,6 @@ private:
     f32 timeSinceLastFpsUpdate = 0.f;
 
     std::unique_ptr<Scene> scene;
-
-    BitmapFont uiFont;
-    BitmapText uiText;
 
     // Debug information;
     sf::Font debugFont;

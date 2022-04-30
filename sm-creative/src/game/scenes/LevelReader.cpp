@@ -30,6 +30,7 @@ LevelScene* LevelReader::loadLevel(const string& fileName) {
 
     const ui32 background = reader.readUInt16_LE();
     const ui32 music = reader.readUInt16_LE();
+    const ui32 time = reader.readUInt16_LE();
 
     readLayer(reader, level->backgroundLayer, false);
     readLayer(reader, level->foregroundLayer, true);
@@ -49,6 +50,8 @@ LevelScene* LevelReader::loadLevel(const string& fileName) {
 
     level->loadBackground(Assets::getBackgroundImageAt(background));
     level->loadMusic(Assets::getMusicAt(music));
+
+    level->timeLeft = (f32)time;
 
     auto t2 = high_resolution_clock::now();
     auto ms_int = duration_cast<milliseconds>(t2 - t1);

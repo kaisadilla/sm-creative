@@ -1,8 +1,11 @@
 {
     "fontName": "Super Mario Bros. 3",
+    "spritesheet": "smb3",
     "spritesheetDimensions": [12, 3],
     "cellDimensions": [10, 10],
     "cellOffset": [1, 1, 1, 1],
+    "spacing": [0, 0],
+    "spaceLength": 6,
     "characters": [
         {
             "character": "0",

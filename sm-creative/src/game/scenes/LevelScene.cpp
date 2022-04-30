@@ -1,12 +1,12 @@
 #include <fstream>
 
 #include "game/scenes/LevelScene.h"
+#include "game/Game.h"
 
 LevelScene::LevelScene () {}
 
 LevelScene::~LevelScene () {
-    //std::cout << "Deleted level started" << "\n";
-    //music.stop();
+    music.stop();
     //std::cout << "Deleted level" << "\n";
 }
 
@@ -23,10 +23,19 @@ void LevelScene::onEnter () {
     __TEMPORARY_spritePause.setTexture(__TEMPORARY_texPause);
     __TEMPORARY_spritePause.setTextureRect(sf::IntRect(ivec2(0, 0), (ivec2)__TEMPORARY_texPause.getSize()));
 
+    ui.__TEMPORARY_initialize_ui();
+    ui.__TEMPORARY_update_world("1");
+    ui.__TEMPORARY_update_lives(game->lives);
+    ui.__TEMPORARY_update_coins(game->coins);
+    ui.__TEMPORARY_update_time((i32)timeLeft);
+    ui.__TEMPORARY_update_score(game->score);
+
     music.play();
 }
 
 void LevelScene::onUpdate () {
+    timeLeft -= Time::getDeltaTime();
+
     for (const auto& tile : foregroundLayer) {
         tile->onUpdate();
     }
@@ -38,6 +47,8 @@ void LevelScene::onUpdate () {
     camera.updatePosition(player.getPixelPosition());
 
     deleteDisposedEntities();
+
+    ui.__TEMPORARY_update_time(timeLeft);
 }
 
 void LevelScene::onFixedUpdate () {
@@ -72,6 +83,8 @@ void LevelScene::onDraw (sf::RenderWindow& window) {
 
     window.setView(window.getDefaultView());
 
+    ui.__TEMPORARY_draw_ui(window);
+
     // TODO: Move this into a drawUI() or something.
     if (isLevelPaused) {
         __TEMPORARY_spritePause.setPosition(((vec2)window.getSize() / 2.f) - (((vec2)__TEMPORARY_texPause.getSize() * 2.f) / 2.f));
@@ -94,6 +107,24 @@ void LevelScene::onEvent (const sf::Event& evt) {
             __TEMPORARY_sound_pause.play();
         }
     }
+}
+
+i32 LevelScene::addLives (const i32 lives) {
+    game->lives += lives;
+    ui.__TEMPORARY_update_lives(game->lives);
+    return game->lives;
+}
+
+i32 LevelScene::addCoins (const i32 coins) {
+    game->coins += coins;
+    ui.__TEMPORARY_update_coins(game->coins);
+    return game->coins;
+}
+
+i32 LevelScene::addScore (const i32 score) {
+    game->score += score;
+    ui.__TEMPORARY_update_score(game->score);
+    return game->score;
 }
 
 void LevelScene::loadBackground (const string& name) {

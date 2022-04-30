@@ -7,6 +7,7 @@
 #include "entities/Entity.h"
 #include "entities/Player.h"
 #include "player/Camera.h"
+#include "game/UserInterface.h"
 
 class LevelScene : public Scene {
     friend class LevelReader;
@@ -31,7 +32,14 @@ private:
 
     bool isLevelPaused = false;
 
-    // TODO: Temporary
+    /**********
+     * SCORES *
+     **********/
+    f32 timeLeft = 999;
+
+    UserInterface ui;
+
+    // TODO: Temporary fields that will be replaced when this is properly implemented.
     sf::Texture __TEMPORARY_texPause;
     sf::Sprite __TEMPORARY_spritePause;
     sf::Sound __TEMPORARY_sound_pause;
@@ -46,6 +54,10 @@ public:
     void onLateUpdate() override;
     void onDraw(sf::RenderWindow& window) override;
     void onEvent(const sf::Event& evt) override;
+
+    i32 addLives(const i32 lives);
+    i32 addCoins(const i32 coins);
+    i32 addScore(const i32 score);
 
 private:
     void loadBackground(const string& name);

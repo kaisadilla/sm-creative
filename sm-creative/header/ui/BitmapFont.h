@@ -12,7 +12,7 @@ class BitmapFont {
 private:
     sf::Texture texture;
     std::unordered_map<byte, sf::IntRect> characters;
-    vec2 spacing = vec2(0, 0);
+    vec2 spacing;
 
 public:
     BitmapFont() {};

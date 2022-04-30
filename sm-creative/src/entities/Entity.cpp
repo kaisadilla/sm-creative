@@ -10,8 +10,8 @@ Entity::Entity() :
 {}
 
 Entity::~Entity () {
-    std::cout << "Destroying entity with id " << id << "\n";
     animations.free();
+    std::cout << "Destroyed entity with id " << id << "\n";
 }
 
 void Entity::updatePhysics () {

@@ -68,6 +68,8 @@ public:
     void takeDamage(bool forceDeath, Direction direction = Direction::NONE) override;
     void die() override;
 
+    void earnCoin();
+
 private:
     void onCollisionWithTile(Collision& collision, Tile& tile) override;
 
