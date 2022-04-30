@@ -13,19 +13,17 @@ void Koopa::initialize (const sf::IntRect& shellColliderPosition) {
 }
 
 void Koopa::initializeAnimations () {
-    DynamicAnimation* aWalking          = new DynamicAnimation({ 6, 1 }, textureSize, 0.2f, { 0, 1 });
-    StaticAnimation*  aShell            = new StaticAnimation({ 6, 1 }, textureSize, 2);
-    DynamicAnimation* aShellTravelling  = new DynamicAnimation({ 6, 1 }, textureSize, 0.03f, { 2, 3, 4 });
-    DynamicAnimation* aShellReanimating = new DynamicAnimation({ 6, 1 }, textureSize, 0.1f, { 2, 5 });
-    StaticAnimation*  aDead             = new StaticAnimation({ 6, 1 }, textureSize, 2);
+    std::unique_ptr<SpriteAnimation> aWalking          = std::make_unique<DynamicAnimation>(uvec2(6, 1), textureSize, 0.2f, std::vector<ui32>{ 0, 1 });
+    std::unique_ptr<SpriteAnimation> aShell            = std::make_unique<StaticAnimation >(uvec2(6, 1), textureSize, 2);
+    std::unique_ptr<SpriteAnimation> aShellTravelling  = std::make_unique<DynamicAnimation>(uvec2(6, 1), textureSize, 0.03f, std::vector<ui32>{ 2, 3, 4 });
+    std::unique_ptr<SpriteAnimation> aShellReanimating = std::make_unique<DynamicAnimation>(uvec2(6, 1), textureSize, 0.1f, std::vector<ui32>{ 2, 5 });
+    std::unique_ptr<SpriteAnimation> aDead             = std::make_unique<StaticAnimation >(uvec2(6, 1), textureSize, 2);
 
-    animations.setAnimations({
-        aWalking,
-        aShell,
-        aShellTravelling,
-        aShellReanimating,
-        aDead
-    });
+    animations.addAnimation(aWalking);
+    animations.addAnimation(aShell);
+    animations.addAnimation(aShellTravelling);
+    animations.addAnimation(aShellReanimating);
+    animations.addAnimation(aDead);
 }
 
 void Koopa::onStart () {

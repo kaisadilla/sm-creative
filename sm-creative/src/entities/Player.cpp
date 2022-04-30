@@ -14,34 +14,32 @@ GameObjectType Player::getType () {
 }
 
 void Player::initializeAnimations () {
-    StaticAnimation*  aSmallStill    = new StaticAnimation({ 16, 8 }, textureSize, 0);
-    DynamicAnimation* aSmallWalking  = new DynamicAnimation({ 16, 8 }, textureSize, 0.1f, { 0, 1 });
-    StaticAnimation*  aSmallSkidding = new StaticAnimation({ 16, 8 }, textureSize, 3);
-    StaticAnimation*  aSmallJumping  = new StaticAnimation({ 16, 8 }, textureSize, 2);
-    StaticAnimation*  aDead          = new StaticAnimation({ 16, 8 }, textureSize, 4);
-    StaticAnimation*  aBigStill      = new StaticAnimation({ 16, 8 }, textureSize, 16);
-    DynamicAnimation* aBigWalking    = new DynamicAnimation({ 16, 8 }, textureSize, 0.075f, { 16, 17, 18, 17 });
-    StaticAnimation*  aBigSkidding   = new StaticAnimation({ 16, 8 }, textureSize, 20);
-    StaticAnimation*  aBigJumping    = new StaticAnimation({ 16, 8 }, textureSize, 19);
-    StaticAnimation*  aBigCrouching  = new StaticAnimation({ 16, 8 }, textureSize, 21);
+    std::unique_ptr<SpriteAnimation> aSmallStill    = std::make_unique<StaticAnimation >(uvec2(16, 8), textureSize, 0);
+    std::unique_ptr<SpriteAnimation> aSmallWalking  = std::make_unique<DynamicAnimation>(uvec2(16, 8), textureSize, 0.1f, std::vector<ui32>{ 0, 1 });
+    std::unique_ptr<SpriteAnimation> aSmallSkidding = std::make_unique<StaticAnimation >(uvec2(16, 8), textureSize, 3);
+    std::unique_ptr<SpriteAnimation> aSmallJumping  = std::make_unique<StaticAnimation >(uvec2(16, 8), textureSize, 2);
+    std::unique_ptr<SpriteAnimation> aDead          = std::make_unique<StaticAnimation >(uvec2(16, 8), textureSize, 4);
+    std::unique_ptr<SpriteAnimation> aBigStill      = std::make_unique<StaticAnimation >(uvec2(16, 8), textureSize, 16);
+    std::unique_ptr<SpriteAnimation> aBigWalking    = std::make_unique<DynamicAnimation>(uvec2(16, 8), textureSize, 0.075f, std::vector<ui32>{ 16, 17, 18, 17 });
+    std::unique_ptr<SpriteAnimation> aBigSkidding   = std::make_unique<StaticAnimation >(uvec2(16, 8), textureSize, 20);
+    std::unique_ptr<SpriteAnimation> aBigJumping    = std::make_unique<StaticAnimation >(uvec2(16, 8), textureSize, 19);
+    std::unique_ptr<SpriteAnimation> aBigCrouching  = std::make_unique<StaticAnimation >(uvec2(16, 8), textureSize, 21);
 
     // TODO: idk what I will do with this.
     DynamicAnimation* aTransformSmallToBig = new DynamicAnimation({ 16, 8 }, textureSize, 0.0666f, { 22, 0, 22, 0, 22, 0, 22, 16, 22, 16, 22, 16 }, [this]() {
         std::cout << "Nothing happens here yet";
     });
 
-    animations.setAnimations({
-        aSmallStill,
-        aSmallWalking,
-        aSmallSkidding,
-        aSmallJumping,
-        aDead,
-        aBigStill,
-        aBigWalking,
-        aBigSkidding,
-        aBigJumping,
-        aBigCrouching
-    });
+    animations.addAnimation(aSmallStill);
+    animations.addAnimation(aSmallWalking);
+    animations.addAnimation(aSmallSkidding);
+    animations.addAnimation(aSmallJumping);
+    animations.addAnimation(aDead);
+    animations.addAnimation(aBigStill);
+    animations.addAnimation(aBigWalking);
+    animations.addAnimation(aBigSkidding);
+    animations.addAnimation(aBigJumping);
+    animations.addAnimation(aBigCrouching);
 }
 
 void Player::onStart () {}

@@ -64,23 +64,27 @@ void Game::setupDebugInfo () {
         std::cout << "ERROR LOADING CASCADIA MONO." << "\n";
     }
 
+    debugBackground.setFillColor(sf::Color(0, 0, 0, 196));
+    debugBackground.setPosition(5.f, 3.f);
+    debugBackground.setSize(vec2(154.f, 42.f));
+
     infoFps.setFont(debugFont);
     infoFps.setString("FPS: 0" + cappedFps ? "[capped]" : "");
-    infoFps.setPosition(8.f, 2.f);
+    infoFps.setPosition(10.f, 4.f);
     infoFps.setCharacterSize(12);
     infoFps.setFillColor(sf::Color::White);
     infoFps.setStyle(sf::Text::Regular);
 
     infoTime.setFont(debugFont);
     infoTime.setString("Time: 0.00");
-    infoTime.setPosition(8.f, 14.f);
+    infoTime.setPosition(10.f, 16.f);
     infoTime.setCharacterSize(12);
     infoTime.setFillColor(sf::Color::White);
     infoTime.setStyle(sf::Text::Regular);
 
     infoTimeScale.setFont(debugFont);
     infoTimeScale.setString("Time scale: 0.00 [paused]");
-    infoTimeScale.setPosition(8.f, 26.f);
+    infoTimeScale.setPosition(10.f, 28.f);
     infoTimeScale.setCharacterSize(12);
     infoTimeScale.setFillColor(sf::Color::White);
     infoTimeScale.setStyle(sf::Text::Regular);
@@ -173,6 +177,7 @@ void Game::drawDebugInfo () {
     infoTime.setString(strTime);
     infoTimeScale.setString(strTimeScale);
 
+    window.draw(debugBackground);
     window.draw(infoFps);
     window.draw(infoTime);
     window.draw(infoTimeScale);

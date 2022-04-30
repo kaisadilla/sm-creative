@@ -1,7 +1,7 @@
 #include "animation/AnimationState.h"
 
-AnimationState::AnimationState(const std::vector<SpriteAnimation*>& animations) :
-    animations(animations)
+AnimationState::AnimationState(std::vector<std::unique_ptr<SpriteAnimation>>& animations) :
+    animations(std::move(animations))
 {}
 
 void AnimationState::free () {

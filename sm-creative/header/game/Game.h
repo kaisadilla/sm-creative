@@ -19,7 +19,7 @@ public:
     /**********
      * SCORES *
      **********/
-    i32 lives = 3;
+    i32 lives = 5;
     i32 coins = 0;
     i32 score = 0;
     i32 yoshiCoins = 0;
@@ -37,6 +37,7 @@ private:
     std::unique_ptr<Scene> scene;
 
     // Debug information;
+    sf::RectangleShape debugBackground;
     sf::Font debugFont;
     sf::Text infoFps;
     sf::Text infoTime;

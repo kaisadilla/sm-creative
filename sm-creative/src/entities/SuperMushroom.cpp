@@ -9,11 +9,9 @@ SuperMushroom::SuperMushroom (bool startingDirectionRight) :
 }
 
 void SuperMushroom::initializeAnimations () {
-    StaticAnimation* anim = new StaticAnimation({ 1, 1 }, textureSize, 0);
+    std::unique_ptr<SpriteAnimation> anim = std::make_unique<StaticAnimation>(uvec2(1, 1), textureSize, 0);
 
-    animations.setAnimations({
-        anim
-    });
+    animations.addAnimation(anim);
 }
 
 void SuperMushroom::onStart () {

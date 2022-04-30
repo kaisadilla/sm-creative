@@ -1,5 +1,9 @@
 #include "animation/SpriteAnimation.h"
 
+SpriteAnimation::~SpriteAnimation () {
+    std::cout << "Destroyed sprite animation. \n";
+}
+
 sf::IntRect SpriteAnimation::calculateSliceDimensions (const uvec2& slices, const vec2& sliceSize, const ui32 index) {
     ui32 xStart = index % slices.x;
     ui32 yStart = index / slices.x;

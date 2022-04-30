@@ -2,8 +2,8 @@
 
 #include "root.h"
 #include "SM_Time.h"
-#include "animation/StaticAnimation.h"
-#include "animation/DynamicAnimation.h"
+#include "animation/AnimationState.h"
+#include "assets/Assets.h"
 #include "physics/Collider.h"
 #include "physics/Collision.h"
 #include "physics/IGameObject.h"
@@ -15,7 +15,8 @@ class Tile : public IGameObject {
 
 protected:
     vec2 position;
-    std::unique_ptr<SpriteAnimation> animation;
+    //std::unique_ptr<SpriteAnimation> animation;
+    AnimationState animations;
     sf::Sprite sprite;
 
     /************
@@ -28,7 +29,8 @@ public:
 
     GameObjectType getType() override { return GameObjectType::Tile; }
     
-    void onUpdate();
+    virtual void onStart();
+    virtual void onUpdate();
 
     virtual bool hasMobCollided(const Collision& collision, const vec2& mobVelocity) const;
     
@@ -62,11 +64,5 @@ public:
 
     inline void draw (sf::RenderWindow& window) const {
         window.draw(sprite);
-    }
-
-protected:
-    inline void setAnimation (std::unique_ptr<SpriteAnimation>& animation) {
-        this->animation = std::move(animation);
-        sprite.setTextureRect(this->animation->getCurrentSlice(false));
     }
 };

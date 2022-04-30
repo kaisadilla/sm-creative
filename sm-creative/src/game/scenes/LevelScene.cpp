@@ -14,6 +14,12 @@ void LevelScene::onEnter () {
     camera = Camera(uvec2(getPixelWidth(), getPixelHeight()), uvec2(windowSize.x / windowZoom.x, windowSize.y / windowZoom.y));
     __TEMPORARY_initialize_player();
 
+    for (const auto& tile : foregroundLayer) {
+        tile->onStart();
+    }
+    for (const auto& tile : backgroundLayer) {
+        tile->onStart();
+    }
     for (const auto& entity : entities) {
         entity->onStart();
     }
@@ -37,6 +43,9 @@ void LevelScene::onUpdate () {
     timeLeft -= Time::getDeltaTime();
 
     for (const auto& tile : foregroundLayer) {
+        tile->onUpdate();
+    }
+    for (const auto& tile : backgroundLayer) {
         tile->onUpdate();
     }
     for (const auto& entity : entities) {

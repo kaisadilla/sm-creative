@@ -42,6 +42,7 @@ public:
     inline static sf::SoundBuffer sound_stomp;
     inline static sf::SoundBuffer sound_kick;
     inline static sf::SoundBuffer sound_playerDeath;
+    inline static sf::SoundBuffer sound_coin;
 
 public:
     static void loadData();

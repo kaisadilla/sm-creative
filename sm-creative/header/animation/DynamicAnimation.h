@@ -25,7 +25,6 @@ public:
     DynamicAnimation(const uvec2& slices, const vec2& sliceSize, const f32 frameTime, const std::vector<ui32>& frames);
     DynamicAnimation(const uvec2& slices, const vec2& sliceSize, const f32 frameTime, const std::vector<ui32>& frames, std::function<void()> callback);
     DynamicAnimation(const DynamicAnimation& animation);
-    ~DynamicAnimation();
 
     void onUpdate(const f32 deltaTime, const f32 speed) override;
     void reset() override;

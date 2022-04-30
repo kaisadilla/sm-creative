@@ -95,6 +95,7 @@ void Assets::loadSounds () {
     sound_stomp.loadFromFile("res/sound/stomp.wav");
     sound_kick.loadFromFile("res/sound/kick.wav");
     sound_playerDeath.loadFromFile("res/sound/player_death.wav");
+    sound_coin.loadFromFile("res/sound/coin.wav");
 }
 
 void Assets::loadLevels () {

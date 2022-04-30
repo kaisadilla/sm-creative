@@ -7,13 +7,11 @@ Goomba::Goomba(bool avoidsCliffs, bool startingDirectionRight) :
 {}
 
 void Goomba::initializeAnimations () {
-    DynamicAnimation* aWalking = new DynamicAnimation({ 3, 1 }, textureSize, 0.2f, { 0, 1 });
-    StaticAnimation*  aStomped = new StaticAnimation({ 3, 1 }, textureSize, 2);
+    std::unique_ptr<SpriteAnimation> aWalking = std::make_unique<DynamicAnimation>(uvec2(3, 1), textureSize, 0.2f, std::vector<ui32>{ 0, 1 });
+    std::unique_ptr<SpriteAnimation> aStomped = std::make_unique<StaticAnimation>(uvec2(3, 1), textureSize, 2);
 
-    animations.setAnimations({
-        aWalking,
-        aStomped
-    });
+    animations.addAnimation(aWalking);
+    animations.addAnimation(aStomped);
 }
 
 void Goomba::onStart () {

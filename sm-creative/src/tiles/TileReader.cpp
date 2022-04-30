@@ -23,8 +23,6 @@ Tile* TileReader::getNextTile (Buffer& reader, const bool generateCollider) {
         animations[i] = getNextTileAnimation(reader);
     }
 
-    //SpriteAnimation* animation = getNextTileAnimation(reader);
-
     if (tileType == ID_BLOCK) {
         const bool isHidden = reader.readUInt8();
 
@@ -39,6 +37,7 @@ Tile* TileReader::getNextTile (Buffer& reader, const bool generateCollider) {
         const byte hitCount = reader.readUInt8();
 
         tile = new QuestionBlock(isHidden, std::unique_ptr<Entity>(), hitCount);
+        ((QuestionBlock*)tile)->initialize();
     }
     else if (tileType == ID_DONUT_BLOCK) {
         tile = new DonutBlock();
@@ -63,7 +62,10 @@ Tile* TileReader::getNextTile (Buffer& reader, const bool generateCollider) {
 
     if (tile != nullptr) {
         tile->setGridPosition(ivec2(posX, posY));
-        tile->setAnimation(std::unique_ptr<SpriteAnimation>(animations[0]));
+
+        for (auto& anim : animations) {
+            tile->animations.addAnimation(std::unique_ptr<SpriteAnimation>(anim));
+        }
 
         if (generateCollider) {
             const vec2 colliderPosition = vec2(posX * PIXELS_PER_TILE, posY * PIXELS_PER_TILE);

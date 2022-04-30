@@ -9,10 +9,6 @@ DynamicAnimation::DynamicAnimation (const DynamicAnimation& animations) :
     frameSlicesMirrored(animations.frameSlicesMirrored)
 {}
 
-DynamicAnimation::~DynamicAnimation () {
-    std::cout << "KILLED ANIM \n";
-}
-
 void DynamicAnimation::reset () {
     currentFrame = 0;
     timeSinceLastFrame = 0.f;

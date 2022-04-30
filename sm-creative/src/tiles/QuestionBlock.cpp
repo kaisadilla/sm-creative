@@ -11,3 +11,22 @@ QuestionBlock::QuestionBlock (const bool isHidden, std::unique_ptr<Tile>& contai
     this->containedTile = std::move(containedTile);
     this->maxHitCount = hitCount;
 }
+
+void QuestionBlock::initialize () {
+    sound_coin.setBuffer(Assets::sound_coin);
+}
+
+void QuestionBlock::onCollisionWithPlayer (Collision& collision, Player* player) {
+    if (collision.direction == Direction::UP) {
+        if (currentState == State::Active) {
+            currentHits++;
+            player->earnCoin();
+            sound_coin.play();
+
+            if (currentHits >= maxHitCount) {
+                currentState = State::Empty;
+                animations.setState(AnimState::ANIM_EMPTY);
+            }
+        }
+    }
+}

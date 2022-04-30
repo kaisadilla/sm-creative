@@ -10,11 +10,10 @@ class Mob : public Entity {
     friend class IAvoidCliffs;
 
 protected:
+    sf::Sound sound_kick;
     sf::Sound sound_stomp;
 
     bool dyingWithStyle = false;
-
-    sf::Sound sound_kick;
 
 public:
     Mob();

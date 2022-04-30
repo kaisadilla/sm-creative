@@ -4,6 +4,8 @@
 
 class SpriteAnimation {
 public:
+    ~SpriteAnimation();
+
     virtual void onUpdate(const f32 deltaTime, const f32 speed) = 0;
     virtual void reset() = 0;
 
