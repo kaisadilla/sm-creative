@@ -17,9 +17,9 @@ private:
         ID_PIPE_COMPONENT
     };
 
-    enum SpriteTypes {
-        SPRITE_TYPE_STATIC,
-        SPRITE_TYPE_DYNAMIC
+    enum AnimTypes {
+        ANIM_TYPE_STATIC,
+        ANIM_TYPE_DYNAMIC
     };
 
     enum ContentType {
@@ -31,7 +31,7 @@ public:
     static Tile* getNextTile(Buffer& reader, const bool generateCollider);
 
 private:
-    static SpriteAnimation* getNextTileAnimation(Buffer& reader);
-    static SpriteAnimation* getNextTileStaticAnimation(Buffer& reader);
-    static SpriteAnimation* getNextTileDynamicAnimation(Buffer& reader);
+    static SpriteAnimation* getNextTileAnimation(Buffer& reader, const ui32 spriteIndex);
+    static SpriteAnimation* getNextTileStaticAnimation(Buffer& reader, const ui32 spriteIndex);
+    static SpriteAnimation* getNextTileDynamicAnimation(Buffer& reader, const ui32 spriteIndex);
 };

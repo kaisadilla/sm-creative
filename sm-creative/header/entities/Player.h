@@ -58,7 +58,7 @@ public:
     Player();
 
     GameObjectType getType() override;
-    void initializeAnimations() override;
+    void __TEMPORARY_initialize_animations();
 
     void onStart() override;
     void onUpdate() override;

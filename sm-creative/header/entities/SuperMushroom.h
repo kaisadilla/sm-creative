@@ -14,8 +14,6 @@ private:
 public:
     SuperMushroom(bool startingDirectionRight);
 
-    void initializeAnimations() override;
-
     void onStart() override;
     void onUpdate() override;
 

@@ -13,6 +13,16 @@ private:
         ID_KOOPA
     };
 
+    enum AnimTypes {
+        ANIM_TYPE_STATIC,
+        ANIM_TYPE_DYNAMIC
+    };
+
 public:
     static Entity* getNextEntity(Buffer& reader);
+
+private:
+    static SpriteAnimation* getNextEntityAnimation(Buffer& reader, const vec2& spriteSize);
+    static SpriteAnimation* getNextEntityStaticAnimation(Buffer& reader, const vec2& spriteSize);
+    static SpriteAnimation* getNextEntityDynamicAnimation(Buffer& reader, const vec2& spriteSize);
 };

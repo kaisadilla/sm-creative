@@ -18,8 +18,6 @@ private:
 public:
     Goomba(bool avoidsCliffs, bool startingDirectionRight);
 
-    void initializeAnimations() override;
-
     void onStart() override;
     void onUpdate() override;
     void onFixedUpdate() override;

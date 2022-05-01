@@ -14,13 +14,14 @@ Tile* TileReader::getNextTile (Buffer& reader, const bool generateCollider) {
     // position
     const ui16 posX = reader.readUInt16_LE();
     const ui16 posY = reader.readUInt16_LE();
+    const ui32 spriteIndex = reader.readUInt32_LE();
 
     // animations
     const byte animationLength = reader.readUInt8();
     std::vector<SpriteAnimation*> animations(animationLength);
 
     for (i32 i = 0; i < animationLength; i++) {
-        animations[i] = getNextTileAnimation(reader);
+        animations[i] = getNextTileAnimation(reader, spriteIndex);
     }
 
     if (tileType == ID_BLOCK) {
@@ -79,26 +80,26 @@ Tile* TileReader::getNextTile (Buffer& reader, const bool generateCollider) {
     return tile;
 }
 
-SpriteAnimation* TileReader::getNextTileAnimation(Buffer& reader) {
-    const byte spriteType = reader.readUInt8();
+SpriteAnimation* TileReader::getNextTileAnimation(Buffer& reader, const ui32 spriteIndex) {
+    const byte animType = reader.readUInt8();
 
-    if (spriteType == SPRITE_TYPE_STATIC) {
-        return TileReader::getNextTileStaticAnimation(reader);
+    if (animType == ANIM_TYPE_STATIC) {
+        return TileReader::getNextTileStaticAnimation(reader, spriteIndex);
     }
-    else if (spriteType == SPRITE_TYPE_DYNAMIC) {
-        return TileReader::getNextTileDynamicAnimation(reader);
+    else if (animType == ANIM_TYPE_DYNAMIC) {
+        return TileReader::getNextTileDynamicAnimation(reader, spriteIndex);
     }
     else {
         return nullptr;
     }
 }
 
-SpriteAnimation* TileReader::getNextTileStaticAnimation (Buffer& reader) {
+SpriteAnimation* TileReader::getNextTileStaticAnimation (Buffer& reader, const ui32 spriteIndex) {
     const uvec2 slices(Assets::texturesPerRow, Assets::texturesPerRow);
     const vec2 sliceSize(Assets::tileSize, Assets::tileSize);
 
-    const ui32 spriteIndex = reader.readUInt32_LE();
-    const ui32 sliceCount = reader.readUInt8();
+    const ui32 sliceCountX = reader.readUInt8();
+    const ui32 sliceCountY = reader.readUInt8(); // unused for tiles, always equals 1.
     const ui32 frame = reader.readUInt8();
 
     const ui32 tileIndex = Assets::tileIndices[spriteIndex][frame];
@@ -106,12 +107,12 @@ SpriteAnimation* TileReader::getNextTileStaticAnimation (Buffer& reader) {
     return new StaticAnimation(slices, sliceSize, tileIndex);
 }
 
-SpriteAnimation* TileReader::getNextTileDynamicAnimation (Buffer& reader) {
+SpriteAnimation* TileReader::getNextTileDynamicAnimation (Buffer& reader, const ui32 spriteIndex) {
     const uvec2 slices(Assets::texturesPerRow, Assets::texturesPerRow);
     const vec2 sliceSize(Assets::tileSize, Assets::tileSize);
 
-    const ui32 spriteIndex = reader.readUInt32_LE();
-    const ui32 sliceCount = reader.readUInt8();
+    const ui32 sliceCountX = reader.readUInt8();
+    const ui32 sliceCountY = reader.readUInt8(); // unused for tiles, always equals 1.
 
     const ui32 framesLength = reader.readUInt8();
     std::vector<ui32> frames(framesLength);

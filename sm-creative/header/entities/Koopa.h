@@ -26,7 +26,6 @@ public:
     Koopa(bool avoidsCliffs, bool startingDirectionRight, bool canRevive, bool playerCanGrabShell);
 
     void initialize(const sf::IntRect& shellColliderPosition);
-    void initializeAnimations() override;
 
     void onStart() override;
     void onUpdate() override;

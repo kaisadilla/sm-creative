@@ -13,7 +13,7 @@ GameObjectType Player::getType () {
     return GameObjectType::Player;
 }
 
-void Player::initializeAnimations () {
+void Player::__TEMPORARY_initialize_animations () {
     std::unique_ptr<SpriteAnimation> aSmallStill    = std::make_unique<StaticAnimation >(uvec2(16, 8), textureSize, 0);
     std::unique_ptr<SpriteAnimation> aSmallWalking  = std::make_unique<DynamicAnimation>(uvec2(16, 8), textureSize, 0.1f, std::vector<ui32>{ 0, 1 });
     std::unique_ptr<SpriteAnimation> aSmallSkidding = std::make_unique<StaticAnimation >(uvec2(16, 8), textureSize, 3);

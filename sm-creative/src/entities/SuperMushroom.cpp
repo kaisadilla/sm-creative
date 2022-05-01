@@ -8,12 +8,6 @@ SuperMushroom::SuperMushroom (bool startingDirectionRight) :
     gravityScale = 0.f;
 }
 
-void SuperMushroom::initializeAnimations () {
-    std::unique_ptr<SpriteAnimation> anim = std::make_unique<StaticAnimation>(uvec2(1, 1), textureSize, 0);
-
-    animations.addAnimation(anim);
-}
-
 void SuperMushroom::onStart () {
     Item::onStart();
 

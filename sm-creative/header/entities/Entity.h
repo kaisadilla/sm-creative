@@ -18,6 +18,8 @@ class Player;
 class Tile;
 
 class Entity : public IGameObject {
+    friend class EntityReader;
+
 protected:
     i32 id = -1;
     vec2 position;
@@ -122,7 +124,6 @@ public:
     void setSprite(const ui32 spriteIndex);
     void setColliderSize(const sf::IntRect& colliderPosition); // TODO: Rename to setColliderPosition.
     void setLevel(LevelScene* level);
-    virtual void initializeAnimations() = 0;
 
     /**********
      * EVENTS *

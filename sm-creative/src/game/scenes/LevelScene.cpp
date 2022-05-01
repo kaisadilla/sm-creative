@@ -197,6 +197,6 @@ void LevelScene::__TEMPORARY_initialize_player () {
     player.setDefaultSizes(vec2(32.f, 32.f), vec2(32.f, 32.f), sf::IntRect(11, 18, 10, 14));
     player.setGridPosition(ivec2(0.f, 22.f));
     player.__TEMPORARY_set_sprite_by_filename("mario", vec2(32, 32));
-    player.initializeAnimations();
+    player.__TEMPORARY_initialize_animations();
     player.setLevel(this);
 }
