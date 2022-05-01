@@ -6,12 +6,12 @@ void UserInterface::__TEMPORARY_initialize_ui () {
 
     __worldIcon.setScale(2);
     __worldIcon.setFont(__uiFont);
-    __worldIcon.setPosition(18, 10);
+    __worldIcon.setPivot(18, 10);
     __worldIcon.setString("WORLD");
 
     __world.setScale(2);
     __world.setFont(__uiFont);
-    __world.setPosition(110, 10);
+    __world.setPivot(110, 10);
     __world.setString("999");
 
     __livesIcon.setScale(2, 2);
@@ -21,7 +21,8 @@ void UserInterface::__TEMPORARY_initialize_ui () {
 
     __lives.setScale(2);
     __lives.setFont(__uiFont);
-    __lives.setPosition(212, 10);
+    __lives.setAlign(BitmapText::TextAlign::Right);
+    __lives.setPivot(212 + (16 * 2), 10);
     __lives.setString("99");
 
     __coinIcon.setScale(vec2(2, 2));
@@ -31,7 +32,8 @@ void UserInterface::__TEMPORARY_initialize_ui () {
 
     __coins.setScale(2);
     __coins.setFont(__uiFont);
-    __coins.setPosition(640, 10);
+    __coins.setAlign(BitmapText::TextAlign::Right);
+    __coins.setPivot(640 + (16 * 2), 10);
     __coins.setString("99");
 
     __timeIcon.setScale(vec2(2, 2));
@@ -41,12 +43,14 @@ void UserInterface::__TEMPORARY_initialize_ui () {
 
     __time.setScale(2);
     __time.setFont(__uiFont);
-    __time.setPosition(vec2(704, 10));
+    __time.setAlign(BitmapText::TextAlign::Right);
+    __time.setPivot(704 + (16 * 3), 10);
     __time.setString("999");
 
     __score.setScale(2);
     __score.setFont(__uiFont);
-    __score.setPosition(vec2(624, 34));
+    __score.setAlign(BitmapText::TextAlign::Right);
+    __score.setPivot(624 + (16 * 8), 34);
     __score.setString("99999999");
 
     for (i32 i = 0; i < 3; i++) {

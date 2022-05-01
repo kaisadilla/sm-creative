@@ -11,6 +11,13 @@ void BitmapText::setString (const string& string) {
 
     int xOffset = 0;
 
+    if (align == TextAlign::Right) {
+        for (byte c : string) {
+            c = ::toupper(c);
+            xOffset -= font.getCharacterRect(c).width * scale.x;
+        }
+    }
+
     for (byte c : string) {
         c = ::toupper(c);
         sf::IntRect rect = font.getCharacterRect(c);
@@ -19,9 +26,10 @@ void BitmapText::setString (const string& string) {
         charSprite.setScale(scale);
         charSprite.setTexture(font.getTexture());
         charSprite.setTextureRect(rect);
-        charSprite.setPosition(position.x + xOffset, position.y);
 
+        charSprite.setPosition(pivot.x + xOffset, pivot.y);
         xOffset += rect.width * scale.x;
+
         stringSprites.push_back(charSprite);
     }
 }
