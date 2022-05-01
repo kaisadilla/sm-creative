@@ -27,9 +27,14 @@ public:
     /// <param name="target"></param>
     void updatePosition(vec2 target);
 
+    void __drawDebugLines(sf::RenderWindow& window);
+
+public:
     inline sf::View& getView () {
         return view;
     }
 
-    void __drawDebugLines(sf::RenderWindow& window);
+    inline vec2 getTopLeft () {
+        return view.getCenter() - (vec2)windowHalves;
+    }
 };

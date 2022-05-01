@@ -40,8 +40,11 @@ Camera::Camera (const uvec2 levelDimensions, const uvec2 windowDimensions) :
 }
 
 void Camera::updatePosition (vec2 target) {
-    f32 x = std::clamp(target.x, viewMins.x, viewMaxes.x);
-    f32 y = std::clamp(target.y, viewMins.y, viewMaxes.y);
+    // TODO: Make this parameter configurable. This is half of the total size of the player entity.
+    constexpr f32 __TEMPORARY_MARIO_HARDCODED_OFFSET = 16.f;
+
+    f32 x = std::clamp(target.x + __TEMPORARY_MARIO_HARDCODED_OFFSET, viewMins.x, viewMaxes.x);
+    f32 y = std::clamp(target.y + __TEMPORARY_MARIO_HARDCODED_OFFSET, viewMins.y, viewMaxes.y);
 
     f32 xFixed = ((int)(x * 10.f) / 10.f) + 0.01f;
     f32 yFixed = ((int)(y * 10.f) / 10.f) + 0.01f;

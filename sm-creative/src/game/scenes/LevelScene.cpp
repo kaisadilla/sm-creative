@@ -38,6 +38,7 @@ void LevelScene::onEnter () {
     ui.__TEMPORARY_update_time((i32)timeLeft);
     ui.__TEMPORARY_update_score(game->score);
 
+    initializeBackground();
     music.play();
 }
 
@@ -61,6 +62,7 @@ void LevelScene::onUpdate () {
     camera.updatePosition(player.getPixelPosition());
 
     deleteDisposedObjects();
+    updateBackgroundPosition();
 
     ui.__TEMPORARY_update_time(timeLeft);
 }
@@ -219,6 +221,25 @@ void LevelScene::deleteDisposedObjects () {
             itParticles++;
         }
     }
+}
+
+void LevelScene::initializeBackground () {
+    // TODO: This is hardcoded to scale to 2x zoom.
+    auto& bgSize = backgroundTexture.getSize();
+    // TODO: Will underflow if the size of the window is bigger than the size of the background texture.
+    backgroundParallaxMaxX = bgSize.x - (windowSize.x / 2);
+    backgroundParallaxMaxY = bgSize.y - (windowSize.y / 2);
+    levelParallaxMaxX = getPixelWidth() - (windowSize.x / 2);
+    levelParallaxMaxY = getPixelHeight() - (windowSize.y / 2);
+}
+
+void LevelScene::updateBackgroundPosition() {
+    auto& topLeft = camera.getTopLeft();
+
+    const i32 xTop = (i32)math::lerp(0, backgroundParallaxMaxX, topLeft.x / levelParallaxMaxX);
+    const i32 yTop = (i32)math::lerp(0, backgroundParallaxMaxY, topLeft.y / levelParallaxMaxY);
+
+    backgroundImage.setTextureRect(sf::IntRect(xTop, yTop, windowSize.x / 2, windowSize.y / 2));
 }
 
 void LevelScene::__TEMPORARY_initialize_player () {

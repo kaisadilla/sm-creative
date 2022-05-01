@@ -65,7 +65,13 @@ inline Direction getOppositeDirection (Direction direction) {
     else return Direction::NONE;
 }
 
-// TODO: Move somewhere else, anyway we probably won't use this.
-inline f32 roundDownToNearest (f32 number, f32 target) {
-    return std::floorf(number / target) * target;
+namespace math {
+    // TODO: Move somewhere else, anyway we probably won't use this.
+    inline f32 roundDownToNearest (f32 number, f32 target) {
+        return std::floorf(number / target) * target;
+    }
+
+    inline f32 lerp (f32 a, f32 b, f32 f) {
+        return a + f * (b - a);
+    }
 }

@@ -17,6 +17,13 @@ private:
     ui32 width = 0;
     ui32 height = 0;
 
+    /************************
+     * BACKGROUND AND MUSIC *
+     ************************/
+    f32 backgroundParallaxMaxX = 0;
+    f32 backgroundParallaxMaxY = 0;
+    f32 levelParallaxMaxX = 0;
+    f32 levelParallaxMaxY = 0;
     sf::Texture backgroundTexture;
     sf::Sprite backgroundImage;
     sf::Music music;
@@ -82,6 +89,9 @@ private:
     void drawDebugInfo(sf::RenderWindow& window);
 
     void deleteDisposedObjects();
+
+    void initializeBackground();
+    void updateBackgroundPosition();
 
 public:
     inline ui32 getGridWidth () const {
