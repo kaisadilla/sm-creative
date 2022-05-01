@@ -1,6 +1,9 @@
 #pragma once
 
+#include <tweeny/tweeny.h>
+
 #include "Tile.h"
+#include "animation/TweenAnimation.h"
 #include "entities/Entity.h"
 #include "entities/Player.h"
 
@@ -33,11 +36,18 @@ private:
 
     sf::Sound sound_coin;
 
+    //bool animating = false;
+    //tweeny::tween<i32> tween;
+
+    TweenAnimation<i32> animHitByPlayer;
+
 public:
     QuestionBlock(const bool isHidden, std::unique_ptr<Entity>& containedEntity, const i32 hitCount);
     QuestionBlock(const bool isHidden, std::unique_ptr<Tile>& containedTile, const i32 hitCount);
 
     void initialize();
+
+    void onUpdate() override;
 
     void onCollisionWithPlayer(Collision& collision, Player* player) override;
 };

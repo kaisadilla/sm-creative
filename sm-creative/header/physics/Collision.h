@@ -30,9 +30,8 @@ public:
     /// The vertical side of this collider that collided with the other agent.
     /// </summary>
     Direction verticalDirection;
-    // TODO: Speak English.
     /// <summary>
-    /// The amount of distance, in each direction, that the others are inside each other.
+    /// A vector representing the overlap between the two colliders.
     /// </summary>
     vec2 intersection;
 
