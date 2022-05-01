@@ -6,6 +6,7 @@ void Assets::loadData () {
 
     buildTileAtlas();
     loadSounds();
+    loadParticleTextures();
 }
 
 void Assets::freeData () {
@@ -101,6 +102,15 @@ void Assets::loadSounds () {
 void Assets::loadLevels () {
     std::cout << "=== LOADING LEVELS ===" << std::endl;
 
+}
+
+void Assets::loadParticleTextures () {
+    std::cout << "=== LOADING PARTICLES ===" << std::endl;
+
+    for (const string& fileName : registry.particleSprites) {
+        particleTextures[fileName] = sf::Texture();
+        particleTextures[fileName].loadFromFile("res/sprites/particles/" + fileName + ".png");
+    }
 }
 
 /***********

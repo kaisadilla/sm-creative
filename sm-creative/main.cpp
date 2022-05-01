@@ -6,6 +6,7 @@ int main () {
     Game game;
     game.initialize();
 
+
     while (game.isOpen()) {
         game.update();
         game.draw();

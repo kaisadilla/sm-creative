@@ -5,6 +5,10 @@ Tile::Tile () {
     sprite.setTexture(Assets::tileAtlas);
 }
 
+void Tile::setLevel(LevelScene* level) {
+    this->level = level;
+}
+
 void Tile::onStart () {
     sprite.setTextureRect(animations.getCurrentAnimation().getCurrentSlice(false));
 }

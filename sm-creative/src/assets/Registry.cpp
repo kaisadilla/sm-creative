@@ -13,6 +13,7 @@ Registry::Registry (const string& path) {
     tileSize = json_registry["sprites"]["tile_size"];
     tileSprites = json_registry["sprites"]["tiles"].get<std::vector<string>>();
     entitySprites = json_registry["sprites"]["entities"].get<std::vector<string>>();
+    particleSprites = json_registry["sprites"]["particles"].get<std::vector<string>>();
 
     int k = 3;
 }

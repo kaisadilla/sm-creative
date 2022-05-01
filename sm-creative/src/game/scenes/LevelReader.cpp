@@ -32,10 +32,10 @@ LevelScene* LevelReader::loadLevel(const string& fileName) {
     const ui32 music = reader.readUInt16_LE();
     const ui32 time = reader.readUInt16_LE();
 
-    readLayer(reader, level->backgroundLayer, false);
-    readLayer(reader, level->foregroundLayer, true);
-    readLayer(reader, level->detailLayer, false);
-    readLayer(reader, level->frontLayer, false);
+    readLayer(reader, level, level->backgroundLayer, false);
+    readLayer(reader, level, level->foregroundLayer, true);
+    readLayer(reader, level, level->detailLayer, false);
+    readLayer(reader, level, level->frontLayer, false);
 
     const ui32 entityCount = reader.readUInt16_LE();
     level->entities.resize(entityCount);
@@ -60,12 +60,13 @@ LevelScene* LevelReader::loadLevel(const string& fileName) {
     return level;
 }
 
-void LevelReader::readLayer (Buffer& reader, std::vector<std::unique_ptr<Tile>>& tiles, const bool generateColliders) {
+void LevelReader::readLayer (Buffer& reader, LevelScene* level, std::vector<std::unique_ptr<Tile>>& tiles, const bool generateColliders) {
     const ui32 tileCount = reader.readUInt32_LE();
     tiles.resize(tileCount);
 
     for (i32 i = 0; i < tileCount; i++) {
         Tile* tile = TileReader::getNextTile(reader, generateColliders);
+        tile->setLevel(level);
         tiles[i] = std::unique_ptr<Tile>(tile);
     }
 }

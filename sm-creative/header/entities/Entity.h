@@ -11,7 +11,6 @@
 #include "world/WorldTile.h"
 
 class LevelScene;
-class SceneLevel; // TODO: REMOVE
 class Item;
 class Mob;
 class Player;

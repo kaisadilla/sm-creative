@@ -9,6 +9,7 @@
 #include "physics/IGameObject.h"
 
 class Player;
+class LevelScene;
 
 class Tile : public IGameObject {
     friend class TileReader;
@@ -27,6 +28,11 @@ protected:
     AnimationState animations;
     sf::Sprite sprite;
 
+    /// <summary>
+    /// The level scene this tile is currently in.
+    /// </summary>
+    LevelScene* level = nullptr;
+
     /************
      * COLLIDER *
      ************/
@@ -36,6 +42,8 @@ public:
     Tile();
 
     GameObjectType getType() override { return GameObjectType::Tile; }
+
+    void setLevel(LevelScene* level);
     
     virtual void onStart();
     virtual void onUpdate();

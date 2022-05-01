@@ -8,6 +8,7 @@
 #include "entities/Player.h"
 #include "player/Camera.h"
 #include "game/UserInterface.h"
+#include "vfx/Particle.h"
 
 class LevelScene : public Scene {
     friend class LevelReader;
@@ -26,6 +27,8 @@ private:
     std::vector<std::unique_ptr<Tile>> frontLayer;
 
     std::vector<std::unique_ptr<Entity>> entities;
+
+    std::vector<std::unique_ptr<Particle>> particles;
 
     Player player;
     Camera camera;
@@ -59,6 +62,14 @@ public:
     i32 addCoins(const i32 coins);
     i32 addScore(const i32 score);
 
+    // TODO: Someday, this will be pooled.
+    /// <summary>
+    /// Adds a particle to the level. This method will call the onStart() event on the
+    /// particle, so it doesn't need to be called before.
+    /// </summary>
+    /// <param name="particle">The particle to instantiate inside the level.</param>
+    void instantiateParticle(std::unique_ptr<Particle>& particle);
+
 private:
     void loadBackground(const string& name);
     void loadMusic(const string& name);
@@ -66,10 +77,11 @@ private:
     void drawLayer(sf::RenderWindow& window, std::vector<std::unique_ptr<Tile>>& layer);
     void drawEntities(sf::RenderWindow& window);
     void drawPlayer(sf::RenderWindow& window);
+    void drawParticles(sf::RenderWindow& window);
     void drawColliders(sf::RenderWindow& window);
     void drawDebugInfo(sf::RenderWindow& window);
 
-    void deleteDisposedEntities();
+    void deleteDisposedObjects();
 
 public:
     inline ui32 getGridWidth () const {

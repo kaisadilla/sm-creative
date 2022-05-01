@@ -365,6 +365,9 @@
             "goomba_red",
             "koopa_red",
             "mushroom"
+        ],
+        "particles": [
+            "volatile_coin"
         ]
     }
 }

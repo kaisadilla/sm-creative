@@ -1,3 +1,5 @@
+#pragma once
+
 #include <tweeny/tweeny.h>
 
 #include "root.h"
@@ -5,15 +7,16 @@
 template<typename T>
 class TweenAnimation {
 private:
-    bool isAnimating = false;
+    bool animating = false;
     bool loop = false;
     std::unique_ptr<tweeny::tween<T>> tween;
+    std::function<void()> endCallback = []() {};
 
 public:
     TweenAnimation () {};
 
     void onUpdate (std::function<void(T)> callback) {
-        if (isAnimating) {
+        if (animating) {
             i32 ms = (i32)(Time::getDeltaTime() * 1000);
             i32 newValue = tween->step(ms);
             callback(newValue);
@@ -23,13 +26,19 @@ public:
                     tween->seek(0);
                 }
                 else {
-                    isAnimating = false;
+                    animating = false;
                 }
+
+                endCallback();
             }
         }
     }
 
 public:
+    inline bool isAnimating () {
+        return animating;
+    }
+
     inline void setTween (std::unique_ptr<tweeny::tween<T>>& tween) {
         // WARNING: if we copy a value type instead of a pointer, tweeny doesn't work.
         this->tween = std::move(tween);
@@ -39,7 +48,11 @@ public:
         this->loop = loop;
     }
 
+    inline void setEndCallback (const std::function<void()> endCallback) {
+        this->endCallback = endCallback;
+    }
+
     inline void start () {
-        isAnimating = true;
+        animating = true;
     }
 };

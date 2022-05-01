@@ -3,6 +3,8 @@
 #include "game/scenes/LevelScene.h"
 #include "game/Game.h"
 
+#include "vfx/EarnedCoinParticle.h"
+
 LevelScene::LevelScene () {}
 
 LevelScene::~LevelScene () {
@@ -51,11 +53,14 @@ void LevelScene::onUpdate () {
     for (const auto& entity : entities) {
         entity->onUpdate();
     }
+    for (const auto& particle : particles) {
+        particle->onUpdate();
+    }
 
     player.onUpdate();
     camera.updatePosition(player.getPixelPosition());
 
-    deleteDisposedEntities();
+    deleteDisposedObjects();
 
     ui.__TEMPORARY_update_time(timeLeft);
 }
@@ -86,6 +91,7 @@ void LevelScene::onDraw (sf::RenderWindow& window) {
     drawLayer(window, foregroundLayer);
     drawEntities(window);
     drawPlayer(window);
+    drawParticles(window);
 
     if (Debug::drawCollisions) drawColliders(window);
     if (Debug::drawDebugInfo) drawDebugInfo(window);
@@ -136,6 +142,11 @@ i32 LevelScene::addScore (const i32 score) {
     return game->score;
 }
 
+void LevelScene::instantiateParticle (std::unique_ptr<Particle>& particle) {
+    particle->onStart();
+    particles.push_back(std::move(particle));
+}
+
 void LevelScene::loadBackground (const string& name) {
     backgroundTexture.loadFromFile("res/sprites/backgrounds/" + name + ".png");
     backgroundImage.setTexture(backgroundTexture);
@@ -164,6 +175,12 @@ void LevelScene::drawPlayer (sf::RenderWindow& window) {
     player.draw(window);
 }
 
+void LevelScene::drawParticles (sf::RenderWindow& window) {
+    for (const auto& particle : particles) {
+        particle->draw(window);
+    }
+}
+
 void LevelScene::drawColliders (sf::RenderWindow& window) {
     for (const auto& tile : foregroundLayer) {
         tile->getCollider().drawColliderBounds(window);
@@ -180,15 +197,26 @@ void LevelScene::drawDebugInfo (sf::RenderWindow& window) {
     }
 }
 
-void LevelScene::deleteDisposedEntities () {
-    auto& it = entities.begin();
+void LevelScene::deleteDisposedObjects () {
+    auto& itEntities = entities.begin();
 
-    while (it != entities.end()) {
-        if ((*it)->getDisposePending()) {
-            it = entities.erase(it);
+    while (itEntities != entities.end()) {
+        if ((*itEntities)->getDisposePending()) {
+            itEntities = entities.erase(itEntities);
         }
         else {
-            it++;
+            itEntities++;
+        }
+    }
+
+    auto& itParticles = particles.begin();
+
+    while (itParticles != particles.end()) {
+        if ((*itParticles)->getDisposePending()) {
+            itParticles = particles.erase(itParticles);
+        }
+        else {
+            itParticles++;
         }
     }
 }

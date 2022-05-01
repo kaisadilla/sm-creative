@@ -4,6 +4,7 @@
 #include <filesystem>
 #include <unordered_map>
 #include <nlohmann/json.hpp>
+#include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 
 #include "root.h"
@@ -18,7 +19,7 @@ class Assets {
 private:
     inline static Registry registry;
 
-    inline static std::unordered_map<string, i32> tileMap; // remove
+    inline static std::unordered_map<string, i32> tileMap; // TODO remove
 
 public:
     /// <summary>
@@ -34,8 +35,10 @@ public:
 
     inline static std::unordered_map<string, LevelData> levels;
 
-    inline static f32 normalizedTextureSize; // remove
-    inline static std::unordered_map<string, i32> __tilePositionMap; // remove
+    inline static f32 normalizedTextureSize; // TODO remove
+    inline static std::unordered_map<string, i32> __tilePositionMap; // TODO remove
+
+    inline static std::unordered_map<string, sf::Texture> particleTextures;
 
     inline static sf::SoundBuffer sound_pause;
     inline static sf::SoundBuffer sound_jump;
@@ -61,8 +64,13 @@ public:
         return registry.entitySprites[index];
     }
 
+    static inline string getParticleSpriteAt (const i32 index) {
+        return registry.particleSprites[index];
+    }
+
 private:
     static void buildTileAtlas();
     static void loadSounds();
     static void loadLevels();
+    static void loadParticleTextures();
 };

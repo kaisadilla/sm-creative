@@ -1,4 +1,6 @@
 #include "tiles/QuestionBlock.h"
+#include "vfx/EarnedCoinParticle.h"
+#include "game/scenes/LevelScene.h"
 
 QuestionBlock::QuestionBlock (const bool isHidden, std::unique_ptr<Entity>& containedEntity, const i32 hitCount) {
     this->isHidden = isHidden;
@@ -35,6 +37,10 @@ void QuestionBlock::onCollisionWithPlayer (Collision& collision, Player* player)
             tween->to(-10).during(100).via(tweeny::easing::sinusoidalOut).to(0).during(50).via(tweeny::easing::linear);
             animHitByPlayer.setTween(tween);
             animHitByPlayer.start();
+
+            std::unique_ptr<Particle> coinParticle = std::make_unique<EarnedCoinParticle>();
+            coinParticle->setPosition(position + vec2(0, -16));
+            level->instantiateParticle(coinParticle);
 
             if (currentHits >= maxHitCount) {
                 currentState = State::Empty;

@@ -12,6 +12,7 @@ public:
     inline static i32 tileSize;
     inline static std::vector<string> tileSprites;
     inline static std::vector<string> entitySprites;
+    inline static std::vector<string> particleSprites;
 
 public:
     Registry() {}
