@@ -10,6 +10,10 @@ class Player : public Entity {
 private:
     static constexpr f32 ACCELERATION_X = 16.f * 20.f;
     static constexpr f32 MAX_SPEED_X = 16.f * 5.5f;
+    /// <summary>
+    /// The window of time, in seconds, that a jump instruction is "saved" if it cannot be executed immediately.
+    /// </summary>
+    static constexpr f32 JUMP_BUFFER = 0.1f;
 
 public:
     enum class MarioMode {
@@ -47,6 +51,7 @@ private:
     f32 jumpMaxTime = 0.f;
     bool isJumping = false;
     bool jumpReleased = true;
+    f32 jumpBufferTime = 0.f;
 
     /**********
      * SOUNDS *

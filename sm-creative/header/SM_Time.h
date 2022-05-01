@@ -20,6 +20,10 @@ public:
     static inline f32 getTime () {
         return time;
     }
+
+    /// <summary>
+    /// Returns the amount of time, in seconds, since the last update.
+    /// </summary>
     static inline f32 getDeltaTime () {
         return deltaTime;
     }

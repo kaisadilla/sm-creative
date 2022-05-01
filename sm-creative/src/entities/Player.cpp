@@ -64,6 +64,10 @@ void Player::onCollisionWithTile (Collision& collision, Tile& tile) {
 }
 
 void Player::input () {
+    if (jumpBufferTime > 0.f) {
+        jumpBufferTime -= Time::getDeltaTime();
+    }
+
     f32 acc = ACCELERATION_X * Time::getDeltaTime();
     f32 maxSpeed = MAX_SPEED_X;
 
@@ -104,12 +108,17 @@ void Player::input () {
         }
     }
 
-    // TODO: Replace this with keydown and keyup, giving a 0.1 s buffer time for the jump.
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::X)) {
         if (isJumping) {
             playerJump();
         }
-        else if (!isJumping && jumpReleased && isGrounded) {
+        // queue up a jump command, whether or not the player can jump now.
+        else if (!isJumping && jumpReleased) {
+            jumpBufferTime = JUMP_BUFFER;
+        }
+
+        // if there's a jump command queued up and the player can jump, do so.
+        if (jumpBufferTime > 0.f && isGrounded) {
             playerJumpStart();
         }
 
