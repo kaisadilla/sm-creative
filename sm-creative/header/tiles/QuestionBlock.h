@@ -10,6 +10,7 @@
 class QuestionBlock : public Tile {
 private:
     enum class ContentType {
+        Coin,
         Entity,
         Tile
     };

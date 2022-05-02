@@ -122,3 +122,6 @@
 2761	5341	6731433671629785	sm-creative/CMakeFiles/sm-creative.dir/src/tiles/QuestionBlock.cpp.obj	99ee85a5e004143a
 2729	5414	6731433672344780	sm-creative/CMakeFiles/sm-creative.dir/src/game/scenes/LevelReader.cpp.obj	dd7dc64ef99d78bd
 5414	6394	6731433676147629	sm-creative/sm-creative.exe	ed11809e8479afc6
+58	3532	6731898742884451	sm-creative/CMakeFiles/sm-creative.dir/src/tiles/TileReader.cpp.obj	35745faada25ad2d
+49	3539	6731898742934463	sm-creative/CMakeFiles/sm-creative.dir/src/tiles/QuestionBlock.cpp.obj	99ee85a5e004143a
+3539	10535	6731898777313405	sm-creative/sm-creative.exe	ed11809e8479afc6
