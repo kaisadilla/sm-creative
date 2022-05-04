@@ -74,8 +74,14 @@ public:
     /// Adds a particle to the level. This method will call the onStart() event on the
     /// particle, so it doesn't need to be called before.
     /// </summary>
-    /// <param name="particle">The particle to instantiate inside the level.</param>
+    /// <param name="particle">The particle to instantiate inside this level.</param>
     void instantiateParticle(std::unique_ptr<Particle>& particle);
+    /// <summary>
+    /// Adds an entity to the level. This method will call the onStart() event on the
+    /// entity, so it doesn't need to be called before.
+    /// </summary>
+    /// <param name="entity">The entity to instantiate inside this level.</param>
+    void instantiateEntity(std::unique_ptr<Entity>& entity);
 
 private:
     void loadBackground(const string& name);

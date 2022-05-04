@@ -2,6 +2,7 @@
 
 #include "assets/Assets.h"
 #include "tiles/tiles.h"
+#include "entities/EntityReader.h"
 
 
 Tile* TileReader::getNextTile (Buffer& reader, const bool generateCollider) {
@@ -25,20 +26,37 @@ Tile* TileReader::getNextTile (Buffer& reader, const bool generateCollider) {
     }
 
     if (tileType == ID_BLOCK) {
-        const bool isHidden = reader.readUInt8();
-
-        tile = new Block(isHidden);
+        tile = new Block();
     }
     else if (tileType == ID_BACKGROUND) {
         tile = new BackgroundTile();
     }
     else if (tileType == ID_QUESTION_BLOCK) {
-        const bool isHidden = reader.readUInt8();
-        const byte contentType = reader.readUInt8();
-        const byte hitCount = reader.readUInt8();
+        bool isHidden = reader.readUInt8();
+        byte contentType = reader.readUInt8();
+        
+        Entity* containedEntity = nullptr;
+        if (contentType == (byte)QuestionBlock::ContentType::Entity) {
+            containedEntity = EntityReader::getNextEntity(reader, false);
+        }
 
-        tile = new QuestionBlock(isHidden, std::unique_ptr<Entity>(), hitCount);
-        ((QuestionBlock*)tile)->initialize();
+        byte hitMode = reader.readUInt8();
+        if (hitMode == (byte)QuestionBlock::HitMode::N_Times) {
+
+        }
+        else if (hitMode == (byte)QuestionBlock::HitMode::N_Seconds) {
+
+        }
+
+        //tile = new QuestionBlock(isHidden, std::unique_ptr<Entity>(), hitCount);
+        tile = new QuestionBlock(isHidden, (QuestionBlock::ContentType)contentType, (QuestionBlock::HitMode)hitMode);
+
+        QuestionBlock* ctile = (QuestionBlock*)tile;
+        ctile->initialize();
+
+        if (containedEntity != nullptr) {
+            ctile->setContainedEntity(std::unique_ptr<Entity>(containedEntity));
+        }
     }
     else if (tileType == ID_DONUT_BLOCK) {
         tile = new DonutBlock();
@@ -50,16 +68,15 @@ Tile* TileReader::getNextTile (Buffer& reader, const bool generateCollider) {
         tile = new BreakableBlock();
     }
     else if (tileType == ID_PIPE_ORIGIN) {
-        const bool containsWarp = reader.readUInt8();
-        const bool containsEntity = reader.readUInt8();
+        //const bool containsWarp = reader.readUInt8();
+        //const bool containsEntity = reader.readUInt8();
         tile = new PipeOrigin();
     }
     else if (tileType == ID_PIPE_COMPONENT) {
         tile = new PipeComponent();
     }
     else {
-        std::cerr << "Invalid tile behavior ID: " << tileType << " (Address: 0x" << std::hex << startOffset << "|" << reader.getReadOffset() << std::dec << ")\n";
-    }
+        std::cerr << "Invalid tile behavior ID: " << tileType << " (Address: 0x" << std::hex << startOffset << " to " << reader.getReadOffset() << std::dec << ")\n";    }
 
     if (tile != nullptr) {
         tile->setGridPosition(ivec2(posX, posY));

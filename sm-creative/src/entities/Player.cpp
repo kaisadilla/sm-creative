@@ -1,6 +1,6 @@
 #include "entities/Player.h"
 #include "entities/Item.h"
-#include "entities/Mob.h"
+#include "entities/Enemy.h"
 #include "game/scenes/LevelScene.h"
 
 Player::Player () {
@@ -42,7 +42,9 @@ void Player::__TEMPORARY_initialize_animations () {
     animations.addAnimation(aBigCrouching);
 }
 
-void Player::onStart () {}
+void Player::onStart () {
+    Entity::onStart();
+}
 
 void Player::onUpdate () {
     Entity::onUpdate();

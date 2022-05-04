@@ -19,7 +19,13 @@ private:
     };
 
 public:
-    static Entity* getNextEntity(Buffer& reader);
+    /// <summary>
+    /// Reads an entity from the current position in the buffer given.
+    /// </summary>
+    /// <param name="reader">A buffer containing the binary, with the cursor in which to read the entity.</param>
+    /// <param name="hasLevelSettings">If true, the encoded entity contains level settings information (such as its position)</param>
+    /// <returns></returns>
+    static Entity* getNextEntity(Buffer& reader, bool hasLevelSettings);
 
 private:
     static SpriteAnimation* getNextEntityAnimation(Buffer& reader, const vec2& spriteSize);

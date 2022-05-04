@@ -40,7 +40,7 @@ LevelScene* LevelReader::loadLevel(const string& fileName) {
     const ui32 entityCount = reader.readUInt16_LE();
     level->entities.resize(entityCount);
     for (i32 i = 0; i < entityCount; i++) {
-        Entity* entity = EntityReader::getNextEntity(reader);
+        Entity* entity = EntityReader::getNextEntity(reader, true);
         entity->setLevel(level);
         level->entities[i] = std::unique_ptr<Entity>(entity);
     }

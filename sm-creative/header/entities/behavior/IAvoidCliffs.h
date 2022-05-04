@@ -1,7 +1,7 @@
 #pragma once
 
 #include "root.h"
-#include "entities/Mob.h"
+#include "entities/Enemy.h"
 
 /// <summary>
 /// WARNING: Requires SceneLevel.h to be imported in the child class, too.
@@ -18,6 +18,6 @@ protected:
     IAvoidCliffs(const bool avoidsCliffs, const f32 mobHeight);
 
     void onStart();
-    void checkCliffs(Mob* mob, f32 speed);
+    void checkCliffs(Enemy* mob, f32 speed);
     void drawDebugInfo_cliffDetection(sf::RenderWindow& window);
 };

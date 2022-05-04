@@ -1,15 +1,11 @@
-#include "entities/Mob.h"
+#include "entities/Enemy.h"
 
-Mob::Mob () {
+Enemy::Enemy () {
     sound_stomp.setBuffer(Assets::sound_stomp);
     sound_kick.setBuffer(Assets::sound_kick);
 }
 
-void Mob::onUpdate () {
-    Entity::onUpdate();
-}
-
-void Mob::dieWithStyle (Direction direction) {
+void Enemy::dieWithStyle (Direction direction) {
     dyingWithStyle = true;
     isDead = true;
     despawnTimer = 3.f;
@@ -25,6 +21,6 @@ void Mob::dieWithStyle (Direction direction) {
     sound_kick.play();
 }
 
-bool Mob::isBeingTrampledByPlayer(const sf::FloatRect& playerCollider) {
+bool Enemy::isBeingTrampledByPlayer(const sf::FloatRect& playerCollider) {
     return (playerCollider.top + playerCollider.height) < (getColliderPosition().top + 4);
 }

@@ -1,24 +1,23 @@
 #include "entities/Goomba.h"
 #include "entities/Player.h"
 
-Goomba::Goomba(bool avoidsCliffs, bool startingDirectionRight) :
-    IAvoidCliffs(avoidsCliffs, size.y), // TODO: Size is not yet defined at this point.
-    startingDirectionRight(startingDirectionRight)
+Goomba::Goomba(bool avoidsCliffs) :
+    IAvoidCliffs(avoidsCliffs, size.y) // TODO: Size is not yet defined at this point.
 {}
 
 void Goomba::onStart () {
-    Mob::onStart();
+    Enemy::onStart();
     IAvoidCliffs::onStart();
 
     velocity.x = (startingDirectionRight ? WALKING_SPEED : -WALKING_SPEED);
 }
 
 void Goomba::onUpdate () {
-    Mob::onUpdate();
+    Enemy::onUpdate();
 }
 
 void Goomba::onFixedUpdate () {
-    Mob::onFixedUpdate();
+    Enemy::onFixedUpdate();
 
     if (!dyingWithStyle && avoidsCliffs) {
         checkCliffs(this, WALKING_SPEED);
@@ -34,7 +33,7 @@ void Goomba::onCollisionWithTile (Collision& collision, Tile& tile) {
     }
 }
 
-void Goomba::onCollisionWithEnemy (Collision& collision, Mob* enemy) {
+void Goomba::onCollisionWithEnemy (Collision& collision, Enemy* enemy) {
     if (collision.getDirectionForGameObject(this) == Direction::LEFT) {
         velocity.x = -WALKING_SPEED;
     }
@@ -70,7 +69,7 @@ void Goomba::takeDamage (bool forceDeath, Direction direction) {
 }
 
 void Goomba::die () {
-    Mob::die();
+    Enemy::die();
     animations.setState(AnimStates::Goomba::STOMPED);
     velocity.x = 0;
 

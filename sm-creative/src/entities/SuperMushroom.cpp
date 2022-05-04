@@ -1,8 +1,7 @@
 #include "entities/SuperMushroom.h"
 #include "entities/Player.h"
 
-SuperMushroom::SuperMushroom (bool startingDirectionRight) :
-    startingDirectionRight(startingDirectionRight)
+SuperMushroom::SuperMushroom ()
 {
     flipSpriteWhenLookingLeft = false;
     gravityScale = 0.f;
@@ -11,7 +10,7 @@ SuperMushroom::SuperMushroom (bool startingDirectionRight) :
 void SuperMushroom::onStart () {
     Item::onStart();
 
-    velocity.x = (startingDirectionRight ? SPEED_X : -SPEED_Y);
+    velocity.x = (startingDirectionRight ? SPEED_X : -SPEED_X);
 }
 
 void SuperMushroom::onUpdate () {

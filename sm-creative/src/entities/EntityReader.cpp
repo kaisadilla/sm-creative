@@ -1,14 +1,10 @@
 #include "entities/EntityReader.h"
 #include "entities/entities.h"
 
-Entity* EntityReader::getNextEntity (Buffer& reader) {
+Entity* EntityReader::getNextEntity (Buffer& reader, bool hasLevelSettings) {
     Entity* entity = nullptr;
 
     const ui32 entityType = reader.readUInt32_LE();
-
-    // position
-    const ui16 posX = reader.readUInt16_LE();
-    const ui16 posY = reader.readUInt16_LE();
 
     // sprite
     const byte entitySizeX = reader.readUInt8();
@@ -34,29 +30,27 @@ Entity* EntityReader::getNextEntity (Buffer& reader) {
     }
     
     if (entityType == ID_SUPER_MUSHROOM) {
-        const bool startingDirectionRight = reader.readUInt8();
         const byte effectOnPlayer = reader.readUInt8(); // discarded for now
 
-        entity = new SuperMushroom(startingDirectionRight);
+        entity = new SuperMushroom();
 
     }
     else if (entityType == ID_GOOMBA) {
         const bool avoidsCliffs = reader.readUInt8();
-        const bool startingDirectionRight = reader.readUInt8();
 
-        entity = new Goomba(avoidsCliffs, startingDirectionRight);
+        entity = new Goomba(avoidsCliffs);
     }
     else if (entityType == ID_KOOPA) {
         const byte shellColliderTop = reader.readUInt8();
         const byte shellColliderLeft = reader.readUInt8();
         const byte shellColliderWidth = reader.readUInt8();
         const byte shellColliderHeight = reader.readUInt8();
+
         const bool avoidsCliffs = reader.readUInt8();
-        const bool startingDirectionRight = reader.readUInt8();
         const bool canRevive = reader.readUInt8();
         const bool playerCanGrabShell = reader.readUInt8();
 
-        entity = new Koopa(avoidsCliffs, startingDirectionRight, canRevive, playerCanGrabShell);
+        entity = new Koopa(avoidsCliffs, canRevive, playerCanGrabShell);
         ((Koopa*)entity)->initialize(sf::IntRect(shellColliderTop, shellColliderLeft, shellColliderWidth, shellColliderHeight));
     }
     else {
@@ -64,12 +58,22 @@ Entity* EntityReader::getNextEntity (Buffer& reader) {
     }
 
     if (entity != nullptr) {
-        entity->setGridPosition(ivec2(posX, posY));
         entity->setDefaultSizes(entitySize, spriteSize, collider);
         entity->setSprite(spriteIndex);
 
         for (auto& anim : animations) {
             entity->animations.addAnimation(std::unique_ptr<SpriteAnimation>(anim));
+        }
+
+        if (hasLevelSettings) {
+            // position
+            const ui16 posX = reader.readUInt16_LE();
+            const ui16 posY = reader.readUInt16_LE();
+
+            const bool startingDirectionRight = reader.readUInt8();
+
+            entity->setGridPosition(ivec2(posX, posY));
+            entity->setStartingDirectionRight(startingDirectionRight);
         }
     }
 

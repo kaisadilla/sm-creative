@@ -6,7 +6,7 @@
 
 class Player;
 
-class Mob : public Entity {
+class Enemy : public Entity {
     friend class IAvoidCliffs;
 
 protected:
@@ -16,11 +16,9 @@ protected:
     bool dyingWithStyle = false;
 
 public:
-    Mob();
+    Enemy();
 
     GameObjectType getType() override { return GameObjectType::Enemy; }
-
-    virtual void onUpdate();
 
     virtual void onCollisionWithPlayer(Collision& collision, Player* player) override = 0;
 

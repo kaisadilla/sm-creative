@@ -7,12 +7,12 @@
 #include "assets/Assets.h"
 #include "animation/AnimationState.h"
 #include "physics/Collider.h"
+#include "physics/Collision.h"
 #include "physics/IGameObject.h"
-#include "world/WorldTile.h"
 
 class LevelScene;
 class Item;
-class Mob;
+class Enemy;
 class Player;
 class Tile;
 
@@ -21,8 +21,12 @@ class Entity : public IGameObject {
 
 protected:
     i32 id = -1;
-    vec2 position;
     vec2 size;
+    vec2 position;
+    /// <summary>
+    /// If true, the goomba starts walking to the right instead of to the left.
+    /// </summary>
+    bool startingDirectionRight = false;
 
     /********
      * DATA *
@@ -34,6 +38,10 @@ protected:
     /*********
      * STATE *
      *********/
+    /// <summary>
+    /// If false, this entity won't do anything on its update() and fixedUpdate() events.
+    /// </summary>
+    bool isUpdated = true;
     bool isDead = false;
     f32 despawnTimer = 0.f;
     bool disposePending = false;
@@ -127,9 +135,9 @@ public:
     /**********
      * EVENTS *
      **********/
-    virtual void onStart() {};
-    virtual void onUpdate();
-    virtual void onFixedUpdate();
+    void start();
+    void update();
+    void fixedUpdate();
 
     /***********
      * PHYSICS *
@@ -159,13 +167,16 @@ public:
     virtual void drawDebugInfo(sf::RenderWindow& window) {};
 
 protected:
-    bool isCollisionValid(const Collision& collision, const Tile& tile) const;
+    virtual void onStart();
+    virtual void onUpdate();
+    virtual void onFixedUpdate();
 
     virtual void onCollisionWithTile(Collision& collision, Tile& tile) {};
     virtual void onCollisionWithItem(Collision& collision, Item* item) {};
-    virtual void onCollisionWithEnemy(Collision& collision, Mob* enemy) {};
+    virtual void onCollisionWithEnemy(Collision& collision, Enemy* enemy) {};
     virtual void onCollisionWithPlayer(Collision& collision, Player* player) {};
 
+    bool isCollisionValid(const Collision& collision, const Tile& tile) const;
     virtual void checkLookingLeft();
 
 private:
@@ -245,6 +256,10 @@ public:
         this->position = position;
         collider.setPosition(position);
         sprite.setPosition(getPixelPosition() + vec2(0, 1));
+    }
+
+    inline void setStartingDirectionRight (const bool startingDirectionRight) {
+        this->startingDirectionRight = startingDirectionRight;
     }
 
     inline void setGridPosition (const ivec2& position) {

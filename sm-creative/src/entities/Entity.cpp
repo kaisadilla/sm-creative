@@ -1,5 +1,5 @@
 #include "entities/Entity.h"
-#include "entities/Mob.h"
+#include "entities/Enemy.h"
 #include "entities/Item.h"
 #include "entities/Player.h"
 #include "game/scenes/LevelScene.h"
@@ -42,6 +42,22 @@ void Entity::setLevel (LevelScene* level) {
     this->level = level;
 }
 
+void Entity::start() {
+    onStart();
+}
+
+void Entity::update() {
+    if (isUpdated) {
+        onUpdate();
+    }
+}
+
+void Entity::fixedUpdate() {
+    if (isUpdated) {
+        onFixedUpdate();
+    }
+}
+
 void Entity::initializeDefaultSpriteAndColliderSizes (const vec2& spriteSize, const sf::IntRect& colliderPosition) {
     size = spriteSize;
     sprite.setSize(size);
@@ -80,6 +96,9 @@ void Entity::move (vec2 direction) {
 
 void Entity::move (f32 x, f32 y) {
     setPosition(vec2(position.x + x, position.y + y));
+}
+
+void Entity::onStart () {
 }
 
 void Entity::onUpdate () {
@@ -219,7 +238,7 @@ void Entity::checkLookingLeft () {
 void Entity::triggerCollisionWithEntityEvent (Collision& collision, Entity* entity) {
     if (entity->getType() == GameObjectType::Enemy) {
         if (!this->ignoresMobs && !entity->ignoresMobs) {
-            onCollisionWithEnemy(collision, dynamic_cast<Mob*>(entity));
+            onCollisionWithEnemy(collision, dynamic_cast<Enemy*>(entity));
         }
     }
     else if (entity->getType() == GameObjectType::Item) {

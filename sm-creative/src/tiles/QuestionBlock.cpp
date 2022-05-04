@@ -2,20 +2,19 @@
 #include "vfx/EarnedCoinParticle.h"
 #include "game/scenes/LevelScene.h"
 
-QuestionBlock::QuestionBlock (const bool isHidden, std::unique_ptr<Entity>& containedEntity, const i32 hitCount) {
+QuestionBlock::QuestionBlock(const bool isHidden, ContentType contentType, HitMode hitMode) {
     this->isHidden = isHidden;
-    this->containedEntity = std::move(containedEntity);
-    this->maxHitCount = hitCount;
-}
-
-QuestionBlock::QuestionBlock (const bool isHidden, std::unique_ptr<Tile>& containedTile, const i32 hitCount) {
-    this->isHidden = isHidden;
-    this->containedTile = std::move(containedTile);
-    this->maxHitCount = hitCount;
+    this->contentType = contentType;
+    this->hitMode = hitMode;
 }
 
 void QuestionBlock::initialize () {
     sound_coin.setBuffer(Assets::sound_coin);
+    sound_item.setBuffer(Assets::sound_item_spawn);
+}
+
+void QuestionBlock::setContainedEntity (std::unique_ptr<Entity>& containedEntity) {
+    this->containedEntity = std::move(containedEntity);
 }
 
 void QuestionBlock::onUpdate () {
@@ -30,17 +29,26 @@ void QuestionBlock::onCollisionWithPlayer (Collision& collision, Player* player)
     if (collision.direction == Direction::UP) {
         if (currentState == State::Active) {
             currentHits++;
-            player->earnCoin();
-            sound_coin.play();
 
             auto& tween = tweeny::uptrFrom(0);
             tween->to(-10).during(100).via(tweeny::easing::sinusoidalOut).to(0).during(50).via(tweeny::easing::linear);
             animHitByPlayer.setTween(tween);
             animHitByPlayer.start();
 
-            std::unique_ptr<Particle> coinParticle = std::make_unique<EarnedCoinParticle>();
-            coinParticle->setPosition(position + vec2(0, -16));
-            level->instantiateParticle(coinParticle);
+            if (contentType == ContentType::Coin) {
+                player->earnCoin();
+                sound_coin.play();
+
+                std::unique_ptr<Particle> coinParticle = std::make_unique<EarnedCoinParticle>();
+                coinParticle->setPosition(position + vec2(0, -16));
+                level->instantiateParticle(coinParticle);
+            }
+            else if (contentType == ContentType::Entity) {
+                containedEntity->setPosition(position + vec2(0, -16));
+                containedEntity->setStartingDirectionRight(collision.intersection.x > PIXELS_PER_TILE / 2.f);
+                level->instantiateEntity(containedEntity);
+                sound_item.play();
+            }
 
             if (currentHits >= maxHitCount) {
                 currentState = State::Empty;

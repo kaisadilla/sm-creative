@@ -23,7 +23,7 @@ void LevelScene::onEnter () {
         tile->onStart();
     }
     for (const auto& entity : entities) {
-        entity->onStart();
+        entity->start();
     }
 
     __TEMPORARY_sound_pause.setBuffer(Assets::sound_pause);
@@ -52,13 +52,13 @@ void LevelScene::onUpdate () {
         tile->onUpdate();
     }
     for (const auto& entity : entities) {
-        entity->onUpdate();
+        entity->update();
     }
     for (const auto& particle : particles) {
         particle->onUpdate();
     }
 
-    player.onUpdate();
+    player.update();
     camera.updatePosition(player.getPixelPosition());
 
     deleteDisposedObjects();
@@ -69,14 +69,14 @@ void LevelScene::onUpdate () {
 
 void LevelScene::onFixedUpdate () {
     for (const auto& entity : entities) {
-        entity->onFixedUpdate();
+        entity->fixedUpdate();
     }
     for (i32 i = 0; i < entities.size(); i++) {
         entities[i]->checkCollisionWithTiles(foregroundLayer);
         entities[i]->checkCollisionWithEntities(entities, i + 1);
     }
 
-    player.onFixedUpdate();
+    player.fixedUpdate();
     player.checkCollisionWithTiles(foregroundLayer);
     player.checkCollisionWithEntities(entities);
 }
@@ -147,6 +147,12 @@ i32 LevelScene::addScore (const i32 score) {
 void LevelScene::instantiateParticle (std::unique_ptr<Particle>& particle) {
     particle->onStart();
     particles.push_back(std::move(particle));
+}
+
+void LevelScene::instantiateEntity (std::unique_ptr<Entity>& entity) {
+    entity->setLevel(this);
+    entity->start();
+    entities.push_back(std::move(entity));
 }
 
 void LevelScene::loadBackground (const string& name) {

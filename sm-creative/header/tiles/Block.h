@@ -7,5 +7,5 @@ private:
     bool isHidden = false;
 
 public:
-    Block(const bool isHidden);
+    Block();
 };

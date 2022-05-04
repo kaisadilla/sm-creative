@@ -10,7 +10,7 @@ void IAvoidCliffs::onStart () {
     debug_checkedCliffTile.setSize(vec2(16.f, 16.f));
 }
 
-void IAvoidCliffs::checkCliffs(Mob* mob, f32 speed) {
+void IAvoidCliffs::checkCliffs(Enemy* mob, f32 speed) {
     const ivec2& gridPos = mob->getGridPosition();
 
     if (mob->velocity.x < 0.f) {

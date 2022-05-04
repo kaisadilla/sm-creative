@@ -1,9 +1,8 @@
 #include "entities/Koopa.h"
 #include "entities/Player.h"
 
-Koopa::Koopa(bool avoidsCliffs, bool startingDirectionRight, bool canRevive, bool playerCanGrabShell) :
+Koopa::Koopa(bool avoidsCliffs, bool canRevive, bool playerCanGrabShell) :
     IAvoidCliffs(avoidsCliffs, size.y),
-    startingDirectionRight(startingDirectionRight),
     canRevive(canRevive),
     playerCanGrabShell(playerCanGrabShell)
 {}
@@ -13,14 +12,14 @@ void Koopa::initialize (const sf::IntRect& shellColliderPosition) {
 }
 
 void Koopa::onStart () {
-    Mob::onStart();
+    Enemy::onStart();
     IAvoidCliffs::onStart();
 
     velocity.x = (startingDirectionRight ? WALKING_SPEED : -WALKING_SPEED);
 }
 
 void Koopa::onUpdate () {
-    Mob::onUpdate();
+    Enemy::onUpdate();
 
     if (isReviving) {
         animationSpeed = 1.f + (std::powf(1 - secondsUntilReviveEnd, 2) * 3.f);
@@ -31,7 +30,7 @@ void Koopa::onUpdate () {
 }
 
 void Koopa::onFixedUpdate () {
-    Mob::onFixedUpdate();
+    Enemy::onFixedUpdate();
 
     if (avoidsCliffs && !isShell) {
         checkCliffs(this, WALKING_SPEED);
@@ -48,7 +47,7 @@ void Koopa::onCollisionWithTile (Collision& collision, Tile& tile) {
     }
 }
 
-void Koopa::onCollisionWithEnemy (Collision& collision, Mob* enemy) {
+void Koopa::onCollisionWithEnemy (Collision& collision, Enemy* enemy) {
     if (isShell) {
         if (std::abs(velocity.x) > 0.1f) {
             enemy->takeDamage(true, collision.getHorizontalDirectionForGameObject(enemy));
@@ -104,7 +103,7 @@ void Koopa::takeDamage (bool forceDeath, Direction direction) {
 }
 
 void Koopa::die () {
-    Mob::die();
+    Enemy::die();
     animations.setState(AnimStates::Koopa::DEAD);
     velocity.x = 0;
 

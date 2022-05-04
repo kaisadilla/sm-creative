@@ -1,17 +1,16 @@
 #pragma once
 
 #include "root.h"
-#include "Mob.h"
+#include "Enemy.h"
 #include "JobManager.h"
 #include "behavior/IAvoidCliffs.h"
 
-class Koopa : public Mob, public IAvoidCliffs {
+class Koopa : public Enemy, public IAvoidCliffs {
 private:
     static constexpr f32 WALKING_SPEED = 32.f;
     static constexpr f32 SHELL_SPEED = 32.f * 6.f;
 
 private:
-    bool startingDirectionRight;
     bool canRevive;
     bool playerCanGrabShell;
 
@@ -23,7 +22,7 @@ private:
     f32 secondsUntilReviveEnd = 1.0f;
 
 public:
-    Koopa(bool avoidsCliffs, bool startingDirectionRight, bool canRevive, bool playerCanGrabShell);
+    Koopa(bool avoidsCliffs, bool canRevive, bool playerCanGrabShell);
 
     void initialize(const sf::IntRect& shellColliderPosition);
 
@@ -32,7 +31,7 @@ public:
     void onFixedUpdate() override;
 
     void onCollisionWithTile(Collision& collision, Tile& tile) override;
-    void onCollisionWithEnemy(Collision& collision, Mob* enemy) override;
+    void onCollisionWithEnemy(Collision& collision, Enemy* enemy) override;
     void onCollisionWithPlayer(Collision& collision, Player* player) override;
 
     void takeDamage(bool forceDeath, Direction direction = Direction::NONE) override;
