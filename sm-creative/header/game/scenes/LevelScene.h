@@ -88,7 +88,7 @@ private:
     void loadMusic(const string& name);
 
     void drawLayer(sf::RenderWindow& window, std::vector<std::unique_ptr<Tile>>& layer);
-    void drawEntities(sf::RenderWindow& window);
+    void drawEntities(sf::RenderWindow& window, const bool entitiesBeforeForeground);
     void drawPlayer(sf::RenderWindow& window);
     void drawParticles(sf::RenderWindow& window);
     void drawColliders(sf::RenderWindow& window);

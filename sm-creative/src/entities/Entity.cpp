@@ -50,6 +50,13 @@ void Entity::update() {
     if (isUpdated) {
         onUpdate();
     }
+    if (playingAnimation) {
+        if (animGetFromBlock) {
+            animGetFromBlock->onUpdate([this](i32 yPos) {
+                setPosition(vec2(position.x, yPos));
+            });
+        }
+    }
 }
 
 void Entity::fixedUpdate() {
@@ -210,6 +217,25 @@ void Entity::checkCollisionWithEntities (const std::vector<std::unique_ptr<Entit
             }
         }
     }
+}
+
+void Entity::playGetFromBlockAnimation () {
+    auto& tween = tweeny::uptrFrom(position.y);
+    tween->to(position.y - 16).during(750);
+
+    animGetFromBlock = std::make_unique<TweenAnimation<f32>>();
+    animGetFromBlock->setTween(tween);
+    animGetFromBlock->setEndCallback([this]() {
+        drawBeforeForeground = false;
+        playingAnimation = false;
+        isUpdated = true;
+        animGetFromBlock.reset();
+    });
+    animGetFromBlock->start();
+
+    isUpdated = false;
+    playingAnimation = true;
+    drawBeforeForeground = true;
 }
 
 void Entity::checkOutOfBounds () {

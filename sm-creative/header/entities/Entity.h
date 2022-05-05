@@ -6,6 +6,7 @@
 #include "SM_Time.h"
 #include "assets/Assets.h"
 #include "animation/AnimationState.h"
+#include "animation/TweenAnimation.h"
 #include "physics/Collider.h"
 #include "physics/Collision.h"
 #include "physics/IGameObject.h"
@@ -27,6 +28,11 @@ protected:
     /// If true, the goomba starts walking to the right instead of to the left.
     /// </summary>
     bool startingDirectionRight = false;
+    /// <summary>
+    /// If true, this entity is drawn before the foreground layer of tiles, which allows these tiles
+    /// to visually cover this entity.
+    /// </summary>
+    bool drawBeforeForeground = false;
 
     /********
      * DATA *
@@ -120,6 +126,12 @@ protected:
     /// </summary>
     f32 ignoreEntityCollisionTimer = 0.f;
 
+    /**************
+     * ANIMATIONS *
+     **************/
+    bool playingAnimation = false;
+    std::unique_ptr<TweenAnimation<f32>> animGetFromBlock;
+
 public:
     Entity();
     ~Entity();
@@ -147,6 +159,11 @@ public:
     void move(f32 x, f32 y);
     void checkCollisionWithTiles (const std::vector<std::unique_ptr<Tile>>& tiles, const i32 startingIndex = 0);
     void checkCollisionWithEntities (const std::vector<std::unique_ptr<Entity>>& entities, const i32 startingIndex = 0);
+
+    /**************
+     * ANIMATIONS *
+     **************/
+    void playGetFromBlockAnimation();
 
     // remove:
 
@@ -240,6 +257,14 @@ public:
         return ivec2((i32)position.x & 0xf, (i32)position.y & 0xf);
     }
 
+    inline bool getDrawBeforeForeground () const {
+        return drawBeforeForeground;
+    }
+
+    inline bool getIsUpdated () const {
+        return isUpdated;
+    }
+
     inline bool getLookingLeft () const {
         return isLookingLeft;
     }
@@ -264,6 +289,14 @@ public:
 
     inline void setGridPosition (const ivec2& position) {
         setPosition(vec2(position.x * PIXELS_PER_TILE, position.y * PIXELS_PER_TILE));
+    }
+
+    inline void setDrawBeforeForeground (const bool drawBeforeForeground) {
+        this->drawBeforeForeground = drawBeforeForeground;
+    }
+
+    inline void setIsUpdated (const bool isUpdated) {
+        this->isUpdated = isUpdated;
     }
 
     inline void draw (sf::RenderWindow& window) const {

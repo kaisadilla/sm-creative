@@ -18,7 +18,7 @@ void Game::initialize () {
 
     sf::Listener::setGlobalVolume(50.f);
 
-    scene = std::unique_ptr<LevelScene>(LevelReader::loadLevel("level1-1"));
+    scene = std::unique_ptr<LevelScene>(LevelReader::loadLevel("level1-1-goomba"));
 
     scene->setGame(this);
     scene->setWindowSize(window.getSize(), vec2(2.f, 2.f));

@@ -44,10 +44,14 @@ void QuestionBlock::onCollisionWithPlayer (Collision& collision, Player* player)
                 level->instantiateParticle(coinParticle);
             }
             else if (contentType == ContentType::Entity) {
-                containedEntity->setPosition(position + vec2(0, -16));
-                containedEntity->setStartingDirectionRight(collision.intersection.x > PIXELS_PER_TILE / 2.f);
-                level->instantiateEntity(containedEntity);
-                sound_item.play();
+                animHitByPlayer.setEndCallback([this, collision]() {
+                    containedEntity->setPosition(position + vec2(0, 0));
+                    containedEntity->setStartingDirectionRight(collision.intersection.x > PIXELS_PER_TILE / 2.f);
+                    containedEntity->playGetFromBlockAnimation();
+
+                    level->instantiateEntity(containedEntity);
+                    sound_item.play();
+                });
             }
 
             if (currentHits >= maxHitCount) {

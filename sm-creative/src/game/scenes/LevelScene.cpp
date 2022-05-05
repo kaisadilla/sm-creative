@@ -90,8 +90,9 @@ void LevelScene::onDraw (sf::RenderWindow& window) {
 
     window.setView(camera.getView());
     drawLayer(window, backgroundLayer);
+    drawEntities(window, true);
     drawLayer(window, foregroundLayer);
-    drawEntities(window);
+    drawEntities(window, false);
     drawPlayer(window);
     drawParticles(window);
 
@@ -173,9 +174,11 @@ void LevelScene::drawLayer (sf::RenderWindow& window, std::vector<std::unique_pt
     }
 }
 
-void LevelScene::drawEntities (sf::RenderWindow& window) {
+void LevelScene::drawEntities (sf::RenderWindow& window, const bool entitiesBeforeForeground) {
     for (const auto& entity : entities) {
-        entity->draw(window);
+        if (entity->getDrawBeforeForeground() == entitiesBeforeForeground) {
+            entity->draw(window);
+        }
     }
 }
 
