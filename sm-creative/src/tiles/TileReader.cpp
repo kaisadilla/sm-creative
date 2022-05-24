@@ -32,31 +32,28 @@ Tile* TileReader::getNextTile (Buffer& reader, const bool generateCollider) {
         tile = new BackgroundTile();
     }
     else if (tileType == ID_QUESTION_BLOCK) {
-        bool isHidden = reader.readUInt8();
-        byte contentType = reader.readUInt8();
+        auto questionBlock = new QuestionBlock();
+        questionBlock->isHidden = reader.readUInt8();
+        questionBlock->contentType = (QuestionBlock::ContentType)reader.readUInt8();
+
+        if (questionBlock->contentType == (QuestionBlock::ContentType::Entity)) {
+            questionBlock->containedEntity = std::unique_ptr<Entity>(EntityReader::getNextEntity(reader, false));
+        }
         
-        Entity* containedEntity = nullptr;
-        if (contentType == (byte)QuestionBlock::ContentType::Entity) {
-            containedEntity = EntityReader::getNextEntity(reader, false);
+        questionBlock->hitMode = (QuestionBlock::HitMode)reader.readUInt8();
+
+        if (questionBlock->hitMode == QuestionBlock::HitMode::N_Times) {
+            questionBlock->maxHitCount = reader.readUInt8();
+            questionBlock->revertToCoin = reader.readBool();
+        }
+        else if (questionBlock->hitMode == QuestionBlock::HitMode::N_Seconds) {
+            questionBlock->hitTimer = reader.readFloat_LE();
+            questionBlock->persistsUntilHit = reader.readBool();
+            questionBlock->revertToCoin = reader.readBool();
         }
 
-        byte hitMode = reader.readUInt8();
-        if (hitMode == (byte)QuestionBlock::HitMode::N_Times) {
-
-        }
-        else if (hitMode == (byte)QuestionBlock::HitMode::N_Seconds) {
-
-        }
-
-        //tile = new QuestionBlock(isHidden, std::unique_ptr<Entity>(), hitCount);
-        tile = new QuestionBlock(isHidden, (QuestionBlock::ContentType)contentType, (QuestionBlock::HitMode)hitMode);
-
-        QuestionBlock* ctile = (QuestionBlock*)tile;
-        ctile->initialize();
-
-        if (containedEntity != nullptr) {
-            ctile->setContainedEntity(std::unique_ptr<Entity>(containedEntity));
-        }
+        questionBlock->initialize();
+        tile = questionBlock;
     }
     else if (tileType == ID_DONUT_BLOCK) {
         tile = new DonutBlock();
@@ -68,11 +65,24 @@ Tile* TileReader::getNextTile (Buffer& reader, const bool generateCollider) {
         tile = new BreakableBlock();
     }
     else if (tileType == ID_PIPE_ORIGIN) {
-        //const bool containsWarp = reader.readUInt8();
-        //const bool containsEntity = reader.readUInt8();
-        tile = new PipeOrigin();
+        auto pipe = new PipeOrigin();
+
+        pipe->containsEntity = reader.readBool();
+        if (pipe->containsEntity) {
+            pipe->containedEntity = std::unique_ptr<Entity>(EntityReader::getNextEntity(reader, false));
+        }
+
+        pipe->generatesEntity = reader.readBool();
+        if (pipe->generatesEntity) {
+            pipe->generatedEntity = std::unique_ptr<Entity>(EntityReader::getNextEntity(reader, false));
+        }
+
+        pipe->containsWarp = reader.readBool();
+
+        tile = pipe;
     }
     else if (tileType == ID_PIPE_COMPONENT) {
+
         tile = new PipeComponent();
     }
     else {

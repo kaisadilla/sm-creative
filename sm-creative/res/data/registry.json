@@ -364,7 +364,8 @@
             "goomba_brown",
             "goomba_red",
             "koopa_red",
-            "mushroom"
+            "mushroom",
+            "venus_fire_trap_red"
         ],
         "particles": [
             "volatile_coin"

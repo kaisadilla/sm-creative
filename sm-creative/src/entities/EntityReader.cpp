@@ -1,5 +1,4 @@
 #include "entities/EntityReader.h"
-#include "entities/entities.h"
 
 Entity* EntityReader::getNextEntity (Buffer& reader, bool hasLevelSettings) {
     Entity* entity = nullptr;
@@ -30,28 +29,16 @@ Entity* EntityReader::getNextEntity (Buffer& reader, bool hasLevelSettings) {
     }
     
     if (entityType == ID_SUPER_MUSHROOM) {
-        const byte effectOnPlayer = reader.readUInt8(); // discarded for now
-
-        entity = new SuperMushroom();
-
+        entity = getNextSuperMushroom(reader);
     }
     else if (entityType == ID_GOOMBA) {
-        const bool avoidsCliffs = reader.readUInt8();
-
-        entity = new Goomba(avoidsCliffs);
+        entity = getNextGoomba(reader);
     }
     else if (entityType == ID_KOOPA) {
-        const byte shellColliderTop = reader.readUInt8();
-        const byte shellColliderLeft = reader.readUInt8();
-        const byte shellColliderWidth = reader.readUInt8();
-        const byte shellColliderHeight = reader.readUInt8();
-
-        const bool avoidsCliffs = reader.readUInt8();
-        const bool canRevive = reader.readUInt8();
-        const bool playerCanGrabShell = reader.readUInt8();
-
-        entity = new Koopa(avoidsCliffs, canRevive, playerCanGrabShell);
-        ((Koopa*)entity)->initialize(sf::IntRect(shellColliderTop, shellColliderLeft, shellColliderWidth, shellColliderHeight));
+        entity = getNextKoopa(reader);
+    }
+    else if (entityType == ID_VENUS_FIRE_TRAP) {
+        entity = getNextVenusFireTrap(reader);
     }
     else {
         std::cerr << "Invalid entity behavior ID: " << entityType << "\n";
@@ -129,4 +116,43 @@ SpriteAnimation* EntityReader::getNextEntityDynamicAnimation (Buffer& reader, co
 
         return new DynamicAnimation(uvec2(slicesX, slicesY), spriteSize, frameTimes, frames);
     }
+}
+
+SuperMushroom* EntityReader::getNextSuperMushroom(Buffer& reader) {
+    auto mushroom = new SuperMushroom();
+
+    const byte effectOnPlayer = reader.readUInt8(); // discarded for now
+
+    return mushroom;
+}
+
+Goomba* EntityReader::getNextGoomba(Buffer& reader) {
+    const bool avoidsCliffs = reader.readUInt8();
+
+    return new Goomba(avoidsCliffs);
+}
+
+Koopa* EntityReader::getNextKoopa(Buffer& reader) {
+    const byte shellColliderTop = reader.readUInt8();
+    const byte shellColliderLeft = reader.readUInt8();
+    const byte shellColliderWidth = reader.readUInt8();
+    const byte shellColliderHeight = reader.readUInt8();
+
+    const bool avoidsCliffs = reader.readUInt8();
+    const bool canRevive = reader.readUInt8();
+    const bool playerCanGrabShell = reader.readUInt8();
+
+    auto koopa = new Koopa(avoidsCliffs, canRevive, playerCanGrabShell);
+    koopa->initialize(sf::IntRect(shellColliderTop, shellColliderLeft, shellColliderWidth, shellColliderHeight));
+
+    return koopa;
+}
+
+VenusFireTrap* EntityReader::getNextVenusFireTrap(Buffer& reader) {
+    auto plant = new VenusFireTrap();
+
+    plant->projectileCount = reader.readUInt8();
+    plant->canBeStomped = reader.readBool();
+
+    return plant;
 }

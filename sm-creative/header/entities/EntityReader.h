@@ -1,6 +1,7 @@
 #pragma once 
 
 #include "root.h"
+#include "entities/entities.h"
 #include "entities/Entity.h"
 #include "libraries/Buffer.hpp"
 
@@ -8,9 +9,10 @@ class EntityReader {
 private:
     enum BehaviorIndices {
         ID_VOID = 0,
-        ID_SUPER_MUSHROOM,
+        ID_SUPER_MUSHROOM = 1,
         ID_GOOMBA = 1'000,
-        ID_KOOPA
+        ID_KOOPA = 1'001,
+        ID_VENUS_FIRE_TRAP = 1'002,
     };
 
     enum AnimTypes {
@@ -31,4 +33,9 @@ private:
     static SpriteAnimation* getNextEntityAnimation(Buffer& reader, const vec2& spriteSize);
     static SpriteAnimation* getNextEntityStaticAnimation(Buffer& reader, const vec2& spriteSize);
     static SpriteAnimation* getNextEntityDynamicAnimation(Buffer& reader, const vec2& spriteSize);
+
+    static SuperMushroom* getNextSuperMushroom(Buffer& reader);
+    static Goomba* getNextGoomba(Buffer& reader);
+    static Koopa* getNextKoopa(Buffer& reader);
+    static VenusFireTrap* getNextVenusFireTrap(Buffer& reader);
 };

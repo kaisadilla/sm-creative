@@ -8,6 +8,8 @@
 #include "entities/Player.h"
 
 class QuestionBlock : public Tile {
+    friend class TileReader;
+
 public:
     enum class ContentType : byte {
         Coin,
@@ -41,6 +43,9 @@ private:
     std::unique_ptr<Entity> containedEntity;
     std::unique_ptr<Tile> containedTile;
     i32 maxHitCount = 1;
+    bool revertToCoin = false;
+    f32 hitTimer = 5.0f;
+    bool persistsUntilHit = false;
 
     State currentState = State::Active;
     i32 currentHits = 0;
@@ -54,6 +59,7 @@ private:
     TweenAnimation<i32> animHitByPlayer;
 
 public:
+    QuestionBlock() {};
     QuestionBlock(const bool isHidden, ContentType contentType, HitMode hitMode);
 
     void initialize();
