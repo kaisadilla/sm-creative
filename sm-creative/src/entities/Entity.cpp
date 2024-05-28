@@ -220,7 +220,9 @@ void Entity::checkCollisionWithEntities (const std::vector<std::unique_ptr<Entit
 }
 
 void Entity::playGetFromBlockAnimation () {
-    auto& tween = tweeny::uptrFrom(position.y);
+    //auto& tween = tweeny::uptrFrom(position.y);
+    auto tweeno = tweeny::from(position.y);
+    std::unique_ptr<tweeny::tween<f32>> tween = std::make_unique<tweeny::tween<f32>>(std::move(tweeno));
     tween->to(position.y - 16).during(750);
 
     animGetFromBlock = std::make_unique<TweenAnimation<f32>>();

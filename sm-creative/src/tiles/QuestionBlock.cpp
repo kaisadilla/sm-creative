@@ -30,7 +30,9 @@ void QuestionBlock::onCollisionWithPlayer (Collision& collision, Player* player)
         if (currentState == State::Active) {
             currentHits++;
 
-            auto& tween = tweeny::uptrFrom(0);
+            //auto& tween = tweeny::uptrFrom(0);
+            auto tweeno = tweeny::from(0);
+            std::unique_ptr<tweeny::tween<i32>> tween = std::make_unique<tweeny::tween<i32>>(std::move(tweeno));
             tween->to(-10).during(100).via(tweeny::easing::sinusoidalOut).to(0).during(50).via(tweeny::easing::linear);
             animHitByPlayer.setTween(tween);
             animHitByPlayer.start();

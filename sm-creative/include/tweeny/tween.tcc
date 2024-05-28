@@ -43,11 +43,11 @@ namespace tweeny {
 
     template<typename T, typename... Ts> inline tween<T, Ts...> tween<T, Ts...>::from(T t, Ts... vs) { return tween<T, Ts...>(t, vs...); }
     // TODO: added by Azaria.
-    template<typename T, typename... Ts> inline tween<T, Ts...>* tween<T, Ts...>::ptrFrom(T t, Ts... vs) { return new tween<T, Ts...>(t, vs...); }
+    //template<typename T, typename... Ts> inline tween<T, Ts...>* tween<T, Ts...>::ptrFrom(T t, Ts... vs) { return new tween<T, Ts...>(t, vs...); }
     // TODO: added by Azaria.
-    template<typename T, typename... Ts> inline std::unique_ptr<tween<T, Ts...>> tween<T, Ts...>::uptrFrom(T t, Ts... vs) {
-        return std::make_unique<tween<T, Ts...>>(t, vs...);
-    }
+    //template<typename T, typename... Ts> inline std::unique_ptr<tween<T, Ts...>> tween<T, Ts...>::uptrFrom(T t, Ts... vs) {
+    //    return std::make_unique<tween<T, Ts...>>(t, vs...);
+    //}
 
     template<typename T, typename... Ts> inline tween<T, Ts...>::tween() { }
     template<typename T, typename... Ts> inline tween<T, Ts...>::tween(T t, Ts... vs) {

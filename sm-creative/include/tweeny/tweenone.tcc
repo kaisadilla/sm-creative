@@ -35,9 +35,9 @@
 namespace tweeny {
     template<typename T> inline tween<T> tween<T>::from(T t) { return tween<T>(t); }
     //TODO: Added by Azaria
-    template<typename T> inline tween<T>* tween<T>::ptrFrom(T t) { return new tween<T>(t); }
+    //template<typename T> inline tween<T>* tween<T>::ptrFrom(T t) { return new tween<T>(t); }
     //TODO: Added by Azaria
-    template<typename T> inline std::unique_ptr<tween<T>> tween<T>::uptrFrom(T t) { return std::unique_ptr<tween<T>>(new tween<T>(t)); }
+    //template<typename T> inline std::unique_ptr<tween<T>> tween<T>::uptrFrom(T t) { return std::unique_ptr<tween<T>>(new tween<T>(t)); }
 
     template<typename T> inline tween<T>::tween() { }
     template<typename T> inline tween<T>::tween(T t) {

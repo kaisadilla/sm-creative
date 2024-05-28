@@ -57,9 +57,9 @@ namespace tweeny {
              */
             static tween<T, Ts...> from(T t, Ts... vs);
             // TODO: Added by azaria.
-            static tween<T, Ts...>* ptrFrom(T t, Ts... vs);
+            //static tween<T, Ts...>* ptrFrom(T t, Ts... vs);
             // TODO: Added by azaria.
-            static std::unique_ptr<tween<T, Ts...>> uptrFrom(T t, Ts... vs);
+            //static std::unique_ptr<tween<T, Ts...>> uptrFrom(T t, Ts... vs);
 
         public:
             /**
@@ -600,9 +600,9 @@ namespace tweeny {
         public:
             static tween<T> from(T t);
             //TODO: Added by Azaria.
-            static tween<T>* ptrFrom(T t);
+            //static tween<T>* ptrFrom(T t);
             //TODO: Added by Azaria.
-            static std::unique_ptr<tween<T>> uptrFrom(T t);
+            //static std::unique_ptr<tween<T>> uptrFrom(T t);
 
         public:
             tween(); ///< @sa tween::tween

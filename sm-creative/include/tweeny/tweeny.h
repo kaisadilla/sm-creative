@@ -96,9 +96,9 @@ namespace tweeny {
    */
     template<typename... Ts> tween<Ts...> from(Ts... vs);
     // TODO: Added by Azaria.
-    template<typename... Ts> tween<Ts...>* ptrFrom(Ts... vs);
+    //template<typename... Ts> tween<Ts...>* ptrFrom(Ts... vs);
     // TODO: Added by Azaria.
-    template<typename... Ts> std::unique_ptr<tween<Ts...>> uptrFrom(Ts... vs);
+    //template<typename... Ts> std::unique_ptr<tween<Ts...>> uptrFrom(Ts... vs);
 }
 
 #include "tweeny.tcc"

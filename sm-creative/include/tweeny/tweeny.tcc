@@ -37,14 +37,14 @@ namespace tweeny {
     }
     
     // TODO: Added by azaria
-    template<typename... Ts> inline tween<Ts...>* ptrFrom(Ts... vs) {
-        return tween<Ts...>::ptrFrom(vs...);
-    }
+    //template<typename... Ts> inline tween<Ts...>* ptrFrom(Ts... vs) {
+    //    return tween<Ts...>::ptrFrom(vs...);
+    //}
 
     // TODO: Added by azaria
-    template<typename... Ts> inline std::unique_ptr<tween<Ts...>> uptrFrom(Ts... vs) {
-        return tween<Ts...>::uptrFrom(vs...);
-    }
+    //template<typename... Ts> inline std::unique_ptr<tween<Ts...>> uptrFrom(Ts... vs) {
+    //    return tween<Ts...>::uptrFrom(vs...);
+    //}
 }
 
 #endif //TWEENY_TWEENY_TCC

@@ -1,8 +1,8 @@
-# Install script for directory: D:/repos/cpp/sm-creative/sm-creative
+# Install script for directory: E:/repos/cpp/sm-creative/sm-creative
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "D:/repos/cpp/sm-creative/out/install/x86-Debug")
+  set(CMAKE_INSTALL_PREFIX "E:/repos/cpp/sm-creative/out/install/x86-Debug")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
